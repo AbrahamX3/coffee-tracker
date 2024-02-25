@@ -1,44 +1,177 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
+  date,
   index,
   integer,
-  pgTableCreator,
+  pgEnum,
+  pgTable,
   primaryKey,
   serial,
   text,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
 import { type AdapterAccount } from "next-auth/adapters";
-
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
  * database instance for multiple projects.
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `coffee-tracker_${name}`);
 
-export const posts = createTable(
-  "post",
+export const roast = pgEnum("roast", [
+  "LIGHT",
+  "LIGHT_MEDIUM",
+  "MEDIUM",
+  "MEDIUM_DARK",
+  "DARK",
+]);
+
+export const note = pgTable("note", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+});
+
+export const coffeeOnNote = pgTable(
+  "coffeeOnNote",
+  {
+    coffeeId: integer("coffeeId")
+      .notNull()
+      .references(() => coffee.id),
+    noteId: integer("notesId")
+      .notNull()
+      .references(() => varietal.id),
+  },
+  (coffeeOnNote) => ({
+    primaryKey: primaryKey({
+      columns: [coffeeOnNote.coffeeId, coffeeOnNote.noteId],
+    }),
+  }),
+);
+
+export const noteRelations = relations(note, ({ many }) => ({
+  coffees: many(coffeeOnNote),
+}));
+
+export const varietal = pgTable("varietal", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+});
+
+export const coffeeOnVarietal = pgTable(
+  "coffeeOnVarietal",
+  {
+    coffeeId: integer("coffeeId")
+      .notNull()
+      .references(() => coffee.id),
+    varietalId: integer("varietalId")
+      .notNull()
+      .references(() => varietal.id),
+  },
+  (coffeeOnVarietal) => ({
+    primaryKey: primaryKey({
+      columns: [coffeeOnVarietal.coffeeId, coffeeOnVarietal.varietalId],
+    }),
+  }),
+);
+
+export const varietalRelations = relations(varietal, ({ many }) => ({
+  coffees: many(coffeeOnVarietal),
+}));
+
+export const roaster = pgTable("roaster", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().notNull(),
+  instagram: text("instagram"),
+  website: text("website"),
+});
+
+export const coffee = pgTable("coffee", {
+  id: serial("id").primaryKey(),
+  roasterId: integer("roasterId")
+    .references(() => roaster.id)
+    .notNull(),
+  region: text("region").notNull(),
+  altitude: integer("altitude"),
+  score: integer("score"),
+  roast: roast("roast"),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt"),
+  active: boolean("active").default(true),
+});
+
+export const coffeeRelations = relations(coffee, ({ one, many }) => ({
+  roaster: one(roaster, {
+    references: [roaster.id],
+    fields: [coffee.roasterId],
+  }),
+  varietals: many(coffeeOnVarietal),
+  notes: many(coffeeOnNote),
+}));
+
+export const coffeeOnNoteRelations = relations(coffeeOnNote, ({ one }) => ({
+  note: one(note, {
+    fields: [coffeeOnNote.noteId],
+    references: [note.id],
+  }),
+  coffee: one(coffee, {
+    fields: [coffeeOnNote.coffeeId],
+    references: [coffee.id],
+  }),
+}));
+
+export const coffeeOnVarietalRelations = relations(
+  coffeeOnVarietal,
+  ({ one }) => ({
+    varietal: one(varietal, {
+      fields: [coffeeOnVarietal.varietalId],
+      references: [varietal.id],
+    }),
+    coffee: one(coffee, {
+      fields: [coffeeOnVarietal.coffeeId],
+      references: [coffee.id],
+    }),
+  }),
+);
+
+export const log = pgTable(
+  "log",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdById: varchar("createdById", { length: 255 })
+    date: date("date").notNull(),
+    coffeeId: integer("coffeeId")
       .notNull()
-      .references(() => users.id),
+      .references(() => coffee.id),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt"),
   },
-  (example) => ({
-    createdByIdIdx: index("createdById_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
-  })
+  (columns) => ({
+    dateIndex: index("date_idx").on(columns.date),
+  }),
 );
 
-export const users = createTable("user", {
+export const logRelations = relations(log, ({ one }) => ({
+  coffee: one(coffee, {
+    references: [coffee.id],
+    fields: [log.coffeeId],
+  }),
+}));
+
+export const CoffeeOnVarietalsSchema = createInsertSchema(coffeeOnVarietal);
+export const CoffeeOnNotesSchema = createInsertSchema(coffeeOnNote);
+export const LogSchema = createInsertSchema(log);
+export const CoffeeSchema = createInsertSchema(coffee);
+export const VarietalSchema = createInsertSchema(varietal);
+export const RoasterSchema = createInsertSchema(roaster);
+export const NoteSchema = createInsertSchema(note);
+
+export const users = pgTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
   name: varchar("name", { length: 255 }),
   email: varchar("email", { length: 255 }).notNull(),
@@ -52,7 +185,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
 }));
 
-export const accounts = createTable(
+export const accounts = pgTable(
   "account",
   {
     userId: varchar("userId", { length: 255 })
@@ -72,18 +205,18 @@ export const accounts = createTable(
     session_state: varchar("session_state", { length: 255 }),
   },
   (account) => ({
-    compoundKey: primaryKey({
+    primaryKey: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
     userIdIdx: index("account_userId_idx").on(account.userId),
-  })
+  }),
 );
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, { fields: [accounts.userId], references: [users.id] }),
 }));
 
-export const sessions = createTable(
+export const sessions = pgTable(
   "session",
   {
     sessionToken: varchar("sessionToken", { length: 255 })
@@ -96,21 +229,23 @@ export const sessions = createTable(
   },
   (session) => ({
     userIdIdx: index("session_userId_idx").on(session.userId),
-  })
+  }),
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(users, { fields: [sessions.userId], references: [users.id] }),
 }));
 
-export const verificationTokens = createTable(
+export const verificationTokens = pgTable(
   "verificationToken",
   {
     identifier: varchar("identifier", { length: 255 }).notNull(),
     token: varchar("token", { length: 255 }).notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  (vt) => ({
-    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  })
+  (verificationToken) => ({
+    primaryKey: primaryKey({
+      columns: [verificationToken.identifier, verificationToken.token],
+    }),
+  }),
 );
