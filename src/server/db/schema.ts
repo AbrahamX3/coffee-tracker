@@ -12,7 +12,7 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { type AdapterAccount } from "next-auth/adapters";
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -31,7 +31,7 @@ export const roast = pgEnum("roast", [
 
 export const note = pgTable("note", {
   id: serial("id").primaryKey(),
-  name: text("name").notNull(),
+  name: text("name").notNull().unique(),
 });
 
 export const coffeeOnNote = pgTable(
@@ -57,7 +57,7 @@ export const noteRelations = relations(note, ({ many }) => ({
 
 export const varietal = pgTable("varietal", {
   id: serial("id").primaryKey(),
-  name: text("name").notNull(),
+  name: text("name").notNull().unique(),
 });
 
 export const coffeeOnVarietal = pgTable(
@@ -83,7 +83,7 @@ export const varietalRelations = relations(varietal, ({ many }) => ({
 
 export const roaster = pgTable("roaster", {
   id: serial("id").primaryKey(),
-  name: text("name").notNull().notNull(),
+  name: text("name").notNull().notNull().unique(),
   instagram: text("instagram"),
   website: text("website"),
 });
@@ -163,13 +163,18 @@ export const logRelations = relations(log, ({ one }) => ({
   }),
 }));
 
-export const CoffeeOnVarietalsSchema = createInsertSchema(coffeeOnVarietal);
-export const CoffeeOnNotesSchema = createInsertSchema(coffeeOnNote);
-export const LogSchema = createInsertSchema(log);
-export const CoffeeSchema = createInsertSchema(coffee);
-export const VarietalSchema = createInsertSchema(varietal);
-export const RoasterSchema = createInsertSchema(roaster);
-export const NoteSchema = createInsertSchema(note);
+export const CoffeeOnVarietalsInsertSchema =
+  createInsertSchema(coffeeOnVarietal);
+export const CoffeeOnNotesInsertSchema = createInsertSchema(coffeeOnNote);
+export const LogInsertSchema = createInsertSchema(log);
+export const CoffeeInsertSchema = createInsertSchema(coffee);
+export const VarietalInsertSchema = createInsertSchema(varietal);
+export const RoasterInsertSchema = createInsertSchema(roaster);
+export const NoteInsertSchema = createInsertSchema(note);
+
+export const VarietalSelectSchema = createSelectSchema(varietal);
+export const RoasterSelectSchema = createSelectSchema(roaster);
+export const NoteSelectSchema = createSelectSchema(note);
 
 export const users = pgTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),

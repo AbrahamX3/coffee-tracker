@@ -1,28 +1,26 @@
-# Create T3 App
+# Coffee Tracker
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+> [!NOTE]
+> Check it out here
+> [https://coffee.abraham.lat](https://coffee.abraham.lat)
 
-## What's next? How do I make an app with this?
+## About the Project 📝
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+This is a personal project that involves creating a coffee tracker, add new coffees you have tried and all their information (roaster, notes, and general data from the coffee) and also track when and how many coffees you've had today!
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Tech Stack 🛠
 
-- [Next.js](https://nextjs.org)
+- [Next.js (App Router)](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
+- [Drizzle ORM](https://orm.drizzle.team/)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
+- [TanStack Query](https://tanstack.com/query/latest)
+- [shadcn/ui](https://ui.shadcn.com)
+- [Neon w/Branches](https://neon.tech)
+- [Vercel](https://www.vercel.com)
 
-## Learn More
+## Get Started Locally 🚀
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+> [!WARNING]
+> TODO

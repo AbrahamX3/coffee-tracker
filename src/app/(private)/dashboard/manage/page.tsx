@@ -1,5 +1,4 @@
 import { DashboardHeader } from "~/components/dashboard-header";
-import { DashboardShell } from "~/components/shell";
 
 export const metadata = {
   title: "Manage Catalogs",
@@ -7,7 +6,7 @@ export const metadata = {
 
 export default async function DashboardPage() {
   return (
-    <DashboardShell>
+    <>
       <DashboardHeader
         heading="Statistics"
         text="Dashboard overview and general statistics"
@@ -16,6 +15,6 @@ export default async function DashboardPage() {
         <div>8 Logs</div>
         <div>3 Rosters</div>
       </div>
-    </DashboardShell>
+    </>
   );
 }

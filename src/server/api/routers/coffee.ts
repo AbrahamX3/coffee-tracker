@@ -1,3 +1,4 @@
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -5,14 +6,14 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import {
-  CoffeeSchema,
+  CoffeeInsertSchema,
   coffee,
   coffeeOnNote,
   coffeeOnVarietal,
 } from "~/server/db/schema";
 
 export const coffeeInsertSchema = z.object({
-  coffeeValues: CoffeeSchema,
+  coffeeValues: CoffeeInsertSchema,
   varietalsValues: z.number().array(),
   notesValues: z.number().array(),
 });
@@ -75,5 +76,14 @@ export const coffeeRouter = createTRPCRouter({
         varietalsInsert,
         notesInsert,
       };
+    }),
+  delete: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.delete(coffee).where(eq(coffee.id, input.id));
     }),
 });

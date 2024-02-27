@@ -43,9 +43,7 @@ export default async function RootLayout({
           />
         </div>
       </header>
-      <div className="container grid flex-1 gap-4 overflow-auto md:grid-cols-12">
-        {children}
-      </div>
+      {children}
       <SiteFooter className="border-t" />
     </div>
   );

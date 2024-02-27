@@ -4,6 +4,7 @@ import { DashboardHeader } from "~/components/dashboard-header";
 import { EmptyPlaceholder } from "~/components/empty-placeholder";
 import { DashboardShell } from "~/components/shell";
 import { api } from "~/trpc/server";
+import { DataTableView } from "./_components/data-table-view";
 
 export const metadata = {
   title: "Manage Roasters",
@@ -18,14 +19,12 @@ export default async function Roasters() {
       <DashboardHeader heading="Roasters" text="Create and manage roasters">
         <CreateButton
           href="/dashboard/manage/roaster/create"
-          title="Create Roaster"
+          title="Create Roeaster"
         />
       </DashboardHeader>
-      <div>
+      <div className="w-full">
         {roasters?.length ? (
-          <div className="divide-y divide-border rounded-md border">
-            roasters
-          </div>
+          <DataTableView data={roasters} />
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />

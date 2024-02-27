@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -19,7 +19,17 @@ import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Note name is required" }),
+  name: z.string().min(1, { message: "Roaster name is required" }),
+  website: z
+    .string()
+    .url({ message: "Invalid URL" })
+    .optional()
+    .or(z.literal("")),
+  instagram: z
+    .string()
+    .url({ message: "Invalid URL" })
+    .optional()
+    .or(z.literal("")),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -29,15 +39,24 @@ export function CreateForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      instagram: "",
+      website: "",
     },
   });
 
-  const create = api.note.create.useMutation({
+  const utils = api.useUtils();
+  const router = useRouter();
+  const create = api.roaster.create.useMutation({
     onSuccess: async () => {
       form.reset();
-      toast.success("Successfully created note");
-      await api.useUtils().note.getAll.invalidate();
-      revalidatePath("/dashboard/manage");
+      toast.success("Successfully created roaster");
+      await utils.roaster.getAll.invalidate();
+      await utils.roaster.getAll.refetch();
+      router.push("/dashboard/manage/roaster");
+      router.refresh();
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 
@@ -57,6 +76,34 @@ export function CreateForm() {
                 <FormLabel>Note Name</FormLabel>
                 <FormControl>
                   <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="website"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Website</FormLabel>
+                <FormControl>
+                  <Input type="url" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="instagram"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Instagram</FormLabel>
+                <FormControl>
+                  <Input type="url" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

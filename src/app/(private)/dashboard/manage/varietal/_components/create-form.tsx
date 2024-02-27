@@ -1,11 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -32,12 +31,20 @@ export function CreateForm() {
     },
   });
 
+  const router = useRouter();
+  const utils = api.useUtils();
+
   const create = api.varietal.create.useMutation({
     onSuccess: async () => {
       form.reset();
       toast.success("Successfully created varietal");
-      await api.useUtils().varietal.getAll.invalidate();
-      revalidatePath("/dashboard/manage");
+      await utils.varietal.getAll.invalidate();
+      await utils.varietal.getAll.refetch();
+      router.push("/dashboard/manage/varietal");
+      router.refresh();
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 

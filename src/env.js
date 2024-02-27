@@ -11,8 +11,15 @@ export const env = createEnv({
       .string()
       .url()
       .refine(
-        (str) => !str.includes("YOUR_MYSQL_URL_HERE"),
-        "You forgot to change the default URL",
+        (str) => !str.includes("YOUR_NEON_URL_HERE"),
+        "You forgot to change the default main URL",
+      ),
+    SHADOW_DATABASE_URL: z
+      .string()
+      .url()
+      .refine(
+        (str) => !str.includes("YOUR_NEON_SHADOW_URL_HERE"),
+        "You forgot to change the default shadow URL",
       ),
     NODE_ENV: z
       .enum(["development", "test", "production"])
@@ -28,8 +35,9 @@ export const env = createEnv({
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
       process.env.VERCEL ? z.string() : z.string().url(),
     ),
-    DISCORD_CLIENT_ID: z.string(),
-    DISCORD_CLIENT_SECRET: z.string(),
+    DISCORD_CLIENT_ID: z.string().min(5),
+    DISCORD_CLIENT_SECRET: z.string().min(5),
+    ADMINISTRATOR_EMAIL: z.string().email(),
   },
 
   /**
@@ -46,7 +54,9 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    ADMINISTRATOR_EMAIL: process.env.ADMINISTRATOR_EMAIL,
     DATABASE_URL: process.env.DATABASE_URL,
+    SHADOW_DATABASE_URL: process.env.SHADOW_DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,

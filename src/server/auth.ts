@@ -46,6 +46,11 @@ export const authOptions: NextAuthOptions = {
       },
     }),
     redirect: () => "/dashboard",
+    signIn({ profile }) {
+      if (profile?.email !== env.ADMINISTRATOR_EMAIL) return false;
+
+      return true;
+    },
   },
   adapter: DrizzleAdapter(db) as Adapter,
   providers: [

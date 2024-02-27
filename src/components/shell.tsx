@@ -8,7 +8,7 @@ export function DashboardShell({
   ...props
 }: DashboardShellProps) {
   return (
-    <div className={cn("grid items-start gap-8", className)} {...props}>
+    <div className={cn("flex w-full flex-col p-2", className)} {...props}>
       {children}
     </div>
   );

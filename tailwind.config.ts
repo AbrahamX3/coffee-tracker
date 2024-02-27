@@ -1,5 +1,5 @@
+import scrollbar from "tailwind-scrollbar";
 import type { Config } from "tailwindcss";
-
 const config = {
   darkMode: ["class"],
   content: [
@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        sm: "450px",
+      },
       fontFamily: {
         sans: ["Alexandria Variable", "sans-serif"],
       },
@@ -77,7 +80,10 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    scrollbar({ nocompatible: true, preferredStrategy: "pseudoelements" }),
+  ],
 } satisfies Config;
 
 export default config;

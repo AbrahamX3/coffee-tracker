@@ -4,6 +4,7 @@ import { DashboardHeader } from "~/components/dashboard-header";
 import { EmptyPlaceholder } from "~/components/empty-placeholder";
 import { DashboardShell } from "~/components/shell";
 import { api } from "~/trpc/server";
+import { DataTableView } from "./_components/data-table-view";
 
 export const metadata = {
   title: "Manage Notes",
@@ -21,17 +22,15 @@ export default async function Varietal() {
           title="Create Varietal"
         />
       </DashboardHeader>
-      <div>
+      <div className="w-full">
         {varietals?.length ? (
-          <div className="flex flex-col rounded-md border p-4">
-            {varietals.map((varietal) => (
-              <div key={varietal.id}>{varietal.name}</div>
-            ))}
-          </div>
+          <DataTableView data={varietals} />
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />
-            <EmptyPlaceholder.Title>No varietal created</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Title>
+              No varietals created
+            </EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
               You don&apos;t have any varietals yet.
             </EmptyPlaceholder.Description>

@@ -4,10 +4,12 @@ import { DashboardHeader } from "~/components/dashboard-header";
 import { EmptyPlaceholder } from "~/components/empty-placeholder";
 import { DashboardShell } from "~/components/shell";
 import { api } from "~/trpc/server";
+import { DataTableView } from "./_components/data-table-view";
 
 export const metadata = {
   title: "Manage Notes",
 };
+
 export default async function Notes() {
   noStore();
   const notes = await api.note.getAll.query();
@@ -20,9 +22,9 @@ export default async function Notes() {
           title="Create Note"
         />
       </DashboardHeader>
-      <section>
+      <div className="w-full">
         {notes?.length ? (
-          <div className="divide-y divide-border rounded-md border">notes</div>
+          <DataTableView data={notes} />
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />
@@ -37,7 +39,7 @@ export default async function Notes() {
             />
           </EmptyPlaceholder>
         )}
-      </section>
+      </div>
     </DashboardShell>
   );
 }
