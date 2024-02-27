@@ -19,7 +19,7 @@ import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Note name is required" }),
+  name: z.string().min(1, { message: "Note Name is required" }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;

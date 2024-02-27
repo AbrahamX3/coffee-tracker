@@ -19,7 +19,7 @@ import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Roaster name is required" }),
+  name: z.string().min(1, { message: "Roaster Name is required" }),
   website: z
     .string()
     .url({ message: "Invalid URL" })
@@ -73,7 +73,7 @@ export function CreateForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Note Name</FormLabel>
+                <FormLabel>Roaster Name</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
