@@ -2,12 +2,11 @@ import { DashboardHeader } from "~/components/dashboard-header";
 import FormShell from "~/components/form-shell";
 import { DashboardShell } from "~/components/shell";
 import { CreateForm } from "../_components/create-form";
+import { z } from "zod";
 
 export const metadata = {
-  title: "Create Roaster",
+  title: "Create Coffee",
 };
-
-import { z } from "zod";
 
 export const coffeeInsertformSchema = z.object({
   notes: z.array(z.number()),
@@ -22,10 +21,11 @@ export const coffeeInsertformSchema = z.object({
 });
 
 export type CreateFormSchema = z.infer<typeof coffeeInsertformSchema>;
+
 export default async function Create() {
   return (
     <DashboardShell>
-      <DashboardHeader heading="Create Roaster" text="Create a new roaster" />
+      <DashboardHeader heading="Create Coffee" text="Create a new coffee" />
       <FormShell>
         <CreateForm />
       </FormShell>
