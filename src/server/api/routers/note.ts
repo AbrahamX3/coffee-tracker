@@ -11,6 +11,21 @@ export const noteRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.query.note.findMany();
   }),
+  list: publicProcedure.query(async ({ ctx }) => {
+    return (await ctx.db.query.note.findMany()).map((note) => {
+      return {
+        label: note.name,
+        value: note.id,
+      };
+    });
+  }),
+  getById: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.query.note.findFirst({
+        where: eq(note.id, input.id),
+      });
+    }),
   create: protectedProcedure
     .input(NoteInsertSchema)
     .mutation(async ({ ctx, input }) => {

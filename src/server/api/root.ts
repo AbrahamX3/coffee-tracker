@@ -1,6 +1,7 @@
 import { coffeeRouter } from "~/server/api/routers/coffee";
 import { logRouter } from "~/server/api/routers/log";
 import { noteRouter } from "~/server/api/routers/note";
+import { processRouter } from "~/server/api/routers/process";
 import { roasterRouter } from "~/server/api/routers/roaster";
 import { varietalRouter } from "~/server/api/routers/varietal";
 import { createTRPCRouter } from "~/server/api/trpc";
@@ -14,8 +15,9 @@ export const appRouter = createTRPCRouter({
   log: logRouter,
   roaster: roasterRouter,
   note: noteRouter,
-  coffeee: coffeeRouter,
+  coffee: coffeeRouter,
   varietal: varietalRouter,
+  process: processRouter,
 });
 
 // export type definition of API

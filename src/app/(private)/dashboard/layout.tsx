@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "Coffee Tracker - %s",
   },
   description: "Coffee Tracker - Dashboard",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/icon.svg" }],
 };
 
 export default async function RootLayout({

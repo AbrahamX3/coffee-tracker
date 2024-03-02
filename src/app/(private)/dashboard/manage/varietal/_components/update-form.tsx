@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -16,31 +15,38 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import { type VarietalSelectSchema } from "~/server/db/schema";
 import { api } from "~/trpc/react";
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Note Name is required" }),
+  name: z.string().min(1, { message: "Varietal name is required" }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export function CreateForm() {
+interface UpdateFormProps {
+  id: number;
+  data?: z.infer<typeof VarietalSelectSchema>;
+}
+
+export function UpdateForm({ id, data }: UpdateFormProps) {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: data?.name,
     },
   });
 
-  const utils = api.useUtils();
   const router = useRouter();
-  const create = api.note.create.useMutation({
+  const utils = api.useUtils();
+
+  const update = api.varietal.update.useMutation({
     onSuccess: async () => {
       form.reset();
-      toast.success("Successfully created note");
-      await utils.note.getAll.invalidate();
-      await utils.note.getAll.refetch();
-      router.push("/dashboard/manage/note");
+      toast.success("Successfully updated varietal");
+      await utils.varietal.getAll.invalidate();
+      await utils.varietal.getAll.refetch();
+      router.push("/dashboard/manage/varietal");
       router.refresh();
     },
     onError: (error) => {
@@ -49,7 +55,10 @@ export function CreateForm() {
   });
 
   function onSubmit(values: FormSchema) {
-    create.mutate(values);
+    update.mutate({
+      id,
+      ...values,
+    });
   }
 
   return (
@@ -61,7 +70,7 @@ export function CreateForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Note Name</FormLabel>
+                <FormLabel>Varietal Name</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -70,18 +79,17 @@ export function CreateForm() {
             )}
           />
         </div>
-        <div className="flex justify-end gap-2">
-          <Button type="button" onClick={() => router.back()} variant="ghost">
-            Cancel
-          </Button>
-          <Button disabled={create.isLoading} type="submit">
-            {create.isLoading ? (
-              <span className="animate-pulse">...</span>
-            ) : (
-              "Create"
-            )}
-          </Button>
-        </div>
+        <Button
+          disabled={update.isLoading || !form.formState.isDirty}
+          className="float-end"
+          type="submit"
+        >
+          {update.isLoading ? (
+            <span className="animate-pulse">...</span>
+          ) : (
+            "Update"
+          )}
+        </Button>
       </form>
     </Form>
   );

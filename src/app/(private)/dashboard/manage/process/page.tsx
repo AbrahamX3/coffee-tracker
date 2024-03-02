@@ -10,32 +10,34 @@ export const metadata = {
   title: "Manage Roasters",
 };
 
-export default async function Roasters() {
+export default async function Process() {
   noStore();
-  const roasters = await api.roaster.getAll.query();
+  const processes = await api.process.getAll.query();
 
   return (
     <DashboardShell>
       <DashboardHeader heading="Roasters" text="Create and manage roasters">
         <CreateButton
-          href="/dashboard/manage/roaster/create"
-          title="Create Roaster"
+          href="/dashboard/manage/process/create"
+          title="Create Process"
         />
       </DashboardHeader>
       <div className="w-full">
-        {roasters?.length ? (
-          <DataTableView data={roasters} />
+        {processes?.length ? (
+          <DataTableView data={processes} />
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />
-            <EmptyPlaceholder.Title>No roasters created</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Title>
+              No processes created
+            </EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
-              You don&apos;t have any roasters yet.
+              You don&apos;t have any processes yet.
             </EmptyPlaceholder.Description>
             <CreateButton
               variant="outline"
-              href="/dashboard/manage/roaster/create"
-              title="Create Roaster"
+              href="/dashboard/manage/process/create"
+              title="Create Process"
             />
           </EmptyPlaceholder>
         )}

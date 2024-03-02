@@ -5,47 +5,47 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { RoasterInsertSchema, roaster } from "~/server/db/schema";
+import { ProcessInsertSchema, process } from "~/server/db/schema";
 
-export const roasterRouter = createTRPCRouter({
+export const processRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.db.query.roaster.findMany();
+    return await ctx.db.query.process.findMany();
   }),
   list: publicProcedure.query(async ({ ctx }) => {
-    return (await ctx.db.query.roaster.findMany()).map((roaster) => {
+    return (await ctx.db.query.process.findMany()).map((process) => {
       return {
-        value: roaster.id,
-        label: roaster.name,
+        value: process.id,
+        label: process.name,
       };
     });
   }),
   getById: protectedProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
-      return await ctx.db.query.roaster.findFirst({
-        where: eq(roaster.id, input.id),
+      return await ctx.db.query.process.findFirst({
+        where: eq(process.id, input.id),
       });
     }),
   create: protectedProcedure
-    .input(RoasterInsertSchema)
+    .input(ProcessInsertSchema)
     .mutation(async ({ ctx, input }) => {
-      return await ctx.db.insert(roaster).values({
+      return await ctx.db.insert(process).values({
         ...input,
       });
     }),
   update: protectedProcedure
-    .input(RoasterInsertSchema)
+    .input(ProcessInsertSchema)
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");
       }
 
       return await ctx.db
-        .update(roaster)
+        .update(process)
         .set({
           ...input,
         })
-        .where(eq(roaster.id, input.id));
+        .where(eq(process.id, input.id));
     }),
   delete: protectedProcedure
     .input(
@@ -54,6 +54,6 @@ export const roasterRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.db.delete(roaster).where(eq(roaster.id, input.id));
+      return await ctx.db.delete(process).where(eq(process.id, input.id));
     }),
 });

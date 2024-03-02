@@ -1,0 +1,1 @@
+ALTER TABLE "coffee" ALTER COLUMN "processId" SET DEFAULT 1;

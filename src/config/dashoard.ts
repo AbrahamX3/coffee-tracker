@@ -33,6 +33,11 @@ export const dashboardConfig: DashboardConfig = {
       icon: "settings",
     },
     {
+      title: "Processes",
+      href: "/dashboard/manage/process",
+      icon: "settings",
+    },
+    {
       title: "Roasters",
       href: "/dashboard/manage/roaster",
       icon: "settings",

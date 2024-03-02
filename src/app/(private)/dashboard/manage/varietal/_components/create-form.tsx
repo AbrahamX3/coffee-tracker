@@ -70,13 +70,18 @@ export function CreateForm() {
             )}
           />
         </div>
-        <Button disabled={create.isLoading} className="float-end" type="submit">
-          {create.isLoading ? (
-            <span className="animate-pulse">...</span>
-          ) : (
-            "Create"
-          )}
-        </Button>
+        <div className="flex justify-end gap-2">
+          <Button type="button" onClick={() => router.back()} variant="ghost">
+            Cancel
+          </Button>
+          <Button disabled={create.isLoading} type="submit">
+            {create.isLoading ? (
+              <span className="animate-pulse">...</span>
+            ) : (
+              "Create"
+            )}
+          </Button>
+        </div>
       </form>
     </Form>
   );

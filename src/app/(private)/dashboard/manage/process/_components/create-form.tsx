@@ -19,7 +19,7 @@ import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Note Name is required" }),
+  name: z.string().min(1, { message: "Process Name is required" }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -34,13 +34,13 @@ export function CreateForm() {
 
   const utils = api.useUtils();
   const router = useRouter();
-  const create = api.note.create.useMutation({
+  const create = api.process.create.useMutation({
     onSuccess: async () => {
       form.reset();
-      toast.success("Successfully created note");
-      await utils.note.getAll.invalidate();
-      await utils.note.getAll.refetch();
-      router.push("/dashboard/manage/note");
+      toast.success("Successfully created process");
+      await utils.process.getAll.invalidate();
+      await utils.process.getAll.refetch();
+      router.push("/dashboard/manage/process");
       router.refresh();
     },
     onError: (error) => {
@@ -61,7 +61,7 @@ export function CreateForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Note Name</FormLabel>
+                <FormLabel>Roaster Name</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>

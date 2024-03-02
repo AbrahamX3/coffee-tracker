@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { coffeeInsertformSchema } from "~/app/(private)/dashboard/manage/coffee/create/page";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -29,7 +30,7 @@ export const coffeeRouter = createTRPCRouter({
     });
   }),
   insert: protectedProcedure
-    .input(coffeeInsertSchema)
+    .input(coffeeInsertformSchema)
     .mutation(async ({ ctx, input }) => {
       let varietalsInsert: {
         varietalId: number;
@@ -41,18 +42,26 @@ export const coffeeRouter = createTRPCRouter({
 
       const coffeeInsert = await ctx.db
         .insert(coffee)
-        .values(input.coffeeValues)
+        .values({
+          region: input.region,
+          roasterId: input.roasterId,
+          active: input.active,
+          altitude: input.altitude,
+          score: input.score,
+          roast: input.roast,
+          processId: input.processId,
+        })
         .returning({
           id: coffee.id,
         });
 
       const coffeeId = coffeeInsert[0]?.id;
 
-      if (input.varietalsValues.length > 0 && coffeeId) {
+      if (input.varietals.length > 0 && coffeeId) {
         varietalsInsert = await ctx.db
           .insert(coffeeOnVarietal)
           .values(
-            input.varietalsValues.map((varietalId) => ({
+            input.varietals.map((varietalId) => ({
               coffeeId,
               varietalId,
             })),
@@ -62,10 +71,10 @@ export const coffeeRouter = createTRPCRouter({
           });
       }
 
-      if (input.notesValues.length > 0 && coffeeId) {
+      if (input.notes.length > 0 && coffeeId) {
         notesInsert = await ctx.db
           .insert(coffeeOnNote)
-          .values(input.notesValues.map((noteId) => ({ coffeeId, noteId })))
+          .values(input.notes.map((noteId) => ({ coffeeId, noteId })))
           .returning({
             noteId: coffeeOnNote.noteId,
           });

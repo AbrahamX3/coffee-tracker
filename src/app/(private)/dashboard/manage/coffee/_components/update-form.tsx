@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import { type RoasterSelectSchema } from "~/server/db/schema";
 import { api } from "~/trpc/react";
 
 const formSchema = z.object({
@@ -34,22 +35,27 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export function CreateForm() {
+interface UpdateFormProps {
+  id: number;
+  data?: z.infer<typeof RoasterSelectSchema>;
+}
+
+export function UpdateForm({ id, data }: UpdateFormProps) {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      instagram: "",
-      website: "",
+      name: data?.name,
+      instagram: data?.instagram ?? "",
+      website: data?.website ?? "",
     },
   });
 
   const utils = api.useUtils();
   const router = useRouter();
-  const create = api.roaster.create.useMutation({
+  const update = api.roaster.update.useMutation({
     onSuccess: async () => {
       form.reset();
-      toast.success("Successfully created roaster");
+      toast.success("Successfully updated roaster");
       await utils.roaster.getAll.invalidate();
       await utils.roaster.getAll.refetch();
       router.push("/dashboard/manage/roaster");
@@ -61,7 +67,10 @@ export function CreateForm() {
   });
 
   function onSubmit(values: FormSchema) {
-    create.mutate(values);
+    update.mutate({
+      id,
+      ...values,
+    });
   }
 
   return (
@@ -110,18 +119,17 @@ export function CreateForm() {
             )}
           />
         </div>
-        <div className="flex justify-end gap-2">
-          <Button type="button" onClick={() => router.back()} variant="ghost">
-            Cancel
-          </Button>
-          <Button disabled={create.isLoading} type="submit">
-            {create.isLoading ? (
-              <span className="animate-pulse">...</span>
-            ) : (
-              "Create"
-            )}
-          </Button>
-        </div>
+        <Button
+          disabled={update.isLoading || !form.formState.isDirty}
+          className="float-end"
+          type="submit"
+        >
+          {update.isLoading ? (
+            <span className="animate-pulse">...</span>
+          ) : (
+            "Update"
+          )}
+        </Button>
       </form>
     </Form>
   );

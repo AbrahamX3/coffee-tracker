@@ -14,6 +14,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { type AdapterAccount } from "next-auth/adapters";
+import { type SchemaRelations, type SchemaWithRelations } from ".";
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
  * database instance for multiple projects.
@@ -39,10 +40,10 @@ export const coffeeOnNote = pgTable(
   {
     coffeeId: integer("coffeeId")
       .notNull()
-      .references(() => coffee.id),
+      .references(() => coffee.id, { onDelete: "cascade" }),
     noteId: integer("notesId")
       .notNull()
-      .references(() => varietal.id),
+      .references(() => note.id),
   },
   (coffeeOnNote) => ({
     primaryKey: primaryKey({
@@ -65,7 +66,7 @@ export const coffeeOnVarietal = pgTable(
   {
     coffeeId: integer("coffeeId")
       .notNull()
-      .references(() => coffee.id),
+      .references(() => coffee.id, { onDelete: "cascade" }),
     varietalId: integer("varietalId")
       .notNull()
       .references(() => varietal.id),
@@ -88,10 +89,18 @@ export const roaster = pgTable("roaster", {
   website: text("website"),
 });
 
+export const process = pgTable("process", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().notNull().unique(),
+});
+
 export const coffee = pgTable("coffee", {
   id: serial("id").primaryKey(),
   roasterId: integer("roasterId")
     .references(() => roaster.id)
+    .notNull(),
+  processId: integer("processId")
+    .references(() => process.id)
     .notNull(),
   region: text("region").notNull(),
   altitude: integer("altitude"),
@@ -108,6 +117,10 @@ export const coffeeRelations = relations(coffee, ({ one, many }) => ({
   roaster: one(roaster, {
     references: [roaster.id],
     fields: [coffee.roasterId],
+  }),
+  process: one(process, {
+    references: [process.id],
+    fields: [coffee.processId],
   }),
   varietals: many(coffeeOnVarietal),
   notes: many(coffeeOnNote),
@@ -171,10 +184,13 @@ export const CoffeeInsertSchema = createInsertSchema(coffee);
 export const VarietalInsertSchema = createInsertSchema(varietal);
 export const RoasterInsertSchema = createInsertSchema(roaster);
 export const NoteInsertSchema = createInsertSchema(note);
+export const ProcessInsertSchema = createInsertSchema(process);
 
 export const VarietalSelectSchema = createSelectSchema(varietal);
 export const RoasterSelectSchema = createSelectSchema(roaster);
 export const NoteSelectSchema = createSelectSchema(note);
+export const CoffeeSelectSchema = createSelectSchema(coffee);
+export const ProcessSelectSchema = createSelectSchema(process);
 
 export const users = pgTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
@@ -254,3 +270,6 @@ export const verificationTokens = pgTable(
     }),
   }),
 );
+
+export type Coffee<T extends SchemaRelations<"coffee"> = never> =
+  SchemaWithRelations<"coffee", T>;

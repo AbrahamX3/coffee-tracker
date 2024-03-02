@@ -1,21 +1,32 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { VarietalInsertSchema, varietal } from "~/server/db/schema";
 
 export const varietalRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async ({ ctx }) => {
+  getAll: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db.query.varietal.findMany();
+  }),
+  list: protectedProcedure.query(async ({ ctx }) => {
+    return (await ctx.db.query.varietal.findMany()).map((varietal) => {
+      return {
+        value: varietal.id,
+        label: varietal.name,
+      };
+    });
   }),
   create: protectedProcedure
     .input(VarietalInsertSchema)
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.insert(varietal).values({
         ...input,
+      });
+    }),
+  getById: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.query.varietal.findFirst({
+        where: eq(varietal.id, input.id),
       });
     }),
   update: protectedProcedure

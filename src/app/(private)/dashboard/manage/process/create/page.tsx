@@ -4,13 +4,13 @@ import { DashboardShell } from "~/components/shell";
 import { CreateForm } from "../_components/create-form";
 
 export const metadata = {
-  title: "Create Note",
+  title: "Create Process",
 };
 
 export default async function Create() {
   return (
     <DashboardShell>
-      <DashboardHeader heading="Create Note" text="Create a new note" />
+      <DashboardHeader heading="Create Process" text="Create a new process" />
       <FormShell>
         <CreateForm />
       </FormShell>

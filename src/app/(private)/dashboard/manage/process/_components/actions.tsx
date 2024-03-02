@@ -13,20 +13,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { VarietalSelectSchema } from "~/server/db/schema";
+import { ProcessSelectSchema } from "~/server/db/schema";
 import { api } from "~/trpc/react";
 
 export function Actions<TData>({ row }: DataTableRowActionsProps<TData>) {
   const router = useRouter();
   const utils = api.useUtils();
-  const task = VarietalSelectSchema.parse(row.original);
+  const task = ProcessSelectSchema.parse(row.original);
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const { mutate, isLoading } = api.varietal.delete.useMutation({
+  const { mutate, isLoading } = api.process.delete.useMutation({
     onSuccess: async () => {
       toast.success("Successfully deleted");
-      await utils.varietal.getAll.invalidate();
+      await utils.process.getAll.invalidate();
       router.refresh();
     },
     onError: (error) => {
@@ -35,7 +35,7 @@ export function Actions<TData>({ row }: DataTableRowActionsProps<TData>) {
   });
 
   return (
-    <div className="relative">
+    <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -48,10 +48,11 @@ export function Actions<TData>({ row }: DataTableRowActionsProps<TData>) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/manage/note/${task.id}`)}
+            onClick={() => router.push(`/dashboard/manage/process/${task.id}`)}
           >
             Edit
           </DropdownMenuItem>
+
           <DropdownMenuItem onClick={() => setIsOpen(true)}>
             Delete
           </DropdownMenuItem>
@@ -63,6 +64,6 @@ export function Actions<TData>({ row }: DataTableRowActionsProps<TData>) {
         deleteAction={() => mutate({ id: task.id })}
         isOpen={isOpen}
       />
-    </div>
+    </>
   );
 }

@@ -7,24 +7,24 @@ import { api } from "~/trpc/server";
 import { DataTableView } from "./_components/data-table-view";
 
 export const metadata = {
-  title: "Manage Roasters",
+  title: "Manage Coffees",
 };
 
-export default async function Roasters() {
+export default async function Coffees() {
   noStore();
-  const roasters = await api.roaster.getAll.query();
+  const coffees = await api.coffee.getAll.query();
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Roasters" text="Create and manage roasters">
+      <DashboardHeader heading="Coffees" text="Create and manage coffees">
         <CreateButton
-          href="/dashboard/manage/roaster/create"
-          title="Create Roaster"
+          href="/dashboard/manage/coffee/create"
+          title="Create Coffee"
         />
       </DashboardHeader>
       <div className="w-full">
-        {roasters?.length ? (
-          <DataTableView data={roasters} />
+        {coffees?.length ? (
+          <DataTableView data={coffees} />
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />
@@ -34,8 +34,8 @@ export default async function Roasters() {
             </EmptyPlaceholder.Description>
             <CreateButton
               variant="outline"
-              href="/dashboard/manage/roaster/create"
-              title="Create Roaster"
+              href="/dashboard/manage/coffee/create"
+              title="Create Coffee"
             />
           </EmptyPlaceholder>
         )}
