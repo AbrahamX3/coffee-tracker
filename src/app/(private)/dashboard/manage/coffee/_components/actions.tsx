@@ -14,12 +14,12 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { api } from "~/trpc/react";
-import { type CoffeeColumn } from "./columns";
+import { type CoffeeDataTableColumn } from "~/utils/schemas/coffee-schema";
 
 export function Actions<TData>({ row }: DataTableRowActionsProps<TData>) {
   const router = useRouter();
   const utils = api.useUtils();
-  const task = row.original as CoffeeColumn;
+  const task = row.original as CoffeeDataTableColumn;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -35,7 +35,7 @@ export function Actions<TData>({ row }: DataTableRowActionsProps<TData>) {
   });
 
   return (
-    <>
+    <div className="relative">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -64,6 +64,6 @@ export function Actions<TData>({ row }: DataTableRowActionsProps<TData>) {
         deleteAction={() => mutate({ id: task.id })}
         isOpen={isOpen}
       />
-    </>
+    </div>
   );
 }

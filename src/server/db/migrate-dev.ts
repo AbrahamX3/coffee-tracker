@@ -1,15 +1,10 @@
-import {
-  neon,
-  neonConfig,
-  type NeonQueryFunction,
-} from "@neondatabase/serverless";
+import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/neon-http";
 import { migrate } from "drizzle-orm/neon-http/migrator";
 
 void (async () => {
   console.log("--- Development Migrations Started ---");
-  neonConfig.fetchConnectionCache = true;
 
   const sql: NeonQueryFunction<boolean, boolean> = neon(
     process.env.SHADOW_DATABASE_URL!,

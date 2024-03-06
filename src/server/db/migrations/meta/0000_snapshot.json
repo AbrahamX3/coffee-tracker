@@ -1,5 +1,5 @@
 {
-  "id": "d5caf8d0-d15d-485d-bbf3-af20826a90c5",
+  "id": "3a2f3a29-95b2-4d4c-88d8-33e42fb33f12",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -111,8 +111,20 @@
           "primaryKey": true,
           "notNull": true
         },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "roasterId": {
           "name": "roasterId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "processId": {
+          "name": "processId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -172,10 +184,25 @@
           "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
+        },
+        "coffee_processId_process_id_fk": {
+          "name": "coffee_processId_process_id_fk",
+          "tableFrom": "coffee",
+          "tableTo": "process",
+          "columnsFrom": ["processId"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "coffee_name_unique": {
+          "name": "coffee_name_unique",
+          "nullsNotDistinct": false,
+          "columns": ["name"]
+        }
+      }
     },
     "coffeeOnNote": {
       "name": "coffeeOnNote",
@@ -202,13 +229,13 @@
           "tableTo": "coffee",
           "columnsFrom": ["coffeeId"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "coffeeOnNote_notesId_varietal_id_fk": {
-          "name": "coffeeOnNote_notesId_varietal_id_fk",
+        "coffeeOnNote_notesId_note_id_fk": {
+          "name": "coffeeOnNote_notesId_note_id_fk",
           "tableFrom": "coffeeOnNote",
-          "tableTo": "varietal",
+          "tableTo": "note",
           "columnsFrom": ["notesId"],
           "columnsTo": ["id"],
           "onDelete": "no action",
@@ -248,7 +275,7 @@
           "tableTo": "coffee",
           "columnsFrom": ["coffeeId"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "coffeeOnVarietal_varietalId_varietal_id_fk": {
@@ -346,7 +373,41 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "note_name_unique": {
+          "name": "note_name_unique",
+          "nullsNotDistinct": false,
+          "columns": ["name"]
+        }
+      }
+    },
+    "process": {
+      "name": "process",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "process_name_unique": {
+          "name": "process_name_unique",
+          "nullsNotDistinct": false,
+          "columns": ["name"]
+        }
+      }
     },
     "roaster": {
       "name": "roaster",
@@ -380,7 +441,13 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "roaster_name_unique": {
+          "name": "roaster_name_unique",
+          "nullsNotDistinct": false,
+          "columns": ["name"]
+        }
+      }
     },
     "session": {
       "name": "session",
@@ -487,7 +554,13 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "varietal_name_unique": {
+          "name": "varietal_name_unique",
+          "nullsNotDistinct": false,
+          "columns": ["name"]
+        }
+      }
     },
     "verificationToken": {
       "name": "verificationToken",

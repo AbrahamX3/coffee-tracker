@@ -14,21 +14,21 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { type AdapterAccount } from "next-auth/adapters";
-import { type SchemaRelations, type SchemaWithRelations } from ".";
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
  * database instance for multiple projects.
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-
-export const roast = pgEnum("roast", [
+export const roastTypes = [
   "LIGHT",
   "LIGHT_MEDIUM",
   "MEDIUM",
   "MEDIUM_DARK",
   "DARK",
-]);
+] as const;
+
+export const roast = pgEnum("roast", roastTypes);
 
 export const note = pgTable("note", {
   id: serial("id").primaryKey(),
@@ -96,6 +96,7 @@ export const process = pgTable("process", {
 
 export const coffee = pgTable("coffee", {
   id: serial("id").primaryKey(),
+  name: text("name").unique(),
   roasterId: integer("roasterId")
     .references(() => roaster.id)
     .notNull(),
@@ -179,7 +180,6 @@ export const logRelations = relations(log, ({ one }) => ({
 export const CoffeeOnVarietalsInsertSchema =
   createInsertSchema(coffeeOnVarietal);
 export const CoffeeOnNotesInsertSchema = createInsertSchema(coffeeOnNote);
-export const LogInsertSchema = createInsertSchema(log);
 export const CoffeeInsertSchema = createInsertSchema(coffee);
 export const VarietalInsertSchema = createInsertSchema(varietal);
 export const RoasterInsertSchema = createInsertSchema(roaster);
@@ -191,6 +191,7 @@ export const RoasterSelectSchema = createSelectSchema(roaster);
 export const NoteSelectSchema = createSelectSchema(note);
 export const CoffeeSelectSchema = createSelectSchema(coffee);
 export const ProcessSelectSchema = createSelectSchema(process);
+export const LogSelectSchema = createSelectSchema(log);
 
 export const users = pgTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
@@ -270,6 +271,3 @@ export const verificationTokens = pgTable(
     }),
   }),
 );
-
-export type Coffee<T extends SchemaRelations<"coffee"> = never> =
-  SchemaWithRelations<"coffee", T>;

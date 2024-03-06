@@ -1,61 +1,12 @@
 {
   "version": "5",
-  "dialect": "mysql",
+  "dialect": "pg",
   "entries": [
     {
       "idx": 0,
       "version": "5",
-      "when": 1708841207235,
-      "tag": "0000_white_giant_girl",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1709036728156,
-      "tag": "0001_chunky_miss_america",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1709036885411,
-      "tag": "0002_crazy_queen_noir",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1709365538582,
-      "tag": "0003_spotty_hercules",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1709365577310,
-      "tag": "0004_known_firedrake",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1709365617614,
-      "tag": "0005_yielding_maelstrom",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1709367022175,
-      "tag": "0006_lethal_supreme_intelligence",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "5",
-      "when": 1709367458144,
-      "tag": "0007_public_sheva_callister",
+      "when": 1709678846409,
+      "tag": "0000_greedy_loki",
       "breakpoints": true
     }
   ]

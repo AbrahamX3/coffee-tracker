@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { type Table } from "@tanstack/react-table";
 import { X, type LucideIcon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { Button } from "~/components/ui/button";
 import { DataTableViewOptions } from "~/components/ui/datatable/data-table-view-options";
@@ -11,16 +11,16 @@ import { Input } from "~/components/ui/input";
 
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
-interface Options {
+export interface FilterOptions {
   label: string;
   value: string | number;
-  icon?: LucideIcon;
+  icon: LucideIcon;
 }
 
 export interface Filter {
   columnId: string;
   title: string;
-  options: Options[];
+  options: FilterOptions[];
 }
 
 interface DataTableToolbarProps<TData> {

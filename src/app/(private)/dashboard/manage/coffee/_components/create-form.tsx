@@ -32,14 +32,18 @@ import {
 import { Switch } from "~/components/ui/switch";
 import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
-import { coffeeInsertformSchema, type CreateFormSchema } from "../create/page";
+import {
+  CoffeeInsertFormSchema,
+  type CoffeeInsertForm,
+} from "~/utils/schemas/coffee-schema";
 
 export function CreateForm() {
-  const form = useForm<CreateFormSchema>({
-    resolver: zodResolver(coffeeInsertformSchema),
+  const form = useForm<CoffeeInsertForm>({
+    resolver: zodResolver(CoffeeInsertFormSchema),
     defaultValues: {
       notes: [],
       varietals: [],
+      active: true,
     },
   });
 
@@ -73,7 +77,7 @@ export function CreateForm() {
     },
   });
 
-  function onSubmit(values: CreateFormSchema) {
+  function onSubmit(values: CoffeeInsertForm) {
     create.mutate(values);
   }
 
@@ -81,6 +85,20 @@ export function CreateForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="col-span-1 grid w-full gap-4 md:grid-cols-3">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="region"
@@ -340,7 +358,7 @@ export function CreateForm() {
                               form.setValue(
                                 "roast",
                                 roast.value as z.infer<
-                                  typeof coffeeInsertformSchema
+                                  typeof CoffeeInsertFormSchema
                                 >["roast"],
                               );
                             }}

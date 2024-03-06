@@ -2,8 +2,8 @@ import { cn } from "~/lib/utils";
 
 import { Check, ChevronsUpDown, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Badge } from "~/components/ui/badge";
-import { Button } from "~/components/ui/button";
+import { badgeVariants } from "~/components/ui/badge";
+import { Button, buttonVariants } from "~/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -75,14 +75,15 @@ function MultiSelect({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
+        <div
           id={id}
-          variant="outline"
           role="combobox"
+          aria-controls="suggestion"
           aria-expanded={open}
-          className={`w-full justify-between ${
-            selected.length > 1 ? "h-full" : "h-10"
-          }`}
+          className={cn(
+            buttonVariants({ variant: "outline" }),
+            `w-full justify-between ${selected.length > 1 ? "h-full" : "h-10"}`,
+          )}
           onClick={() => setOpen(!open)}
         >
           <div className="flex flex-wrap gap-1">
@@ -90,15 +91,26 @@ function MultiSelect({
               <span className="text-muted-foreground">{placeholder}</span>
             ) : (
               selected.map((item) => (
-                <Badge
-                  variant="secondary"
+                <div
                   key={item}
-                  className="mb-1 mr-1"
-                  onClick={() => handleUnselect(item)}
+                  className={cn(
+                    badgeVariants({ variant: "secondary" }),
+                    "mr-1",
+                  )}
                 >
-                  {options.find((option) => option.value === item)?.label}
-
                   <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+
+                      handleUnselect(item);
+                    }}
+                  >
+                    {options.find((option) => option.value === item)?.label}
+                  </button>
+
+                  <Button
+                    variant="outline"
+                    size="xs"
                     className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
@@ -112,13 +124,13 @@ function MultiSelect({
                     onClick={() => handleUnselect(item)}
                   >
                     <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
-                  </button>
-                </Badge>
+                  </Button>
+                </div>
               ))
             )}
           </div>
           <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
-        </Button>
+        </div>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <Command className={className}>

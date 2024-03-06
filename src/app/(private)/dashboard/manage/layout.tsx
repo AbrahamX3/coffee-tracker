@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { SidebarNav } from "~/components/nav";
 import { dashboardConfig } from "~/config/dashoard";
 
@@ -12,7 +13,7 @@ export default async function RootLayout({
         <SidebarNav items={dashboardConfig.sidebarNav} />
       </aside>
       <main className="flex w-full flex-1 flex-col overflow-hidden rounded-md border p-4">
-        {children}
+        <Suspense fallback={"Loading..."}>{children}</Suspense>
       </main>
     </div>
   );

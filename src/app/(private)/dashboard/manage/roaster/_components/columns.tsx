@@ -68,6 +68,7 @@ export function Columns() {
     },
     {
       id: "actions",
+      header: () => <span className="sr-only hidden">Actions</span>,
       cell: ({ row }) => {
         return <Actions row={row} />;
       },

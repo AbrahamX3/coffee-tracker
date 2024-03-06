@@ -4,6 +4,7 @@ import { DashboardHeader } from "~/components/dashboard-header";
 import { EmptyPlaceholder } from "~/components/empty-placeholder";
 import { DashboardShell } from "~/components/shell";
 import { api } from "~/trpc/server";
+import { DataTableView } from "./_components/data-table-view";
 
 export const metadata = {
   title: "Manage Logs",
@@ -11,6 +12,7 @@ export const metadata = {
 
 export default async function Logs() {
   noStore();
+
   const logs = await api.log.getAll.query();
 
   return (
@@ -20,7 +22,7 @@ export default async function Logs() {
       </DashboardHeader>
       <div>
         {logs?.length ? (
-          <div className="divide-y divide-border rounded-md border">logs</div>
+          <DataTableView data={logs} />
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />

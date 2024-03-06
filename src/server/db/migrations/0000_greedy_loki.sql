@@ -21,14 +21,17 @@ CREATE TABLE IF NOT EXISTS "account" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "coffee" (
 	"id" serial PRIMARY KEY NOT NULL,
+	"name" text,
 	"roasterId" integer NOT NULL,
+	"processId" integer NOT NULL,
 	"region" text NOT NULL,
 	"altitude" integer,
 	"score" integer,
 	"roast" "roast",
 	"created_at" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updatedAt" timestamp,
-	"active" boolean DEFAULT true
+	"active" boolean DEFAULT true,
+	CONSTRAINT "coffee_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "coffeeOnNote" (
@@ -53,14 +56,22 @@ CREATE TABLE IF NOT EXISTS "log" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "note" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"name" text NOT NULL
+	"name" text NOT NULL,
+	CONSTRAINT "note_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "process" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	CONSTRAINT "process_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "roaster" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"instagram" text,
-	"website" text
+	"website" text,
+	CONSTRAINT "roaster_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
@@ -79,7 +90,8 @@ CREATE TABLE IF NOT EXISTS "user" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "varietal" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"name" text NOT NULL
+	"name" text NOT NULL,
+	CONSTRAINT "varietal_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "verificationToken" (
@@ -105,19 +117,25 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "coffeeOnNote" ADD CONSTRAINT "coffeeOnNote_coffeeId_coffee_id_fk" FOREIGN KEY ("coffeeId") REFERENCES "coffee"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "coffee" ADD CONSTRAINT "coffee_processId_process_id_fk" FOREIGN KEY ("processId") REFERENCES "process"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "coffeeOnNote" ADD CONSTRAINT "coffeeOnNote_notesId_varietal_id_fk" FOREIGN KEY ("notesId") REFERENCES "varietal"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "coffeeOnNote" ADD CONSTRAINT "coffeeOnNote_coffeeId_coffee_id_fk" FOREIGN KEY ("coffeeId") REFERENCES "coffee"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "coffeeOnVarietal" ADD CONSTRAINT "coffeeOnVarietal_coffeeId_coffee_id_fk" FOREIGN KEY ("coffeeId") REFERENCES "coffee"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "coffeeOnNote" ADD CONSTRAINT "coffeeOnNote_notesId_note_id_fk" FOREIGN KEY ("notesId") REFERENCES "note"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "coffeeOnVarietal" ADD CONSTRAINT "coffeeOnVarietal_coffeeId_coffee_id_fk" FOREIGN KEY ("coffeeId") REFERENCES "coffee"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

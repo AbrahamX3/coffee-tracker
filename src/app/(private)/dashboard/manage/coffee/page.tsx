@@ -1,4 +1,5 @@
 import { unstable_noStore as noStore } from "next/cache";
+import { Suspense } from "react";
 import { CreateButton } from "~/components/create-button";
 import { DashboardHeader } from "~/components/dashboard-header";
 import { EmptyPlaceholder } from "~/components/empty-placeholder";
@@ -12,6 +13,7 @@ export const metadata = {
 
 export default async function Coffees() {
   noStore();
+
   const coffees = await api.coffee.getAll.query();
 
   return (
@@ -24,13 +26,15 @@ export default async function Coffees() {
       </DashboardHeader>
       <div className="w-full">
         {coffees?.length ? (
-          <DataTableView data={coffees} />
+          <Suspense fallback={"Loading..."}>
+            <DataTableView data={coffees} />
+          </Suspense>
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />
-            <EmptyPlaceholder.Title>No roasters created</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Title>No coffees created</EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
-              You don&apos;t have any roasters yet.
+              You don&apos;t have any coffees yet.
             </EmptyPlaceholder.Description>
             <CreateButton
               variant="outline"

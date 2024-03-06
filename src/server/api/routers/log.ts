@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import {
@@ -5,7 +6,11 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { LogInsertSchema, log } from "~/server/db/schema";
+import { log } from "~/server/db/schema";
+import {
+  LogInsertFormSchema,
+  LogUpdateFormSchema,
+} from "~/utils/schemas/log-schema";
 
 export const logRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -14,6 +19,16 @@ export const logRouter = createTRPCRouter({
         coffee: {
           with: {
             roaster: true,
+            process: true,
+            notes: {
+              columns: {
+                coffeeId: false,
+                noteId: false,
+              },
+              with: {
+                note: true,
+              },
+            },
             varietals: {
               columns: {
                 coffeeId: false,
@@ -28,15 +43,23 @@ export const logRouter = createTRPCRouter({
       },
     });
   }),
+  getById: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.query.log.findFirst({
+        where: eq(log.id, input.id),
+      });
+    }),
   insert: protectedProcedure
-    .input(LogInsertSchema)
+    .input(LogInsertFormSchema)
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.insert(log).values({
         ...input,
+        date: format(input.date, "yyyy-MM-dd"),
       });
     }),
   update: protectedProcedure
-    .input(LogInsertSchema)
+    .input(LogUpdateFormSchema)
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");
@@ -46,6 +69,7 @@ export const logRouter = createTRPCRouter({
         .update(log)
         .set({
           ...input,
+          date: format(input.date, "yyyy-MM-dd"),
           updatedAt: new Date(),
         })
         .where(eq(log.id, input.id));

@@ -35,7 +35,7 @@ export function Actions<TData>({ row }: DataTableRowActionsProps<TData>) {
   });
 
   return (
-    <>
+    <div className="relative">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -64,6 +64,6 @@ export function Actions<TData>({ row }: DataTableRowActionsProps<TData>) {
         deleteAction={() => mutate({ id: task.id })}
         isOpen={isOpen}
       />
-    </>
+    </div>
   );
 }

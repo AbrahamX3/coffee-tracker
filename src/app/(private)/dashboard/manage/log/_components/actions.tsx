@@ -13,17 +13,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { RoasterSelectSchema } from "~/server/db/schema";
 import { api } from "~/trpc/react";
+import { type LogDataTableColumn } from "~/utils/schemas/log-schema";
 
 export function Actions<TData>({ row }: DataTableRowActionsProps<TData>) {
   const router = useRouter();
   const utils = api.useUtils();
-  const task = RoasterSelectSchema.parse(row.original);
+  const task = row.original as LogDataTableColumn;
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const { mutate, isLoading } = api.roaster.delete.useMutation({
+  const { mutate, isLoading } = api.log.delete.useMutation({
     onSuccess: async () => {
       toast.success("Successfully deleted");
       await utils.roaster.getAll.invalidate();
@@ -48,7 +48,7 @@ export function Actions<TData>({ row }: DataTableRowActionsProps<TData>) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/manage/roaster/${task.id}`)}
+            onClick={() => router.push(`/dashboard/manage/log/${task.id}`)}
           >
             Edit
           </DropdownMenuItem>
