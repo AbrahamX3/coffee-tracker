@@ -4,7 +4,7 @@ import { DashboardShell } from "~/components/shell";
 import { CreateForm } from "../_components/create-form";
 
 export const metadata = {
-  title: "Create Roaster",
+  title: "Create Coffee",
 };
 
 export default async function Create() {
