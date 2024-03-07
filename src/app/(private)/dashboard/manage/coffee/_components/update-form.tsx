@@ -49,7 +49,6 @@ export function UpdateForm({ data }: UpdateFormProps) {
   const form = useForm<CoffeeUpdateForm>({
     resolver: zodResolver(CoffeeUpdateFormSchema),
     defaultValues: {
-      id: data?.id,
       name: data?.name ?? undefined,
       altitude: data?.altitude ?? undefined,
       region: data?.region,
@@ -72,16 +71,10 @@ export function UpdateForm({ data }: UpdateFormProps) {
   const varietalOptions = api.varietal.list.useQuery();
 
   useEffect(() => {
-    if (
-      !noteOptions.isLoading &&
-      !processOptions.isLoading &&
-      !roasterOptions.isLoading &&
-      !varietalOptions.isLoading
-    ) {
+    if (!noteOptions.isLoading && !varietalOptions.isLoading) {
       form.reset({
-        notes: data?.notes.flatMap((note) => note.noteId) ?? [],
-        varietals:
-          data?.varietals.flatMap((varietal) => varietal.varietalId) ?? [],
+        notes: data?.notes.map((note) => note.noteId) ?? [],
+        varietals: data?.varietals.map((varietal) => varietal.varietalId) ?? [],
       });
     }
   }, [
@@ -89,8 +82,6 @@ export function UpdateForm({ data }: UpdateFormProps) {
     data?.varietals,
     form,
     noteOptions.isLoading,
-    processOptions.isLoading,
-    roasterOptions.isLoading,
     varietalOptions.isLoading,
   ]);
 
@@ -117,7 +108,15 @@ export function UpdateForm({ data }: UpdateFormProps) {
   });
 
   function onSubmit(values: CoffeeUpdateForm) {
-    update.mutate(values);
+    if (!data?.id)
+      return toast.error("Error submitting form", {
+        description: "Missing ID field",
+      });
+
+    update.mutate({
+      id: data.id,
+      ...values,
+    });
   }
 
   return (

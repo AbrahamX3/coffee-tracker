@@ -8,7 +8,6 @@ export const LogInsertFormSchema = z.object({
 export type LogInsertForm = z.infer<typeof LogInsertFormSchema>;
 
 export const LogUpdateFormSchema = z.object({
-  id: z.number(),
   date: z.date(),
   coffeeId: z.number(),
 });

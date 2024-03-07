@@ -44,7 +44,6 @@ export function UpdateForm({ data }: UpdateFormProps) {
   const form = useForm<LogUpdateForm>({
     resolver: zodResolver(LogUpdateFormSchema),
     defaultValues: {
-      id: data?.id,
       coffeeId: data?.coffeeId,
       date: new Date(data?.date ?? Date.now()),
     },
@@ -70,7 +69,15 @@ export function UpdateForm({ data }: UpdateFormProps) {
   });
 
   function onSubmit(values: LogUpdateForm) {
-    update.mutate(values);
+    if (!data?.id)
+      return toast.error("Error submitting form", {
+        description: "Missing ID field",
+      });
+
+    update.mutate({
+      id: data.id,
+      ...values,
+    });
   }
 
   return (

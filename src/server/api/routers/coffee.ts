@@ -108,7 +108,7 @@ export const coffeeRouter = createTRPCRouter({
       };
     }),
   update: protectedProcedure
-    .input(CoffeeUpdateFormSchema)
+    .input(CoffeeUpdateFormSchema.extend({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");

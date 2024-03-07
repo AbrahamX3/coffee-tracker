@@ -59,7 +59,7 @@ export const logRouter = createTRPCRouter({
       });
     }),
   update: protectedProcedure
-    .input(LogUpdateFormSchema)
+    .input(LogUpdateFormSchema.extend({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");

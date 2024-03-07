@@ -17,7 +17,6 @@ export const CoffeeInsertFormSchema = z.object({
 export type CoffeeInsertForm = z.infer<typeof CoffeeInsertFormSchema>;
 
 export const CoffeeUpdateFormSchema = z.object({
-  id: z.number(),
   name: z.string().optional(),
   notes: z.array(z.number()),
   varietals: z.array(z.number()),

@@ -43,7 +43,7 @@ export const coffeeOnNote = pgTable(
       .references(() => coffee.id, { onDelete: "cascade" }),
     noteId: integer("notesId")
       .notNull()
-      .references(() => note.id),
+      .references(() => note.id, { onDelete: "cascade" }),
   },
   (coffeeOnNote) => ({
     primaryKey: primaryKey({
@@ -69,7 +69,7 @@ export const coffeeOnVarietal = pgTable(
       .references(() => coffee.id, { onDelete: "cascade" }),
     varietalId: integer("varietalId")
       .notNull()
-      .references(() => varietal.id),
+      .references(() => varietal.id, { onDelete: "cascade" }),
   },
   (coffeeOnVarietal) => ({
     primaryKey: primaryKey({
@@ -94,25 +94,33 @@ export const process = pgTable("process", {
   name: text("name").notNull().notNull().unique(),
 });
 
-export const coffee = pgTable("coffee", {
-  id: serial("id").primaryKey(),
-  name: text("name").unique(),
-  roasterId: integer("roasterId")
-    .references(() => roaster.id)
-    .notNull(),
-  processId: integer("processId")
-    .references(() => process.id)
-    .notNull(),
-  region: text("region").notNull(),
-  altitude: integer("altitude"),
-  score: integer("score"),
-  roast: roast("roast"),
-  createdAt: timestamp("created_at")
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp("updatedAt"),
-  active: boolean("active").default(true),
-});
+export const coffee = pgTable(
+  "coffee",
+  {
+    id: serial("id").primaryKey(),
+    name: text("name").unique(),
+    roasterId: integer("roasterId")
+      .references(() => roaster.id)
+      .notNull(),
+    processId: integer("processId")
+      .references(() => process.id)
+      .notNull(),
+    region: text("region").notNull(),
+    altitude: integer("altitude"),
+    score: integer("score"),
+    roast: roast("roast"),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt"),
+    active: boolean("active").default(true),
+  },
+  (columns) => ({
+    activeIdx: index("active_idx").on(columns.active),
+    scoreIdx: index("score_idx").on(columns.score),
+    nameIdx: index("name_idx").on(columns.name),
+  }),
+);
 
 export const coffeeRelations = relations(coffee, ({ one, many }) => ({
   roaster: one(roaster, {
@@ -166,7 +174,7 @@ export const log = pgTable(
     updatedAt: timestamp("updatedAt"),
   },
   (columns) => ({
-    dateIndex: index("date_idx").on(columns.date),
+    dateIdx: index("date_idx").on(columns.date),
   }),
 );
 

@@ -102,6 +102,9 @@ CREATE TABLE IF NOT EXISTS "verificationToken" (
 );
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "account_userId_idx" ON "account" ("userId");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "active_idx" ON "coffee" ("active");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "score_idx" ON "coffee" ("score");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "name_idx" ON "coffee" ("name");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "date_idx" ON "log" ("date");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "session_userId_idx" ON "session" ("userId");--> statement-breakpoint
 DO $$ BEGIN
@@ -129,7 +132,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "coffeeOnNote" ADD CONSTRAINT "coffeeOnNote_notesId_note_id_fk" FOREIGN KEY ("notesId") REFERENCES "note"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "coffeeOnNote" ADD CONSTRAINT "coffeeOnNote_notesId_note_id_fk" FOREIGN KEY ("notesId") REFERENCES "note"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -141,7 +144,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "coffeeOnVarietal" ADD CONSTRAINT "coffeeOnVarietal_varietalId_varietal_id_fk" FOREIGN KEY ("varietalId") REFERENCES "varietal"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "coffeeOnVarietal" ADD CONSTRAINT "coffeeOnVarietal_varietalId_varietal_id_fk" FOREIGN KEY ("varietalId") REFERENCES "varietal"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

@@ -1,5 +1,5 @@
 {
-  "id": "3a2f3a29-95b2-4d4c-88d8-33e42fb33f12",
+  "id": "e7bff0e3-f22e-4d0d-88da-71ef82152bbb",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -78,7 +78,9 @@
       "indexes": {
         "account_userId_idx": {
           "name": "account_userId_idx",
-          "columns": ["userId"],
+          "columns": [
+            "userId"
+          ],
           "isUnique": false
         }
       },
@@ -87,8 +89,12 @@
           "name": "account_userId_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -96,7 +102,10 @@
       "compositePrimaryKeys": {
         "account_provider_providerAccountId_pk": {
           "name": "account_provider_providerAccountId_pk",
-          "columns": ["provider", "providerAccountId"]
+          "columns": [
+            "provider",
+            "providerAccountId"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -174,14 +183,40 @@
           "default": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "active_idx": {
+          "name": "active_idx",
+          "columns": [
+            "active"
+          ],
+          "isUnique": false
+        },
+        "score_idx": {
+          "name": "score_idx",
+          "columns": [
+            "score"
+          ],
+          "isUnique": false
+        },
+        "name_idx": {
+          "name": "name_idx",
+          "columns": [
+            "name"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "coffee_roasterId_roaster_id_fk": {
           "name": "coffee_roasterId_roaster_id_fk",
           "tableFrom": "coffee",
           "tableTo": "roaster",
-          "columnsFrom": ["roasterId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "roasterId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -189,8 +224,12 @@
           "name": "coffee_processId_process_id_fk",
           "tableFrom": "coffee",
           "tableTo": "process",
-          "columnsFrom": ["processId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "processId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -200,7 +239,9 @@
         "coffee_name_unique": {
           "name": "coffee_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       }
     },
@@ -227,8 +268,12 @@
           "name": "coffeeOnNote_coffeeId_coffee_id_fk",
           "tableFrom": "coffeeOnNote",
           "tableTo": "coffee",
-          "columnsFrom": ["coffeeId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "coffeeId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -236,16 +281,23 @@
           "name": "coffeeOnNote_notesId_note_id_fk",
           "tableFrom": "coffeeOnNote",
           "tableTo": "note",
-          "columnsFrom": ["notesId"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "notesId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "coffeeOnNote_coffeeId_notesId_pk": {
           "name": "coffeeOnNote_coffeeId_notesId_pk",
-          "columns": ["coffeeId", "notesId"]
+          "columns": [
+            "coffeeId",
+            "notesId"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -273,8 +325,12 @@
           "name": "coffeeOnVarietal_coffeeId_coffee_id_fk",
           "tableFrom": "coffeeOnVarietal",
           "tableTo": "coffee",
-          "columnsFrom": ["coffeeId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "coffeeId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -282,16 +338,23 @@
           "name": "coffeeOnVarietal_varietalId_varietal_id_fk",
           "tableFrom": "coffeeOnVarietal",
           "tableTo": "varietal",
-          "columnsFrom": ["varietalId"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "varietalId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "coffeeOnVarietal_coffeeId_varietalId_pk": {
           "name": "coffeeOnVarietal_coffeeId_varietalId_pk",
-          "columns": ["coffeeId", "varietalId"]
+          "columns": [
+            "coffeeId",
+            "varietalId"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -335,7 +398,9 @@
       "indexes": {
         "date_idx": {
           "name": "date_idx",
-          "columns": ["date"],
+          "columns": [
+            "date"
+          ],
           "isUnique": false
         }
       },
@@ -344,8 +409,12 @@
           "name": "log_coffeeId_coffee_id_fk",
           "tableFrom": "log",
           "tableTo": "coffee",
-          "columnsFrom": ["coffeeId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "coffeeId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -377,7 +446,9 @@
         "note_name_unique": {
           "name": "note_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       }
     },
@@ -405,7 +476,9 @@
         "process_name_unique": {
           "name": "process_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       }
     },
@@ -445,7 +518,9 @@
         "roaster_name_unique": {
           "name": "roaster_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       }
     },
@@ -475,7 +550,9 @@
       "indexes": {
         "session_userId_idx": {
           "name": "session_userId_idx",
-          "columns": ["userId"],
+          "columns": [
+            "userId"
+          ],
           "isUnique": false
         }
       },
@@ -484,8 +561,12 @@
           "name": "session_userId_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -558,7 +639,9 @@
         "varietal_name_unique": {
           "name": "varietal_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       }
     },
@@ -590,7 +673,10 @@
       "compositePrimaryKeys": {
         "verificationToken_identifier_token_pk": {
           "name": "verificationToken_identifier_token_pk",
-          "columns": ["identifier", "token"]
+          "columns": [
+            "identifier",
+            "token"
+          ]
         }
       },
       "uniqueConstraints": {}
