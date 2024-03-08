@@ -5,6 +5,7 @@ import { processRouter } from "~/server/api/routers/process";
 import { roasterRouter } from "~/server/api/routers/roaster";
 import { varietalRouter } from "~/server/api/routers/varietal";
 import { createTRPCRouter } from "~/server/api/trpc";
+import { statsRouter } from "./routers/stats";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   coffee: coffeeRouter,
   varietal: varietalRouter,
   process: processRouter,
+  stats: statsRouter,
 });
 
 // export type definition of API

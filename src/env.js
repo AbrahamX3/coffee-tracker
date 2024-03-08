@@ -14,13 +14,6 @@ export const env = createEnv({
         (str) => !str.includes("YOUR_NEON_URL_HERE"),
         "You forgot to change the default main URL",
       ),
-    SHADOW_DATABASE_URL: z
-      .string()
-      .url()
-      .refine(
-        (str) => !str.includes("YOUR_NEON_SHADOW_URL_HERE"),
-        "You forgot to change the default shadow URL",
-      ),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -56,7 +49,6 @@ export const env = createEnv({
   runtimeEnv: {
     ADMINISTRATOR_EMAIL: process.env.ADMINISTRATOR_EMAIL,
     DATABASE_URL: process.env.DATABASE_URL,
-    SHADOW_DATABASE_URL: process.env.SHADOW_DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,

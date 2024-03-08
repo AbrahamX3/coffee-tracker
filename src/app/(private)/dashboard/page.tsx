@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
-import { CreateButton } from "~/components/create-button";
-import { DashboardHeader } from "~/components/dashboard-header";
-import { DashboardShell } from "~/components/shell";
+import ContributionGraph from "~/components/graph";
 import { getCurrentUser } from "~/lib/session";
 import { authOptions } from "~/server/auth";
+import { api } from "~/trpc/server";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -12,26 +11,79 @@ export default async function DashboardPage() {
     redirect(authOptions.pages?.signIn ?? "/api/auth/signin");
   }
 
+  const logs = await api.stats.getLogs.query();
+  const months = [
+    {
+      month: "January",
+      id: 1,
+    },
+    {
+      month: "February",
+      id: 2,
+    },
+    {
+      month: "March",
+      id: 3,
+    },
+
+    {
+      month: "April",
+      id: 4,
+    },
+
+    {
+      month: "May",
+      id: 5,
+    },
+
+    {
+      month: "June",
+      id: 6,
+    },
+
+    {
+      month: "July",
+      id: 7,
+    },
+
+    {
+      month: "August",
+      id: 8,
+    },
+    {
+      month: "September",
+      id: 9,
+    },
+    {
+      month: "October",
+      id: 10,
+    },
+    {
+      month: "November",
+      id: 11,
+    },
+    {
+      month: "December",
+      id: 12,
+    },
+  ];
+
   return (
-    <main className="col-span-full flex w-full flex-1 flex-col">
-      <DashboardShell>
-        <DashboardHeader heading="Dashboard" text="Overview of created logs">
-          <CreateButton
-            href="/dashboard/manage/log/create"
-            title="Create Log"
-          />
-        </DashboardHeader>
-        <div className="flex w-full flex-col gap-3">
-          {Array(5)
-            .fill(0)
-            .map((_, index) => (
-              <div
-                key={index}
-                className="h-8 w-full animate-pulse rounded-md bg-muted"
-              ></div>
-            ))}
+    <div className="container flex flex-1 flex-col">
+      <main className="col-span-full flex w-full flex-1 flex-col overflow-hidden rounded-md border p-4">
+        <div className="container flex w-full flex-col gap-2">
+          {months.map((month) => (
+            <div key={month.id}>
+              <h1 className="pb-2 text-3xl font-bold">{month.month}</h1>
+              <ContributionGraph
+                totalsByDate={logs}
+                month={month.id}
+                key={month.month}
+              />
+            </div>
+          ))}
         </div>
-      </DashboardShell>
-    </main>
+      </main>
+    </div>
   );
 }
