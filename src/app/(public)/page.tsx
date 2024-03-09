@@ -13,6 +13,7 @@ export default async function DashboardPage() {
   }
 
   const logs = await api.stats.getLogs.query();
+
   const months = [
     {
       month: "January",

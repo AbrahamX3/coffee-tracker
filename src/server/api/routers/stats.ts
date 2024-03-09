@@ -1,4 +1,5 @@
-import { asc, count, sql } from "drizzle-orm";
+import { asc, count, eq, sql } from "drizzle-orm";
+import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import {
   coffee,
@@ -52,4 +53,37 @@ export const statsRouter = createTRPCRouter({
       .groupBy(log.date)
       .orderBy(asc(log.date));
   }),
+  getLogsByDate: publicProcedure
+    .input(z.object({ date: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.query.log.findMany({
+        where: eq(log.date, input.date),
+        with: {
+          coffee: {
+            with: {
+              roaster: true,
+              process: true,
+              notes: {
+                columns: {
+                  coffeeId: false,
+                  noteId: false,
+                },
+                with: {
+                  note: true,
+                },
+              },
+              varietals: {
+                columns: {
+                  coffeeId: false,
+                  varietalId: false,
+                },
+                with: {
+                  varietal: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    }),
 });
