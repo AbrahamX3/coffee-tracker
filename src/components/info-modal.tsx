@@ -130,7 +130,11 @@ export function InfoModal({
                             rel="noreferrer noopener"
                             href={log.coffee.roaster.instagram}
                           >
-                            <InstagramIcon className="h-4 w-4" />
+                            <InstagramIcon
+                              className="h-4 w-4"
+                              onPointerEnterCapture={undefined}
+                              onPointerLeaveCapture={undefined}
+                            />
                           </a>
                         )}
 
