@@ -18,7 +18,7 @@ export default async function Process() {
     <DashboardShell>
       <DashboardHeader heading="Roasters" text="Create and manage roasters">
         <CreateButton
-          href="/dashboard/manage/process/create"
+          href="/dashboard/manage/process/new"
           title="Create Process"
         />
       </DashboardHeader>
@@ -36,7 +36,7 @@ export default async function Process() {
             </EmptyPlaceholder.Description>
             <CreateButton
               variant="outline"
-              href="/dashboard/manage/process/create"
+              href="/dashboard/manage/process/new"
               title="Create Process"
             />
           </EmptyPlaceholder>

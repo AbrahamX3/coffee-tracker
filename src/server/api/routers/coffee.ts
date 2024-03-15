@@ -68,7 +68,8 @@ export const coffeeRouter = createTRPCRouter({
           roasterId: input.roasterId,
           active: input.active,
           altitude: input.altitude,
-          score: input.score,
+          sca: input.sca,
+          personal_sca: input.personal_sca,
           roast: input.roast,
           processId: input.processId,
         })
@@ -122,7 +123,8 @@ export const coffeeRouter = createTRPCRouter({
           roasterId: input.roasterId,
           active: input.active,
           altitude: input.altitude,
-          score: input.score,
+          sca: input.sca,
+          personal_sca: input.personal_sca,
           roast: input.roast,
           processId: input.processId,
         })

@@ -70,15 +70,15 @@ export function Columns({
       },
     },
     {
-      accessorKey: "score",
+      accessorKey: "sca",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Score" />
+        <DataTableColumnHeader column={column} title="SCA" />
       ),
       cell: ({ row }) => {
         return (
           <div className="flex space-x-2">
             <span className="max-w-[500px] truncate font-medium">
-              {row.getValue("score") !== 0 ? row.getValue("score") : "N/A"}
+              {row.getValue("sca") !== 0 ? row.getValue("sca") : "N/A"}
             </span>
           </div>
         );

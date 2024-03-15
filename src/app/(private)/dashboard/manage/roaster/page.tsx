@@ -18,7 +18,7 @@ export default async function Roasters() {
     <DashboardShell>
       <DashboardHeader heading="Roasters" text="Create and manage roasters">
         <CreateButton
-          href="/dashboard/manage/roaster/create"
+          href="/dashboard/manage/roaster/new"
           title="Create Roaster"
         />
       </DashboardHeader>
@@ -34,7 +34,7 @@ export default async function Roasters() {
             </EmptyPlaceholder.Description>
             <CreateButton
               variant="outline"
-              href="/dashboard/manage/roaster/create"
+              href="/dashboard/manage/roaster/new"
               title="Create Roaster"
             />
           </EmptyPlaceholder>

@@ -1,10 +1,21 @@
 "use client";
 
 import { SiInstagram as InstagramIcon } from "@icons-pack/react-simple-icons";
-import { GlobeIcon } from "lucide-react";
+import {
+  CoffeeIcon,
+  FlameIcon,
+  GlobeIcon,
+  LinkIcon,
+  ListIcon,
+  MapIcon,
+  MapPinIcon,
+  MountainIcon,
+  NotebookIcon,
+  SparkleIcon,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Button, buttonVariants } from "~/components/ui/button";
+import { buttonVariants } from "~/components/ui/button";
 import {
   Card,
   CardContent,
@@ -16,7 +27,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
@@ -71,7 +81,7 @@ export function InfoModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{selectedDate}</DialogTitle>
           <DialogDescription>
@@ -91,98 +101,150 @@ export function InfoModal({
                 </TabsTrigger>
               ))}
             </TabsList>
-            {data?.map((log, index) => (
-              <TabsContent
-                value={`log-${index + 1}`}
-                key={`content-${log.id}`}
-                className="w-full"
-              >
-                <Card>
-                  <CardHeader>
-                    <CardTitle>{log.coffee.name}</CardTitle>
-                    <CardDescription className="flex items-center gap-2 align-middle">
-                      <span className="italic">
-                        By {log.coffee.roaster.name}
-                      </span>
-                      {log.coffee.roaster.instagram && (
-                        <a
-                          className={cn(
-                            buttonVariants({
-                              variant: "outline",
-                              size: "icon",
-                            }),
-                          )}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                          href={log.coffee.roaster.instagram}
-                        >
-                          <InstagramIcon className="h-4 w-4" />
-                        </a>
-                      )}
+            {data?.map((log, index) => {
+              const isScoreAvailable =
+                (log.coffee.sca ?? log.coffee.personal_sca) !== null;
 
-                      {log.coffee.roaster.website && (
-                        <a
-                          className={cn(
-                            buttonVariants({
-                              variant: "outline",
-                              size: "icon",
-                            }),
-                          )}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                          href={log.coffee.roaster.website}
-                        >
-                          <GlobeIcon className="h-4 w-4" />
-                        </a>
-                      )}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <dl>
-                      <DescrptionLabel
-                        title="Region"
-                        description={log.coffee.region}
-                      />
-                      <DescrptionLabel
-                        title="Varietal"
-                        description={log.coffee.varietals
-                          .map((v) => v.varietal.name)
-                          .join(", ")}
-                      />
-                      <DescrptionLabel
-                        title="Process"
-                        description={log.coffee.process.name}
-                      />
-                      <DescrptionLabel
-                        title="Roast"
-                        description={log.coffee.roast ?? "N/A"}
-                      />
-                      <DescrptionLabel
-                        title="Notes"
-                        description={log.coffee.notes
-                          .map((n) => n.note.name)
-                          .join(", ")}
-                      />
-                      <DescrptionLabel
-                        title="Altitude"
-                        description={`${log.coffee.altitude} masl` ?? "N/A"}
-                      />
-                      <DescrptionLabel
-                        title="SCA Score"
-                        description={`${log.coffee.score} points` ?? "N/A"}
-                      />
-                    </dl>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            ))}
+              return (
+                <TabsContent
+                  value={`log-${index + 1}`}
+                  key={`content-${log.id}`}
+                  className="w-full"
+                >
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>{log.coffee.name}</CardTitle>
+                      <CardDescription className="flex items-center gap-2 align-middle">
+                        <span className="italic">
+                          By {log.coffee.roaster.name}
+                        </span>
+                        {log.coffee.roaster.instagram && (
+                          <a
+                            className={cn(
+                              buttonVariants({
+                                variant: "outline",
+                                size: "icon",
+                              }),
+                            )}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            href={log.coffee.roaster.instagram}
+                          >
+                            <InstagramIcon className="h-4 w-4" />
+                          </a>
+                        )}
+
+                        {log.coffee.roaster.website && (
+                          <a
+                            className={cn(
+                              buttonVariants({
+                                variant: "outline",
+                                size: "icon",
+                              }),
+                            )}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            href={log.coffee.roaster.website}
+                          >
+                            <GlobeIcon className="h-4 w-4" />
+                          </a>
+                        )}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <Tabs className="w-full" defaultValue="location">
+                        <TabsList className="flex w-full">
+                          <TabsTrigger className="w-full" value="location">
+                            Location
+                          </TabsTrigger>
+                          <TabsTrigger className="w-full" value="bean">
+                            Coffee Bean
+                          </TabsTrigger>
+                          {isScoreAvailable ? (
+                            <TabsTrigger className="w-full" value="score">
+                              Score
+                            </TabsTrigger>
+                          ) : null}
+                        </TabsList>
+                        <TabsContent className="p-2" value="location">
+                          <dl>
+                            <DescrptionGoogleMapsLink
+                              title="Region"
+                              description={log.coffee.region}
+                              icon={<MapPinIcon className="h-4 w-4" />}
+                            />
+                            {log.coffee.estate ? (
+                              <DescrptionLabel
+                                title="Estate"
+                                icon={<MapIcon className="h-4 w-4" />}
+                                description={log.coffee.estate}
+                              />
+                            ) : null}
+                            {log.coffee.altitude && log.coffee.altitude > 0 ? (
+                              <DescrptionLabel
+                                title="Altitude"
+                                icon={<MountainIcon className="h-4 w-4" />}
+                                description={`${log.coffee.altitude} masl`}
+                              />
+                            ) : null}
+                          </dl>
+                        </TabsContent>
+                        <TabsContent className="p-2" value="bean">
+                          <dl>
+                            <DescrptionLabel
+                              icon={<CoffeeIcon className="h-4 w-4" />}
+                              title="Varietals"
+                              description={log.coffee.varietals
+                                .map((v) => v.varietal.name)
+                                .join(", ")}
+                            />
+                            <DescrptionLabel
+                              title="Process"
+                              icon={<SparkleIcon className="h-4 w-4" />}
+                              description={log.coffee.process.name}
+                            />
+                            <DescrptionLabel
+                              title="Roast"
+                              icon={<FlameIcon className="h-4 w-4" />}
+                              description={log.coffee.roast.toLowerCase()}
+                            />
+                            <DescrptionLabel
+                              title="Notes"
+                              icon={<NotebookIcon className="h-4 w-4" />}
+                              description={log.coffee.notes
+                                .map((n) => n.note.name)
+                                .join(", ")}
+                            />
+                          </dl>
+                        </TabsContent>
+                        <TabsContent className="p-2" value="score">
+                          <dl>
+                            {log.coffee.sca !== null && log.coffee.sca > 0 && (
+                              <DescrptionLabel
+                                icon={<ListIcon className="h-4 w-4" />}
+                                title="SCA Score"
+                                description={`${log.coffee.sca} SCA`}
+                              />
+                            )}
+
+                            {log.coffee.personal_sca !== null &&
+                              log.coffee.personal_sca > 0 && (
+                                <DescrptionLabel
+                                  icon={<ListIcon className="h-4 w-4" />}
+                                  title="Personal SCA Score"
+                                  description={`${log.coffee.personal_sca} SCA`}
+                                />
+                              )}
+                          </dl>
+                        </TabsContent>
+                      </Tabs>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              );
+            })}
           </Tabs>
         </div>
-        <DialogFooter>
-          <Button type="button" onClick={handleClose}>
-            Close
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
@@ -191,14 +253,50 @@ export function InfoModal({
 function DescrptionLabel({
   title,
   description,
+  icon,
 }: {
   title: string;
   description: string | number;
+  icon: React.ReactNode;
 }) {
   return (
     <>
-      <dt className="font-bold">{title}</dt>
-      <dd className="ml-3 text-foreground/60">{description}</dd>
+      <dt className="flex items-center gap-2 align-baseline font-bold">
+        <span>{title}</span>
+        <span>{icon}</span>
+      </dt>
+      <dd className="ml-3 text-sm font-medium capitalize text-foreground/60">
+        {description}
+      </dd>
+    </>
+  );
+}
+
+function DescrptionGoogleMapsLink({
+  title,
+  description,
+  icon,
+}: {
+  title: string;
+  description: string | number;
+  icon: React.ReactNode;
+}) {
+  return (
+    <>
+      <dt className="flex items-center gap-2 align-baseline font-bold">
+        <span>{title}</span>
+        <span>{icon}</span>
+      </dt>
+      <dd className="ml-3 text-sm font-medium">
+        <a
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center gap-2 text-foreground/60 transition duration-150 hover:text-foreground/80"
+          href={`https://www.google.com/maps?q=${description}`}
+        >
+          <span>{description}</span> <LinkIcon className="h-3 w-3" />
+        </a>
+      </dd>
     </>
   );
 }

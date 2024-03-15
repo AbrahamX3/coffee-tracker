@@ -20,7 +20,7 @@ export default async function Coffees() {
     <DashboardShell>
       <DashboardHeader heading="Coffees" text="Create and manage coffees">
         <CreateButton
-          href="/dashboard/manage/coffee/create"
+          href="/dashboard/manage/coffee/new"
           title="Create Coffee"
         />
       </DashboardHeader>
@@ -38,7 +38,7 @@ export default async function Coffees() {
             </EmptyPlaceholder.Description>
             <CreateButton
               variant="outline"
-              href="/dashboard/manage/coffee/create"
+              href="/dashboard/manage/coffee/new"
               title="Create Coffee"
             />
           </EmptyPlaceholder>

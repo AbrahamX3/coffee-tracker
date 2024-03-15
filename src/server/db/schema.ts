@@ -1,4 +1,4 @@
-import { relations, sql } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import {
   boolean,
   date,
@@ -7,6 +7,7 @@ import {
   pgEnum,
   pgTable,
   primaryKey,
+  real,
   serial,
   text,
   timestamp,
@@ -106,18 +107,18 @@ export const coffee = pgTable(
       .references(() => process.id)
       .notNull(),
     region: text("region").notNull(),
+    estate: text("estate"),
     altitude: integer("altitude"),
-    score: integer("score"),
-    roast: roast("roast"),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
+    sca: real("sca"),
+    personal_sca: real("personal_sca"),
+    roast: roast("roast").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt"),
     active: boolean("active").default(true),
   },
   (columns) => ({
     activeIdx: index("active_idx").on(columns.active),
-    scoreIdx: index("score_idx").on(columns.score),
+    scaIdx: index("sca_idx").on(columns.sca),
     nameIdx: index("name_idx").on(columns.name),
   }),
 );
@@ -168,9 +169,7 @@ export const log = pgTable(
     coffeeId: integer("coffeeId")
       .notNull()
       .references(() => coffee.id),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt"),
   },
   (columns) => ({
@@ -207,7 +206,7 @@ export const users = pgTable("user", {
   email: varchar("email", { length: 255 }).notNull(),
   emailVerified: timestamp("emailVerified", {
     mode: "date",
-  }).default(sql`CURRENT_TIMESTAMP`),
+  }).defaultNow(),
   image: varchar("image", { length: 255 }),
 });
 

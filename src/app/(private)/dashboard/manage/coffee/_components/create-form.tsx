@@ -13,6 +13,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "~/components/ui/command";
 import {
   Form,
@@ -84,7 +85,7 @@ export function CreateForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="col-span-1 grid w-full gap-4 md:grid-cols-3">
+        <div className="col-span-1 grid w-full gap-8 md:grid-cols-3">
           <FormField
             control={form.control}
             name="name"
@@ -137,10 +138,32 @@ export function CreateForm() {
 
           <FormField
             control={form.control}
-            name="score"
+            name="sca"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>SCA Score</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="0-100"
+                    type="number"
+                    step={1}
+                    pattern="[0-9]*"
+                    min={0}
+                    max={100}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="personal_sca"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Personal SCA Score</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="0-100"
@@ -222,7 +245,7 @@ export function CreateForm() {
                           ? roasterOptions.data?.find(
                               (roaster) => roaster.value === field.value,
                             )?.label
-                          : "Select roaster"}
+                          : "Select roaster..."}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </FormControl>
@@ -230,28 +253,30 @@ export function CreateForm() {
                   <PopoverContent className="w-[200px] p-0">
                     <Command>
                       <CommandInput placeholder="Search..." />
-                      <CommandEmpty>No roaster found.</CommandEmpty>
-                      <CommandGroup>
-                        {roasterOptions?.data?.map((roaster) => (
-                          <CommandItem
-                            value={roaster.label}
-                            key={roaster.value}
-                            onSelect={() => {
-                              form.setValue("roasterId", roaster.value);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                roaster.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
-                            {roaster.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
+                      <CommandList>
+                        <CommandEmpty>No roaster found.</CommandEmpty>
+                        <CommandGroup>
+                          {roasterOptions?.data?.map((roaster) => (
+                            <CommandItem
+                              value={roaster.label}
+                              key={roaster.value}
+                              onSelect={() => {
+                                form.setValue("roasterId", roaster.value);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  roaster.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0",
+                                )}
+                              />
+                              {roaster.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
                     </Command>
                   </PopoverContent>
                 </Popover>
@@ -289,28 +314,30 @@ export function CreateForm() {
                   <PopoverContent className="w-[200px] p-0">
                     <Command>
                       <CommandInput placeholder="Search..." />
-                      <CommandEmpty>No process found.</CommandEmpty>
-                      <CommandGroup>
-                        {processOptions?.data?.map((process) => (
-                          <CommandItem
-                            value={process.label}
-                            key={process.value}
-                            onSelect={() => {
-                              form.setValue("processId", process.value);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                process.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
-                            {process.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
+                      <CommandList>
+                        <CommandEmpty>No process found.</CommandEmpty>
+                        <CommandGroup>
+                          {processOptions?.data?.map((process) => (
+                            <CommandItem
+                              value={process.label}
+                              key={process.value}
+                              onSelect={() => {
+                                form.setValue("processId", process.value);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  process.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0",
+                                )}
+                              />
+                              {process.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
                     </Command>
                   </PopoverContent>
                 </Popover>
@@ -348,33 +375,35 @@ export function CreateForm() {
                   <PopoverContent className="w-[200px] p-0">
                     <Command>
                       <CommandInput placeholder="Search..." />
-                      <CommandEmpty>No roaster found.</CommandEmpty>
-                      <CommandGroup>
-                        {roastOptions?.map((roast) => (
-                          <CommandItem
-                            value={roast.label}
-                            key={roast.value}
-                            onSelect={() => {
-                              form.setValue(
-                                "roast",
-                                roast.value as z.infer<
-                                  typeof CoffeeInsertFormSchema
-                                >["roast"],
-                              );
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                roast.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
-                            {roast.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
+                      <CommandList>
+                        <CommandEmpty>No roaster found.</CommandEmpty>
+                        <CommandGroup>
+                          {roastOptions?.map((roast) => (
+                            <CommandItem
+                              value={roast.label}
+                              key={roast.value}
+                              onSelect={() => {
+                                form.setValue(
+                                  "roast",
+                                  roast.value as z.infer<
+                                    typeof CoffeeInsertFormSchema
+                                  >["roast"],
+                                );
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  roast.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0",
+                                )}
+                              />
+                              {roast.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
                     </Command>
                   </PopoverContent>
                 </Popover>

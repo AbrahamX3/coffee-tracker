@@ -9,7 +9,7 @@ import { Columns } from "./columns";
 
 export function DataTableView({ data }: { data: LogGetAll }) {
   const coffee = api.coffee.getAll.useQuery().data?.map((coffee) => ({
-    value: coffee.id,
+    value: coffee.name ?? `${coffee.roaster.name} - ${coffee.region}`,
     label: coffee.name ?? `${coffee.roaster.name} - ${coffee.region}`,
     icon: CoffeeIcon,
   }));

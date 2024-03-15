@@ -23,13 +23,20 @@ export function Columns({ coffeeOptions }: { coffeeOptions: FilterOptions[] }) {
     },
     {
       id: "Coffee",
-      accessorFn: (row) => row.coffeeId,
+      accessorFn: (row) => {
+        return (
+          row.coffee.name ?? `${row.coffee.roaster.name} - ${row.coffee.region}`
+        );
+      },
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Coffee" />
       ),
       cell: ({ row }) => {
+        const label =
+          row.original.coffee.name ??
+          `${row.original.coffee.roaster.name} - ${row.original.coffee.region}`;
         const coffee = coffeeOptions.find((coffee) => {
-          return coffee.value === row.original.coffeeId;
+          return coffee.value === label;
         });
 
         if (!coffee?.value) {
@@ -47,10 +54,11 @@ export function Columns({ coffeeOptions }: { coffeeOptions: FilterOptions[] }) {
         );
       },
       filterFn: (row, id: string, value: string) => {
-        return value.includes(
+        const label =
           row.original.coffee.name ??
-            `${row.original.coffee.roaster.name} - ${row.original.coffee.region}`,
-        );
+          `${row.original.coffee.roaster.name} - ${row.original.coffee.region}`;
+
+        return value.includes(label);
       },
     },
     {

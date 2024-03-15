@@ -18,7 +18,7 @@ export default async function Varietal() {
     <DashboardShell>
       <DashboardHeader heading="Varietals" text="Create and manage varietals">
         <CreateButton
-          href="/dashboard/manage/varietal/create"
+          href="/dashboard/manage/varietal/new"
           title="Create Varietal"
         />
       </DashboardHeader>
@@ -36,7 +36,7 @@ export default async function Varietal() {
             </EmptyPlaceholder.Description>
             <CreateButton
               variant="outline"
-              href="/dashboard/manage/varietal/create"
+              href="/dashboard/manage/varietal/new"
               title="Create Varietal"
             />
           </EmptyPlaceholder>

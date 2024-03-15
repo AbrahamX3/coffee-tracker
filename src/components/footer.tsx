@@ -12,7 +12,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
           <p className="text-center text-sm leading-loose md:text-left">
             Built by{" "}
             <a
-              href="#"
+              href="https://abraham.lat"
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"
@@ -28,9 +28,9 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
             >
               Vercel
             </a>
-            . The source code is available on{" "}
+            . Source code available on{" "}
             <a
-              href="#"
+              href="https://github.com/AbrahamX3/coffee-tracker"
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"

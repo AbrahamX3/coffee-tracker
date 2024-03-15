@@ -86,4 +86,16 @@ export const statsRouter = createTRPCRouter({
         },
       });
     }),
+  getAlltimeCoffeeAvg: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db
+      .select({
+        avg: sql`count(${log.id})::decimal / count(distinct ${log.date})`.mapWith(
+          Number,
+        ),
+      })
+      .from(log);
+  }),
+  getTotalCoffeesTried: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.select({ total: count() }).from(coffee);
+  }),
 });

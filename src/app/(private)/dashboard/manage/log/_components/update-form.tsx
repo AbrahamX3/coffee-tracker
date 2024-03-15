@@ -14,6 +14,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "~/components/ui/command";
 import {
   Form,
@@ -105,7 +106,7 @@ export function UpdateForm({ data }: UpdateFormProps) {
                           ? coffeeOptions.data?.find(
                               (coffee) => coffee.value === field.value,
                             )?.label
-                          : "Select roaster"}
+                          : "Select coffee..."}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </FormControl>
@@ -113,28 +114,30 @@ export function UpdateForm({ data }: UpdateFormProps) {
                   <PopoverContent className="w-[200px] p-0">
                     <Command>
                       <CommandInput placeholder="Search..." />
-                      <CommandEmpty>No coffee found.</CommandEmpty>
-                      <CommandGroup>
-                        {coffeeOptions?.data?.map((coffee) => (
-                          <CommandItem
-                            value={coffee.label}
-                            key={coffee.value}
-                            onSelect={() => {
-                              form.setValue("coffeeId", coffee.value);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                coffee.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
-                            {coffee.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
+                      <CommandList>
+                        <CommandEmpty>No coffee found.</CommandEmpty>
+                        <CommandGroup>
+                          {coffeeOptions?.data?.map((coffee) => (
+                            <CommandItem
+                              value={coffee.label}
+                              key={coffee.value}
+                              onSelect={() => {
+                                form.setValue("coffeeId", coffee.value);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  coffee.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0",
+                                )}
+                              />
+                              {coffee.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
                     </Command>
                   </PopoverContent>
                 </Popover>
