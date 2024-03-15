@@ -154,7 +154,7 @@ export default async function DashboardPage() {
   );
 }
 
-export function CardLogStats({ title, total, icon }: CardStatsProps) {
+function CardLogStats({ title, total, icon }: CardStatsProps) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
