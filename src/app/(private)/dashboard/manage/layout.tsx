@@ -1,4 +1,4 @@
-import { SidebarNav } from "~/components/nav";
+import { SidebarNav } from "~/components/general/sidebar-nav";
 import { dashboardConfig } from "~/config/dashoard";
 
 export default async function RootLayout({
@@ -11,7 +11,7 @@ export default async function RootLayout({
       <aside className="flex w-full flex-col rounded-md border p-4 md:w-[200px]">
         <SidebarNav items={dashboardConfig.sidebarNav} />
       </aside>
-      <main className="flex w-full flex-1 flex-col overflow-hidden rounded-md border p-4">
+      <main className="flex h-full w-full flex-1 flex-col overflow-hidden rounded-md border p-4">
         {children}
       </main>
     </div>

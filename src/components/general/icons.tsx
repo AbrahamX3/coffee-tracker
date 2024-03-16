@@ -5,6 +5,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CreditCard,
+  EllipsisIcon,
   File,
   FileText,
   HelpCircle,
@@ -12,7 +13,6 @@ import {
   Laptop,
   Loader2,
   Moon,
-  MoreVertical,
   Pizza,
   Plus,
   Settings,
@@ -23,6 +23,7 @@ import {
   type LucideIcon,
   type LucideProps,
 } from "lucide-react";
+import { cn } from "~/lib/utils";
 
 export type Icon = LucideIcon;
 
@@ -31,7 +32,7 @@ export const Icons = {
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      className="h-8 w-8"
+      className={cn("h-6 w-6", props.className)}
       viewBox="0 0 160.762 161.879"
     >
       <path
@@ -50,7 +51,7 @@ export const Icons = {
   media: Image,
   settings: Settings,
   billing: CreditCard,
-  ellipsis: MoreVertical,
+  ellipsis: EllipsisIcon,
   add: Plus,
   warning: AlertTriangle,
   user: User,

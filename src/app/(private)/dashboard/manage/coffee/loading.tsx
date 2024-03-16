@@ -1,14 +1,18 @@
 import { Loader2Icon } from "lucide-react";
+import { EmptyPlaceholder } from "~/components/general/empty-placeholder";
 
-export default function loading() {
+export default function Loading() {
   return (
-    <div className="flex h-full w-full items-center justify-center align-middle">
-      <div className="flex items-center gap-x-4 align-middle">
-        <Loader2Icon className="h-8 w-8 animate-spin" />
-        <span className="animate-pulse text-3xl font-semibold">
-          Loading data...
-        </span>
-      </div>
-    </div>
+    <EmptyPlaceholder className="h-full w-full">
+      <EmptyPlaceholder.Icon name="ellipsis" />
+      <EmptyPlaceholder.Title>
+        <div className="flex items-center gap-x-4 align-middle">
+          <Loader2Icon className="h-8 w-8 animate-spin" />
+          <span className="animate-pulse text-3xl font-semibold">
+            Loading data...
+          </span>
+        </div>
+      </EmptyPlaceholder.Title>
+    </EmptyPlaceholder>
   );
 }

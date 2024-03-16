@@ -4,7 +4,7 @@ import { MoreHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { DeleteAlert } from "~/components/delete-alert";
+import { DeleteAlert } from "~/components/general/delete-alert";
 import { Button } from "~/components/ui/button";
 import { type DataTableRowActionsProps } from "~/components/ui/datatable/data-table";
 import {

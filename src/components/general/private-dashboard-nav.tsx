@@ -4,12 +4,12 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import * as React from "react";
 
-import { Icons } from "~/components/icons";
-import { MobileNav } from "~/components/mobile-nav";
+import { Icons } from "~/components/general/icons";
+import { MobileNav } from "~/components/general/mobile-nav";
 import { cn } from "~/lib/utils";
 import { type NavProps } from "~/types";
 
-export function MainNav({ items, children }: NavProps) {
+export function PrivateDashboardNav({ items, children }: NavProps) {
   const segment = useSelectedLayoutSegment();
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
 

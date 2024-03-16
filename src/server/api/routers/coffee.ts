@@ -6,10 +6,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { coffee, coffeeOnNote, coffeeOnVarietal } from "~/server/db/schema";
-import {
-  CoffeeInsertFormSchema,
-  CoffeeUpdateFormSchema,
-} from "~/utils/schemas/coffee-schema";
+import { CoffeeFormSchema } from "~/utils/schemas/coffee-schema";
 
 export const coffeeRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -50,7 +47,7 @@ export const coffeeRouter = createTRPCRouter({
       });
     }),
   insert: protectedProcedure
-    .input(CoffeeInsertFormSchema)
+    .input(CoffeeFormSchema)
     .mutation(async ({ ctx, input }) => {
       let varietalsInsert: {
         varietalId: number;
@@ -109,7 +106,7 @@ export const coffeeRouter = createTRPCRouter({
       };
     }),
   update: protectedProcedure
-    .input(CoffeeUpdateFormSchema.extend({ id: z.number() }))
+    .input(CoffeeFormSchema.extend({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");

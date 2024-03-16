@@ -13,7 +13,6 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { type AdapterAccount } from "next-auth/adapters";
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -183,22 +182,6 @@ export const logRelations = relations(log, ({ one }) => ({
     fields: [log.coffeeId],
   }),
 }));
-
-export const CoffeeOnVarietalsInsertSchema =
-  createInsertSchema(coffeeOnVarietal);
-export const CoffeeOnNotesInsertSchema = createInsertSchema(coffeeOnNote);
-export const CoffeeInsertSchema = createInsertSchema(coffee);
-export const VarietalInsertSchema = createInsertSchema(varietal);
-export const RoasterInsertSchema = createInsertSchema(roaster);
-export const NoteInsertSchema = createInsertSchema(note);
-export const ProcessInsertSchema = createInsertSchema(process);
-
-export const VarietalSelectSchema = createSelectSchema(varietal);
-export const RoasterSelectSchema = createSelectSchema(roaster);
-export const NoteSelectSchema = createSelectSchema(note);
-export const CoffeeSelectSchema = createSelectSchema(coffee);
-export const ProcessSelectSchema = createSelectSchema(process);
-export const LogSelectSchema = createSelectSchema(log);
 
 export const users = pgTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),

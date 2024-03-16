@@ -31,14 +31,11 @@ import {
 } from "~/components/ui/popover";
 import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
-import {
-  LogInsertFormSchema,
-  type LogInsertForm,
-} from "~/utils/schemas/log-schema";
+import { LogFormSchema, type LogForm } from "~/utils/schemas/log-schema";
 
 export function CreateForm() {
-  const form = useForm<LogInsertForm>({
-    resolver: zodResolver(LogInsertFormSchema),
+  const form = useForm<LogForm>({
+    resolver: zodResolver(LogFormSchema),
     defaultValues: {
       coffeeId: 0,
       date: new Date(),
@@ -66,7 +63,7 @@ export function CreateForm() {
     },
   });
 
-  function onSubmit(values: LogInsertForm) {
+  function onSubmit(values: LogForm) {
     create.mutate(values);
   }
 

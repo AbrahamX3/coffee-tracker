@@ -1,7 +1,8 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { VarietalInsertSchema, varietal } from "~/server/db/schema";
+import { varietal } from "~/server/db/schema";
+import { VarietalFormSchema } from "~/utils/schemas/varietal-schema";
 
 export const varietalRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
@@ -16,7 +17,7 @@ export const varietalRouter = createTRPCRouter({
     });
   }),
   create: protectedProcedure
-    .input(VarietalInsertSchema)
+    .input(VarietalFormSchema)
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.insert(varietal).values({
         ...input,
@@ -30,7 +31,7 @@ export const varietalRouter = createTRPCRouter({
       });
     }),
   update: protectedProcedure
-    .input(VarietalInsertSchema)
+    .input(VarietalFormSchema.extend({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");

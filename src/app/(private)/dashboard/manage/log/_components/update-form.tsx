@@ -32,9 +32,9 @@ import {
 import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import {
-  LogUpdateFormSchema,
+  LogFormSchema,
+  type LogForm,
   type LogGetById,
-  type LogUpdateForm,
 } from "~/utils/schemas/log-schema";
 
 interface UpdateFormProps {
@@ -42,8 +42,8 @@ interface UpdateFormProps {
 }
 
 export function UpdateForm({ data }: UpdateFormProps) {
-  const form = useForm<LogUpdateForm>({
-    resolver: zodResolver(LogUpdateFormSchema),
+  const form = useForm<LogForm>({
+    resolver: zodResolver(LogFormSchema),
     defaultValues: {
       coffeeId: data?.coffeeId,
       date: new Date(data?.date ?? Date.now()),
@@ -69,7 +69,7 @@ export function UpdateForm({ data }: UpdateFormProps) {
     },
   });
 
-  function onSubmit(values: LogUpdateForm) {
+  function onSubmit(values: LogForm) {
     if (!data?.id)
       return toast.error("Error submitting form", {
         description: "Missing ID field",

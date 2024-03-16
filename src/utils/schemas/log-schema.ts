@@ -1,11 +1,11 @@
 import { z } from "zod";
 import { type api } from "~/trpc/server";
 
-export const LogInsertFormSchema = z.object({
+export const LogFormSchema = z.object({
   date: z.date(),
   coffeeId: z.number(),
 });
-export type LogInsertForm = z.infer<typeof LogInsertFormSchema>;
+export type LogForm = z.infer<typeof LogFormSchema>;
 
 export const LogUpdateFormSchema = z.object({
   date: z.date(),

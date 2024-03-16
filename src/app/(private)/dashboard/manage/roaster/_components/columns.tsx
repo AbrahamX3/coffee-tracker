@@ -1,17 +1,14 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-import { type z } from "zod";
 
 import { DataTableColumnHeader } from "~/components/ui/datatable/data-table-column-header";
 import DataTableLabelId from "~/components/ui/datatable/data-table-label-id";
-import { type RoasterSelectSchema } from "~/server/db/schema";
+import { type RoasterDataTableColumn } from "~/utils/schemas/roaster-schema";
 import { Actions } from "./actions";
 
-export type RoasterColumn = z.infer<typeof RoasterSelectSchema>;
-
 export function Columns() {
-  const columns: ColumnDef<RoasterColumn>[] = [
+  const columns: ColumnDef<RoasterDataTableColumn>[] = [
     {
       accessorKey: "id",
       header: ({ column }) => (

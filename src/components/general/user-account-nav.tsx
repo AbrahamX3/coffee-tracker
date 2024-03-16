@@ -4,6 +4,7 @@ import { type User } from "next-auth";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 
+import { UserAvatar } from "~/components/general/user-avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { UserAvatar } from "~/components/user-avatar";
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
   user: Pick<User, "name" | "image" | "email">;

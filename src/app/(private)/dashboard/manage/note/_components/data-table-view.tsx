@@ -2,8 +2,9 @@
 
 import { DataTable } from "~/components/ui/datatable/data-table";
 
-import { Columns, type NoteColumn } from "./columns";
+import { type NoteGetAll } from "~/utils/schemas/note-schema";
+import { Columns } from "./columns";
 
-export function DataTableView({ data }: { data: NoteColumn[] }) {
+export function DataTableView({ data }: { data: NoteGetAll }) {
   return <DataTable columns={Columns()} data={data} />;
 }

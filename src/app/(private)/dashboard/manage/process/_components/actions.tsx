@@ -4,7 +4,7 @@ import { MoreHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { DeleteAlert } from "~/components/delete-alert";
+import { DeleteAlert } from "~/components/general/delete-alert";
 import { Button } from "~/components/ui/button";
 import { type DataTableRowActionsProps } from "~/components/ui/datatable/data-table";
 import {
@@ -13,13 +13,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { ProcessSelectSchema } from "~/server/db/schema";
 import { api } from "~/trpc/react";
+import { type ProcessDataTableColumn } from "~/utils/schemas/process-schema";
 
 export function Actions<TData>({ row }: DataTableRowActionsProps<TData>) {
   const router = useRouter();
   const utils = api.useUtils();
-  const task = ProcessSelectSchema.parse(row.original);
+  const task = row.original as ProcessDataTableColumn;
 
   const [isOpen, setIsOpen] = useState(false);
 

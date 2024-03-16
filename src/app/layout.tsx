@@ -1,16 +1,25 @@
-import "@fontsource-variable/alexandria";
-import { Toaster } from "~/components/ui/sonner";
 import "~/styles/globals.css";
 
-import { unstable_noStore as noStore } from "next/cache";
+import "@fontsource-variable/alexandria";
+import { Toaster } from "~/components/ui/sonner";
+
+import { type Metadata } from "next";
 import { TRPCReactProvider } from "~/trpc/react";
+
+export const metadata: Metadata = {
+  title: {
+    default: "Coffee Tracker - Dashboard",
+    template: "Coffee Tracker - %s",
+  },
+  description: "Coffee Tracker - Dashboard",
+  icons: [{ rel: "icon", url: "/icon.svg" }],
+};
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  noStore();
   return (
     <html lang="en">
       <body>

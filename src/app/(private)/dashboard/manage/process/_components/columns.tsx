@@ -1,17 +1,14 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-import { type z } from "zod";
 
 import { DataTableColumnHeader } from "~/components/ui/datatable/data-table-column-header";
 import DataTableLabelId from "~/components/ui/datatable/data-table-label-id";
-import { type ProcessSelectSchema } from "~/server/db/schema";
+import { type ProcessDataTableColumn } from "~/utils/schemas/process-schema";
 import { Actions } from "./actions";
 
-export type ProcessColumn = z.infer<typeof ProcessSelectSchema>;
-
 export function Columns() {
-  const columns: ColumnDef<ProcessColumn>[] = [
+  const columns: ColumnDef<ProcessDataTableColumn>[] = [
     {
       accessorKey: "id",
       header: ({ column }) => (

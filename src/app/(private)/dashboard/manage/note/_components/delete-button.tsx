@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Icons } from "~/components/icons";
+import { Icons } from "~/components/general/icons";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 

@@ -5,7 +5,8 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { RoasterInsertSchema, roaster } from "~/server/db/schema";
+import { roaster } from "~/server/db/schema";
+import { RoasterFormSchema } from "~/utils/schemas/roaster-schema";
 
 export const roasterRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -27,14 +28,14 @@ export const roasterRouter = createTRPCRouter({
       });
     }),
   create: protectedProcedure
-    .input(RoasterInsertSchema)
+    .input(RoasterFormSchema)
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.insert(roaster).values({
         ...input,
       });
     }),
   update: protectedProcedure
-    .input(RoasterInsertSchema)
+    .input(RoasterFormSchema.extend({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");

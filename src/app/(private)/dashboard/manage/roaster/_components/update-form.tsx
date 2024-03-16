@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -16,33 +15,20 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { type RoasterSelectSchema } from "~/server/db/schema";
 import { api } from "~/trpc/react";
-
-const formSchema = z.object({
-  name: z.string().min(1, { message: "Roaster Name is required" }),
-  website: z
-    .string()
-    .url({ message: "Invalid URL" })
-    .optional()
-    .or(z.literal("")),
-  instagram: z
-    .string()
-    .url({ message: "Invalid URL" })
-    .optional()
-    .or(z.literal("")),
-});
-
-type FormSchema = z.infer<typeof formSchema>;
+import {
+  RoasterFormSchema,
+  type RoasterForm,
+  type RoasterGetById,
+} from "~/utils/schemas/roaster-schema";
 
 interface UpdateFormProps {
-  id: number;
-  data?: z.infer<typeof RoasterSelectSchema>;
+  data?: RoasterGetById;
 }
 
-export function UpdateForm({ id, data }: UpdateFormProps) {
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+export function UpdateForm({ data }: UpdateFormProps) {
+  const form = useForm<RoasterForm>({
+    resolver: zodResolver(RoasterFormSchema),
     defaultValues: {
       name: data?.name,
       instagram: data?.instagram ?? "",
@@ -66,9 +52,14 @@ export function UpdateForm({ id, data }: UpdateFormProps) {
     },
   });
 
-  function onSubmit(values: FormSchema) {
+  function onSubmit(values: RoasterForm) {
+    if (!data?.id)
+      return toast.error("Error submitting form", {
+        description: "Missing ID field",
+      });
+
     update.mutate({
-      id,
+      id: data.id,
       ...values,
     });
   }

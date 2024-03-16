@@ -5,7 +5,8 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { NoteInsertSchema, note } from "~/server/db/schema";
+import { note } from "~/server/db/schema";
+import { NoteFormSchema } from "~/utils/schemas/note-schema";
 
 export const noteRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -27,14 +28,14 @@ export const noteRouter = createTRPCRouter({
       });
     }),
   create: protectedProcedure
-    .input(NoteInsertSchema)
+    .input(NoteFormSchema)
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.insert(note).values({
         ...input,
       });
     }),
   update: protectedProcedure
-    .input(NoteInsertSchema)
+    .input(NoteFormSchema.extend({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");

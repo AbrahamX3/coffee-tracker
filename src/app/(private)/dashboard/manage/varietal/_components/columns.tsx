@@ -1,17 +1,14 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-import { type z } from "zod";
 
 import { DataTableColumnHeader } from "~/components/ui/datatable/data-table-column-header";
 import DataTableLabelId from "~/components/ui/datatable/data-table-label-id";
-import { type VarietalSelectSchema } from "~/server/db/schema";
+import { type VarietalDataTableColumn } from "~/utils/schemas/varietal-schema";
 import { Actions } from "./actions";
 
-export type VarietalColumn = z.infer<typeof VarietalSelectSchema>;
-
 export function Columns() {
-  const columns: ColumnDef<VarietalColumn>[] = [
+  const columns: ColumnDef<VarietalDataTableColumn>[] = [
     {
       accessorKey: "id",
       header: ({ column }) => (

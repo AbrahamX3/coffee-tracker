@@ -34,13 +34,13 @@ import { Switch } from "~/components/ui/switch";
 import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import {
-  CoffeeInsertFormSchema,
-  type CoffeeInsertForm,
+  CoffeeFormSchema,
+  type CoffeeForm,
 } from "~/utils/schemas/coffee-schema";
 
 export function CreateForm() {
-  const form = useForm<CoffeeInsertForm>({
-    resolver: zodResolver(CoffeeInsertFormSchema),
+  const form = useForm<CoffeeForm>({
+    resolver: zodResolver(CoffeeFormSchema),
     defaultValues: {
       notes: [],
       varietals: [],
@@ -78,7 +78,7 @@ export function CreateForm() {
     },
   });
 
-  function onSubmit(values: CoffeeInsertForm) {
+  function onSubmit(values: CoffeeForm) {
     create.mutate(values);
   }
 
@@ -386,7 +386,7 @@ export function CreateForm() {
                                 form.setValue(
                                   "roast",
                                   roast.value as z.infer<
-                                    typeof CoffeeInsertFormSchema
+                                    typeof CoffeeFormSchema
                                   >["roast"],
                                 );
                               }}

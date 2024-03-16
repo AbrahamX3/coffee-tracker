@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Icons } from "~/components/icons";
+import { Icons } from "~/components/general/icons";
 import { cn } from "~/lib/utils";
 
 export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {

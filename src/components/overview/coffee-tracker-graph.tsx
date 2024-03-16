@@ -3,15 +3,15 @@
 import { format, monthDays } from "@formkit/tempo";
 import { useState } from "react";
 import { cn } from "~/lib/utils";
-import { InfoModal } from "./info-modal";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
+import { InfoModal } from "./coffee-info-modal";
 
 interface ContributionGraphProps {
   totalsByDate: { date: string; total: number }[];
   month: number;
 }
 
-export default function TrackingGraph({
+export default function CoffeeTrackerGraph({
   totalsByDate,
   month,
 }: ContributionGraphProps) {

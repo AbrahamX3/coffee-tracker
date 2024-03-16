@@ -1,3 +1,13 @@
+import { EmptyPlaceholder } from "~/components/general/empty-placeholder";
+
 export default function NotFound() {
-  return <div>NotFound</div>;
+  return (
+    <EmptyPlaceholder className="h-full w-full">
+      <EmptyPlaceholder.Icon name="post" />
+      <EmptyPlaceholder.Title>Not Found</EmptyPlaceholder.Title>
+      <EmptyPlaceholder.Description>
+        This page does not exist.
+      </EmptyPlaceholder.Description>
+    </EmptyPlaceholder>
+  );
 }

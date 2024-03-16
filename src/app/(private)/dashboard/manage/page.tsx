@@ -7,14 +7,24 @@ import {
   WarehouseIcon,
 } from "lucide-react";
 import { unstable_noStore as noStore } from "next/cache";
-import { DashboardHeader } from "~/components/dashboard-header";
+import { redirect } from "next/navigation";
+import { DashboardHeader } from "~/components/general/dashboard-header";
+import { getCurrentUser } from "~/lib/session";
+import { authOptions } from "~/server/auth";
 import { api } from "~/trpc/server";
-import CardCstats from "./_components/card-stats";
+import CardStatLink from "../../../../components/overview/card-stat-link";
+
 export const metadata = {
   title: "Manage Catalogs",
 };
 
 export default async function StatsPage() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect(authOptions.pages?.signIn ?? "/api/auth/signin");
+  }
+
   noStore();
 
   const totals = await api.stats.getTotals.query();
@@ -35,37 +45,37 @@ export default async function StatsPage() {
         text="Dashboard overview and general statistics"
       />
       <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
-        <CardCstats
+        <CardStatLink
           title="Total Roasters"
           total={Intl.NumberFormat("en-US").format(totalRoasters)}
           icon={<WarehouseIcon className="h-4 w-4 text-muted-foreground" />}
           url="/dashboard/manage/roaster"
         />
-        <CardCstats
+        <CardStatLink
           title="Total Logs"
           total={Intl.NumberFormat("en-US").format(totalLogs)}
           icon={<CalendarDaysIcon className="h-4 w-4 text-muted-foreground" />}
           url="/dashboard/manage/log"
         />
-        <CardCstats
+        <CardStatLink
           title="Total Coffees"
           total={Intl.NumberFormat("en-US").format(totalCoffees)}
           icon={<CoffeeIcon className="h-4 w-4 text-muted-foreground" />}
           url="/dashboard/manage/coffee"
         />
-        <CardCstats
+        <CardStatLink
           title="Total Notes"
           total={Intl.NumberFormat("en-US").format(totalNotes)}
           icon={<NotepadTextIcon className="h-4 w-4 text-muted-foreground" />}
           url="/dashboard/manage/note"
         />
-        <CardCstats
+        <CardStatLink
           title="Total Varietals"
           total={Intl.NumberFormat("en-US").format(totalVarietals)}
           icon={<SquareStackIcon className="h-4 w-4 text-muted-foreground" />}
           url="/dashboard/manage/varietal"
         />
-        <CardCstats
+        <CardStatLink
           title="Total Processes"
           total={Intl.NumberFormat("en-US").format(totalProcesses)}
           icon={<CogIcon className="h-4 w-4 text-muted-foreground" />}

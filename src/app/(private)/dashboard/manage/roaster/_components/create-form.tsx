@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -17,26 +16,14 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
-
-const formSchema = z.object({
-  name: z.string().min(1, { message: "Roaster Name is required" }),
-  website: z
-    .string()
-    .url({ message: "Invalid URL" })
-    .optional()
-    .or(z.literal("")),
-  instagram: z
-    .string()
-    .url({ message: "Invalid URL" })
-    .optional()
-    .or(z.literal("")),
-});
-
-type FormSchema = z.infer<typeof formSchema>;
+import {
+  RoasterFormSchema,
+  type RoasterForm,
+} from "~/utils/schemas/roaster-schema";
 
 export function CreateForm() {
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<RoasterForm>({
+    resolver: zodResolver(RoasterFormSchema),
     defaultValues: {
       name: "",
       instagram: "",
@@ -60,7 +47,7 @@ export function CreateForm() {
     },
   });
 
-  function onSubmit(values: FormSchema) {
+  function onSubmit(values: RoasterForm) {
     create.mutate(values);
   }
 

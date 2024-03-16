@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -16,16 +15,14 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
-
-const formSchema = z.object({
-  name: z.string().min(1, { message: "Varietal name is required" }),
-});
-
-type FormSchema = z.infer<typeof formSchema>;
+import {
+  VarietalFormSchema,
+  type VarietalForm,
+} from "~/utils/schemas/varietal-schema";
 
 export function CreateForm() {
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<VarietalForm>({
+    resolver: zodResolver(VarietalFormSchema),
     defaultValues: {
       name: "",
     },
@@ -48,7 +45,7 @@ export function CreateForm() {
     },
   });
 
-  function onSubmit(values: FormSchema) {
+  function onSubmit(values: VarietalForm) {
     create.mutate(values);
   }
 

@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -15,23 +14,20 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { type VarietalSelectSchema } from "~/server/db/schema";
 import { api } from "~/trpc/react";
-
-const formSchema = z.object({
-  name: z.string().min(1, { message: "Varietal name is required" }),
-});
-
-type FormSchema = z.infer<typeof formSchema>;
+import {
+  VarietalFormSchema,
+  type VarietalForm,
+  type VarietalGetById,
+} from "~/utils/schemas/varietal-schema";
 
 interface UpdateFormProps {
-  id: number;
-  data?: z.infer<typeof VarietalSelectSchema>;
+  data?: VarietalGetById;
 }
 
-export function UpdateForm({ id, data }: UpdateFormProps) {
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+export function UpdateForm({ data }: UpdateFormProps) {
+  const form = useForm<VarietalForm>({
+    resolver: zodResolver(VarietalFormSchema),
     defaultValues: {
       name: data?.name,
     },
@@ -54,9 +50,14 @@ export function UpdateForm({ id, data }: UpdateFormProps) {
     },
   });
 
-  function onSubmit(values: FormSchema) {
+  function onSubmit(values: VarietalForm) {
+    if (!data?.id)
+      return toast.error("Error submitting form", {
+        description: "Missing ID field",
+      });
+
     update.mutate({
-      id,
+      id: data.id,
       ...values,
     });
   }

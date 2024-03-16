@@ -1,17 +1,14 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-import { type z } from "zod";
 
 import { DataTableColumnHeader } from "~/components/ui/datatable/data-table-column-header";
 import DataTableLabelId from "~/components/ui/datatable/data-table-label-id";
-import { type NoteSelectSchema } from "~/server/db/schema";
+import { type NoteDataTableColumn } from "~/utils/schemas/note-schema";
 import { Actions } from "./actions";
 
-export type NoteColumn = z.infer<typeof NoteSelectSchema>;
-
 export function Columns() {
-  const columns: ColumnDef<NoteColumn>[] = [
+  const columns: ColumnDef<NoteDataTableColumn>[] = [
     {
       accessorKey: "id",
       header: ({ column }) => (

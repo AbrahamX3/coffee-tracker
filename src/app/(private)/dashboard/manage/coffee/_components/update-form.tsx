@@ -37,9 +37,9 @@ import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 
 import {
-  CoffeeUpdateFormSchema,
+  CoffeeFormSchema,
+  type CoffeeForm,
   type CoffeeGetById,
-  type CoffeeUpdateForm,
 } from "~/utils/schemas/coffee-schema";
 
 interface UpdateFormProps {
@@ -47,8 +47,8 @@ interface UpdateFormProps {
 }
 
 export function UpdateForm({ data }: UpdateFormProps) {
-  const form = useForm<CoffeeUpdateForm>({
-    resolver: zodResolver(CoffeeUpdateFormSchema),
+  const form = useForm<CoffeeForm>({
+    resolver: zodResolver(CoffeeFormSchema),
     defaultValues: {
       name: data?.name ?? undefined,
       altitude: data?.altitude ?? undefined,
@@ -109,7 +109,7 @@ export function UpdateForm({ data }: UpdateFormProps) {
     },
   });
 
-  function onSubmit(values: CoffeeUpdateForm) {
+  function onSubmit(values: CoffeeForm) {
     if (!data?.id)
       return toast.error("Error submitting form", {
         description: "Missing ID field",
@@ -381,7 +381,7 @@ export function UpdateForm({ data }: UpdateFormProps) {
                                 form.setValue(
                                   "roast",
                                   roast.value as z.infer<
-                                    typeof CoffeeUpdateFormSchema
+                                    typeof CoffeeFormSchema
                                   >["roast"],
                                 );
                               }}

@@ -7,10 +7,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { log } from "~/server/db/schema";
-import {
-  LogInsertFormSchema,
-  LogUpdateFormSchema,
-} from "~/utils/schemas/log-schema";
+import { LogFormSchema, LogUpdateFormSchema } from "~/utils/schemas/log-schema";
 
 export const logRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -51,7 +48,7 @@ export const logRouter = createTRPCRouter({
       });
     }),
   insert: protectedProcedure
-    .input(LogInsertFormSchema)
+    .input(LogFormSchema)
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.insert(log).values({
         ...input,

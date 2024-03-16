@@ -2,10 +2,10 @@ import { CoffeeIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { DashboardHeader } from "~/components/dashboard-header";
-import TrackingGraph from "~/components/graph";
+import { DashboardHeader } from "~/components/general/dashboard-header";
+import { CardStat } from "~/components/overview/card-stat";
+import CoffeeTrackerGraph from "~/components/overview/coffee-tracker-graph";
 import { buttonVariants } from "~/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -13,16 +13,15 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "~/components/ui/carousel";
+import { months } from "~/lib/constants";
 import { getCurrentUser } from "~/lib/session";
 import { cn } from "~/lib/utils";
 import { authOptions } from "~/server/auth";
 import { api } from "~/trpc/server";
 
-interface CardStatsProps {
-  title: string;
-  total: string;
-  icon: React.ReactNode;
-}
+export const metadata = {
+  title: "Tracker",
+};
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -34,61 +33,6 @@ export default async function DashboardPage() {
   const logs = await api.stats.getLogs.query();
   const avgCoffee = await api.stats.getAlltimeCoffeeAvg.query();
   const totalCoffee = await api.stats.getTotalCoffeesTried.query();
-  const months = [
-    {
-      month: "January",
-      id: 1,
-    },
-    {
-      month: "February",
-      id: 2,
-    },
-    {
-      month: "March",
-      id: 3,
-    },
-
-    {
-      month: "April",
-      id: 4,
-    },
-
-    {
-      month: "May",
-      id: 5,
-    },
-
-    {
-      month: "June",
-      id: 6,
-    },
-
-    {
-      month: "July",
-      id: 7,
-    },
-
-    {
-      month: "August",
-      id: 8,
-    },
-    {
-      month: "September",
-      id: 9,
-    },
-    {
-      month: "October",
-      id: 10,
-    },
-    {
-      month: "November",
-      id: 11,
-    },
-    {
-      month: "December",
-      id: 12,
-    },
-  ];
 
   return (
     <div className="container flex flex-1 flex-col">
@@ -102,7 +46,7 @@ export default async function DashboardPage() {
       </DashboardHeader>
       <div className="flex flex-1 flex-col gap-4 md:flex-row">
         <div className="flex flex-col gap-4">
-          <CardLogStats
+          <CardStat
             icon={<CoffeeIcon className="h-4 w-4" />}
             title="Average Coffee per Day"
             total={
@@ -111,7 +55,7 @@ export default async function DashboardPage() {
               ) + " per day"
             }
           />
-          <CardLogStats
+          <CardStat
             icon={<CoffeeIcon className="h-4 w-4" />}
             title="Total Coffee's Tried"
             total={
@@ -135,7 +79,7 @@ export default async function DashboardPage() {
                   {months.map((month) => (
                     <CarouselItem key={month.id}>
                       <h1 className="pb-2 text-3xl font-bold">{month.month}</h1>
-                      <TrackingGraph
+                      <CoffeeTrackerGraph
                         totalsByDate={logs}
                         month={month.id}
                         key={month.month}
@@ -151,21 +95,5 @@ export default async function DashboardPage() {
         </div>
       </div>
     </div>
-  );
-}
-
-export function CardLogStats({ title, total, icon }: CardStatsProps) {
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium tabular-nums">
-          {title}
-        </CardTitle>
-        {icon}
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{total}</div>
-      </CardContent>
-    </Card>
   );
 }

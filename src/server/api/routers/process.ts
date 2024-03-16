@@ -5,7 +5,8 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { ProcessInsertSchema, process } from "~/server/db/schema";
+import { process } from "~/server/db/schema";
+import { ProcessFormSchema } from "~/utils/schemas/process-schema";
 
 export const processRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -27,14 +28,14 @@ export const processRouter = createTRPCRouter({
       });
     }),
   create: protectedProcedure
-    .input(ProcessInsertSchema)
+    .input(ProcessFormSchema)
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.insert(process).values({
         ...input,
       });
     }),
   update: protectedProcedure
-    .input(ProcessInsertSchema)
+    .input(ProcessFormSchema.extend({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");

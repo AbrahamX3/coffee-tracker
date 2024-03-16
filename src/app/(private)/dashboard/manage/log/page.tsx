@@ -1,8 +1,11 @@
 import { unstable_noStore as noStore } from "next/cache";
-import { CreateButton } from "~/components/create-button";
-import { DashboardHeader } from "~/components/dashboard-header";
-import { EmptyPlaceholder } from "~/components/empty-placeholder";
-import { DashboardShell } from "~/components/shell";
+import { redirect } from "next/navigation";
+import { CreateButton } from "~/components/general/create-button";
+import { DashboardHeader } from "~/components/general/dashboard-header";
+import { EmptyPlaceholder } from "~/components/general/empty-placeholder";
+import { DashboardShell } from "~/components/general/shell";
+import { getCurrentUser } from "~/lib/session";
+import { authOptions } from "~/server/auth";
 import { api } from "~/trpc/server";
 import { DataTableView } from "./_components/data-table-view";
 
@@ -11,6 +14,12 @@ export const metadata = {
 };
 
 export default async function Logs() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect(authOptions.pages?.signIn ?? "/api/auth/signin");
+  }
+
   noStore();
 
   const logs = await api.log.getAll.query();

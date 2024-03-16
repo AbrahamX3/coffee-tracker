@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -16,23 +15,20 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { type NoteSelectSchema } from "~/server/db/schema";
 import { api } from "~/trpc/react";
-
-const formSchema = z.object({
-  name: z.string().min(1, { message: "Note Name is required" }),
-});
-
-type FormSchema = z.infer<typeof formSchema>;
+import {
+  NoteFormSchema,
+  type NoteForm,
+  type NoteGetById,
+} from "~/utils/schemas/note-schema";
 
 interface UpdateFormProps {
-  id: number;
-  data?: z.infer<typeof NoteSelectSchema>;
+  data?: NoteGetById;
 }
 
-export function UpdateForm({ id, data }: UpdateFormProps) {
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+export function UpdateForm({ data }: UpdateFormProps) {
+  const form = useForm<NoteForm>({
+    resolver: zodResolver(NoteFormSchema),
     defaultValues: {
       name: data?.name,
     },
@@ -55,9 +51,14 @@ export function UpdateForm({ id, data }: UpdateFormProps) {
     },
   });
 
-  function onSubmit(values: FormSchema) {
+  function onSubmit(values: NoteForm) {
+    if (!data?.id)
+      return toast.error("Error submitting form", {
+        description: "Missing ID field",
+      });
+
     update.mutate({
-      id,
+      id: data.id,
       ...values,
     });
   }
