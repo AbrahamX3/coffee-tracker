@@ -14,13 +14,14 @@ export const metadata = {
 };
 
 export default async function Notes() {
+  noStore();
+
   const user = await getCurrentUser();
 
   if (!user) {
     redirect(authOptions.pages?.signIn ?? "/api/auth/signin");
   }
 
-  noStore();
   const notes = await api.note.getAll.query();
 
   return (

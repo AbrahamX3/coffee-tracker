@@ -19,13 +19,13 @@ export const metadata = {
 };
 
 export default async function StatsPage() {
+  noStore();
+
   const user = await getCurrentUser();
 
   if (!user) {
     redirect(authOptions.pages?.signIn ?? "/api/auth/signin");
   }
-
-  noStore();
 
   const totals = await api.stats.getTotals.query();
 

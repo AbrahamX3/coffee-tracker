@@ -14,13 +14,14 @@ export const metadata = {
 };
 
 export default async function Process() {
+  noStore();
+
   const user = await getCurrentUser();
 
   if (!user) {
     redirect(authOptions.pages?.signIn ?? "/api/auth/signin");
   }
 
-  noStore();
   const processes = await api.process.getAll.query();
 
   return (

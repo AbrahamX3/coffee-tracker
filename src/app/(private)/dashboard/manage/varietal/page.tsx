@@ -14,13 +14,14 @@ export const metadata = {
 };
 
 export default async function Varietal() {
+  noStore();
+
   const user = await getCurrentUser();
 
   if (!user) {
     redirect(authOptions.pages?.signIn ?? "/api/auth/signin");
   }
 
-  noStore();
   const varietals = await api.varietal.getAll.query();
 
   return (
