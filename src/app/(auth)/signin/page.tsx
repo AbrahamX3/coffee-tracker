@@ -1,11 +1,9 @@
-import { getProviders } from "next-auth/react";
 import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
 import { Icons } from "~/components/general/icons";
 import { getCurrentUser } from "~/lib/session";
-import { Providers } from "./_components/providers";
+import { DiscordLogin } from "./_components/discord-login";
 
 export const metadata = {
   title: "Sign in",
@@ -19,8 +17,6 @@ export default async function AuthSignIn() {
   if (user) {
     return redirect("/dashboard");
   }
-
-  const providers = await getProviders();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
@@ -39,9 +35,7 @@ export default async function AuthSignIn() {
               Sign in with one of the following providers
             </p>
           </div>
-          <Suspense fallback={"Loading providers..."}>
-            <Providers providers={providers} />
-          </Suspense>
+          <DiscordLogin />
         </div>
       </div>
     </main>
