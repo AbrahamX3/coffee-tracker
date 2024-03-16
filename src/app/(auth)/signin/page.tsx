@@ -1,6 +1,8 @@
 import { getProviders } from "next-auth/react";
+import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { Icons } from "~/components/general/icons";
 import { getCurrentUser } from "~/lib/session";
 import { Providers } from "./_components/providers";
@@ -10,6 +12,8 @@ export const metadata = {
 };
 
 export default async function AuthSignIn() {
+  noStore();
+
   const user = await getCurrentUser();
 
   if (user) {
@@ -35,7 +39,9 @@ export default async function AuthSignIn() {
               Sign in with one of the following providers
             </p>
           </div>
-          <Providers providers={providers} />
+          <Suspense fallback={"Loading providers..."}>
+            <Providers providers={providers} />
+          </Suspense>
         </div>
       </div>
     </main>
