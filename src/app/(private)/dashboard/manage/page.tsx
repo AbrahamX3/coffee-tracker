@@ -6,7 +6,6 @@ import {
   SquareStackIcon,
   WarehouseIcon,
 } from "lucide-react";
-import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
 import { DashboardHeader } from "~/components/general/dashboard-header";
 import { getCurrentUser } from "~/lib/session";
@@ -19,8 +18,6 @@ export const metadata = {
 };
 
 export default async function StatsPage() {
-  noStore();
-
   const user = await getCurrentUser();
 
   if (!user) {

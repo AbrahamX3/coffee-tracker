@@ -1,4 +1,5 @@
 import { CoffeeIcon } from "lucide-react";
+import { unstable_noStore as noStore } from "next/cache";
 import { Suspense } from "react";
 import { DashboardHeader } from "~/components/general/dashboard-header";
 import { CardStat } from "~/components/overview/card-stat";
@@ -12,12 +13,13 @@ import {
 } from "~/components/ui/carousel";
 import { months } from "~/lib/constants";
 import { api } from "~/trpc/server";
-
 export const metadata = {
   title: "Tracker",
 };
 
 export default async function PublicDashboard() {
+  noStore();
+
   const logs = await api.stats.getLogs.query();
   const avgCoffee = await api.stats.getAlltimeCoffeeAvg.query();
   const totalCoffee = await api.stats.getTotalCoffeesTried.query();

@@ -1,4 +1,5 @@
 import { CoffeeIcon, PlusIcon } from "lucide-react";
+import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -24,6 +25,8 @@ export const metadata = {
 };
 
 export default async function DashboardPage() {
+  noStore();
+
   const user = await getCurrentUser();
 
   if (!user) {

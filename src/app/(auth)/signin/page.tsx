@@ -1,5 +1,4 @@
 import { getProviders } from "next-auth/react";
-import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Icons } from "~/components/general/icons";
@@ -11,8 +10,6 @@ export const metadata = {
 };
 
 export default async function AuthSignIn() {
-  noStore();
-
   const user = await getCurrentUser();
 
   if (user) {

@@ -15,13 +15,13 @@ export const metadata = {
 };
 
 export default async function Coffees() {
+  noStore();
+
   const user = await getCurrentUser();
 
   if (!user) {
     redirect(authOptions.pages?.signIn ?? "/api/auth/signin");
   }
-
-  noStore();
 
   const coffees = await api.coffee.getAll.query();
 

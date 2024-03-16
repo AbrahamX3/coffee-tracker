@@ -1,5 +1,4 @@
 import { ChevronLeftIcon } from "lucide-react";
-import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { DashboardHeader } from "~/components/general/dashboard-header";
@@ -16,8 +15,6 @@ export const metadata = {
 };
 
 export default async function Update({ params }: { params: { id: string } }) {
-  noStore();
-
   const user = await getCurrentUser();
 
   if (!user) {
