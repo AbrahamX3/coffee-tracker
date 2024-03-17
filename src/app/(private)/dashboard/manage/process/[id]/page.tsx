@@ -1,4 +1,5 @@
 import { notFound, redirect } from "next/navigation";
+import BackButton from "~/components/general/back-button";
 import { DashboardHeader } from "~/components/general/dashboard-header";
 import FormShell from "~/components/general/form-shell";
 import { DashboardShell } from "~/components/general/shell";
@@ -31,7 +32,10 @@ export default async function Update({ params }: { params: { id: string } }) {
       <DashboardHeader
         heading="Update Process"
         text="Update an existing process"
-      />
+        icon="process"
+      >
+        <BackButton href="/dashboard/manage/process" />
+      </DashboardHeader>
       <FormShell>
         <UpdateForm data={data} />
       </FormShell>

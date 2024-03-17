@@ -26,7 +26,11 @@ export default async function Notes() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Logs" text="Create and manage notes">
+      <DashboardHeader
+        heading="Logs"
+        icon="note"
+        text="Create and manage notes"
+      >
         <CreateButton href="/dashboard/manage/note/new" title="Create Note" />
       </DashboardHeader>
       <div className="w-full">

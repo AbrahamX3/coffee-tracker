@@ -138,6 +138,34 @@ export function CreateForm() {
 
           <FormField
             control={form.control}
+            name="producer"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Producer</FormLabel>
+                <FormControl>
+                  <Input placeholder="Producer" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="estate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Estate</FormLabel>
+                <FormControl>
+                  <Input placeholder="Estate" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="sca"
             render={({ field }) => (
               <FormItem>
@@ -423,7 +451,6 @@ export function CreateForm() {
                     checked={field.value}
                     onCheckedChange={field.onChange}
                     aria-readonly
-                    required
                     className="block"
                   />
                 </FormControl>

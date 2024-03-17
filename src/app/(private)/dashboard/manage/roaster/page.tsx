@@ -26,7 +26,11 @@ export default async function Roasters() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Roasters" text="Create and manage roasters">
+      <DashboardHeader
+        icon="roaster"
+        heading="Roasters"
+        text="Create and manage roasters"
+      >
         <CreateButton
           href="/dashboard/manage/roaster/new"
           title="Create Roaster"

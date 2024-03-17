@@ -58,7 +58,7 @@ export function CreateForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Roaster Name</FormLabel>
+                <FormLabel>Process Name</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>

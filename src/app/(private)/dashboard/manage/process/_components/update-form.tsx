@@ -71,7 +71,7 @@ export function UpdateForm({ data }: UpdateFormProps) {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Roaster Name</FormLabel>
+                <FormLabel>Process Name</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>

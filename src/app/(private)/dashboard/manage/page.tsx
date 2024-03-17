@@ -39,6 +39,7 @@ export default async function StatsPage() {
     <>
       <DashboardHeader
         heading="Statistics"
+        icon="statistics"
         text="Dashboard overview and general statistics"
       />
       <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">

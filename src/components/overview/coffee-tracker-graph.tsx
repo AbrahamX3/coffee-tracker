@@ -16,13 +16,11 @@ export default function CoffeeTrackerGraph({
   month,
 }: ContributionGraphProps) {
   const currentDate = new Date();
-  const totalDays = monthDays(currentDate);
-
   const currentYear = currentDate.getFullYear();
-  const currentMonth = month;
+  const totalDays = monthDays(new Date(currentYear, month - 1, 1));
 
   const currentMonthLabels = Array.from({ length: totalDays }, (_, i) =>
-    format(new Date(currentYear, currentMonth - 1, i + 1), "YYYY-MM-DD"),
+    format(new Date(currentYear, month - 1, i + 1), "YYYY-MM-DD"),
   );
 
   const currentMonthTotalsMap = new Map(
@@ -65,12 +63,14 @@ export default function CoffeeTrackerGraph({
           />
         ))}
       </div>
-      <InfoModal
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-        isLoading={isLoading}
-        setIsLoading={setIsLoading}
-      />
+      {selectedDate && (
+        <InfoModal
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
+      )}
     </>
   );
 }

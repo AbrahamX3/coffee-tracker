@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import BackButton from "~/components/general/back-button";
 import { DashboardHeader } from "~/components/general/dashboard-header";
 import FormShell from "~/components/general/form-shell";
 import { DashboardShell } from "~/components/general/shell";
@@ -19,7 +20,9 @@ export default async function Create() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Create Log" text="Create a new log" />
+      <DashboardHeader icon="log" heading="Create Log" text="Create a new log">
+        <BackButton href="/dashboard/manage/log" />
+      </DashboardHeader>
       <FormShell>
         <CreateForm />
       </FormShell>

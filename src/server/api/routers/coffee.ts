@@ -65,10 +65,12 @@ export const coffeeRouter = createTRPCRouter({
           roasterId: input.roasterId,
           active: input.active,
           altitude: input.altitude,
+          estate: input.estate,
           sca: input.sca,
           personal_sca: input.personal_sca,
           roast: input.roast,
           processId: input.processId,
+          producer: input.producer,
         })
         .returning({
           id: coffee.id,
@@ -117,6 +119,7 @@ export const coffeeRouter = createTRPCRouter({
         .set({
           name: input.name,
           region: input.region,
+          estate: input.estate,
           roasterId: input.roasterId,
           active: input.active,
           altitude: input.altitude,
@@ -124,6 +127,8 @@ export const coffeeRouter = createTRPCRouter({
           personal_sca: input.personal_sca,
           roast: input.roast,
           processId: input.processId,
+          producer: input.producer,
+          updatedAt: new Date(),
         })
         .where(eq(coffee.id, input.id));
 

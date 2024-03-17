@@ -26,7 +26,7 @@ export default async function Logs() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Logs" text="Create and manage logs">
+      <DashboardHeader icon="log" heading="Logs" text="Create and manage logs">
         <CreateButton href="/dashboard/manage/log/new" title="Create Log" />
       </DashboardHeader>
       <div>

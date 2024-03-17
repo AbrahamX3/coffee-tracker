@@ -1,5 +1,6 @@
-import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 import "dotenv/config";
+
+import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { migrate } from "drizzle-orm/neon-http/migrator";
 

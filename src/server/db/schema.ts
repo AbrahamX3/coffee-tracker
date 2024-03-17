@@ -108,6 +108,7 @@ export const coffee = pgTable(
     region: text("region").notNull(),
     estate: text("estate"),
     altitude: integer("altitude"),
+    producer: text("producer"),
     sca: real("sca"),
     personal_sca: real("personal_sca"),
     roast: roast("roast").notNull(),
@@ -118,6 +119,7 @@ export const coffee = pgTable(
   (columns) => ({
     activeIdx: index("active_idx").on(columns.active),
     scaIdx: index("sca_idx").on(columns.sca),
+    personalScaIdx: index("personal_sca_idx").on(columns.personal_sca),
     nameIdx: index("name_idx").on(columns.name),
   }),
 );

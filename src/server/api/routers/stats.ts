@@ -51,7 +51,8 @@ export const statsRouter = createTRPCRouter({
       })
       .from(log)
       .groupBy(log.date)
-      .orderBy(asc(log.date));
+      .orderBy(asc(log.date))
+      .where(eq(sql`EXTRACT(YEAR FROM ${log.date})`, new Date().getFullYear()));
   }),
   getLogsByDate: publicProcedure
     .input(z.object({ date: z.string() }))
@@ -87,13 +88,37 @@ export const statsRouter = createTRPCRouter({
       });
     }),
   getAlltimeCoffeeAvg: publicProcedure.query(async ({ ctx }) => {
+    function calculateDaysBetweenDates(date1: Date, date2: Date): number {
+      const utcDate1 = Date.UTC(
+        date1.getFullYear(),
+        date1.getMonth(),
+        date1.getDate(),
+      );
+      const utcDate2 = Date.UTC(
+        date2.getFullYear(),
+        date2.getMonth(),
+        date2.getDate(),
+      );
+
+      const millisecondsPerDay = 1000 * 60 * 60 * 24;
+      const differenceInMs = Math.abs(utcDate2 - utcDate1);
+
+      return Math.floor(differenceInMs / millisecondsPerDay);
+    }
+
+    const currentYear = new Date().getFullYear();
+
+    const days = calculateDaysBetweenDates(
+      new Date(currentYear, 0, 1),
+      new Date(),
+    );
+
     return await ctx.db
       .select({
-        avg: sql`count(${log.id})::decimal / count(distinct ${log.date})`.mapWith(
-          Number,
-        ),
+        avg: sql`count(${log.id})::decimal / ${days}`.mapWith(Number),
       })
-      .from(log);
+      .from(log)
+      .where(eq(sql`EXTRACT(YEAR FROM ${log.date})`, new Date().getFullYear()));
   }),
   getTotalCoffeesTried: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.select({ total: count() }).from(coffee);

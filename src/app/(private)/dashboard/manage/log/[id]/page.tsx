@@ -1,4 +1,5 @@
 import { notFound, redirect } from "next/navigation";
+import BackButton from "~/components/general/back-button";
 import { DashboardHeader } from "~/components/general/dashboard-header";
 import FormShell from "~/components/general/form-shell";
 import { DashboardShell } from "~/components/general/shell";
@@ -28,7 +29,13 @@ export default async function Update({ params }: { params: { id: string } }) {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Update Log" text="Update an existing log" />
+      <DashboardHeader
+        icon="log"
+        heading="Update Log"
+        text="Update an existing log"
+      >
+        <BackButton href="/dashboard/manage/log" />
+      </DashboardHeader>
       <FormShell>
         <UpdateForm data={data} />
       </FormShell>

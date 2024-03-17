@@ -1,5 +1,5 @@
 {
-  "id": "e7bff0e3-f22e-4d0d-88da-71ef82152bbb",
+  "id": "097b98cd-a4b3-4c18-9c35-6ed1059454a6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -78,7 +78,9 @@
       "indexes": {
         "account_userId_idx": {
           "name": "account_userId_idx",
-          "columns": ["userId"],
+          "columns": [
+            "userId"
+          ],
           "isUnique": false
         }
       },
@@ -87,8 +89,12 @@
           "name": "account_userId_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -96,7 +102,10 @@
       "compositePrimaryKeys": {
         "account_provider_providerAccountId_pk": {
           "name": "account_provider_providerAccountId_pk",
-          "columns": ["provider", "providerAccountId"]
+          "columns": [
+            "provider",
+            "providerAccountId"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -135,15 +144,33 @@
           "primaryKey": false,
           "notNull": true
         },
+        "estate": {
+          "name": "estate",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "altitude": {
           "name": "altitude",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "score": {
-          "name": "score",
-          "type": "integer",
+        "producer": {
+          "name": "producer",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sca": {
+          "name": "sca",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "personal_sca": {
+          "name": "personal_sca",
+          "type": "real",
           "primaryKey": false,
           "notNull": false
         },
@@ -151,14 +178,14 @@
           "name": "roast",
           "type": "roast",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "CURRENT_TIMESTAMP"
+          "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
@@ -177,17 +204,30 @@
       "indexes": {
         "active_idx": {
           "name": "active_idx",
-          "columns": ["active"],
+          "columns": [
+            "active"
+          ],
           "isUnique": false
         },
-        "score_idx": {
-          "name": "score_idx",
-          "columns": ["score"],
+        "sca_idx": {
+          "name": "sca_idx",
+          "columns": [
+            "sca"
+          ],
+          "isUnique": false
+        },
+        "personal_sca_idx": {
+          "name": "personal_sca_idx",
+          "columns": [
+            "personal_sca"
+          ],
           "isUnique": false
         },
         "name_idx": {
           "name": "name_idx",
-          "columns": ["name"],
+          "columns": [
+            "name"
+          ],
           "isUnique": false
         }
       },
@@ -196,8 +236,12 @@
           "name": "coffee_roasterId_roaster_id_fk",
           "tableFrom": "coffee",
           "tableTo": "roaster",
-          "columnsFrom": ["roasterId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "roasterId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -205,8 +249,12 @@
           "name": "coffee_processId_process_id_fk",
           "tableFrom": "coffee",
           "tableTo": "process",
-          "columnsFrom": ["processId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "processId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -216,7 +264,9 @@
         "coffee_name_unique": {
           "name": "coffee_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       }
     },
@@ -243,8 +293,12 @@
           "name": "coffeeOnNote_coffeeId_coffee_id_fk",
           "tableFrom": "coffeeOnNote",
           "tableTo": "coffee",
-          "columnsFrom": ["coffeeId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "coffeeId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -252,8 +306,12 @@
           "name": "coffeeOnNote_notesId_note_id_fk",
           "tableFrom": "coffeeOnNote",
           "tableTo": "note",
-          "columnsFrom": ["notesId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "notesId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -261,7 +319,10 @@
       "compositePrimaryKeys": {
         "coffeeOnNote_coffeeId_notesId_pk": {
           "name": "coffeeOnNote_coffeeId_notesId_pk",
-          "columns": ["coffeeId", "notesId"]
+          "columns": [
+            "coffeeId",
+            "notesId"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -289,8 +350,12 @@
           "name": "coffeeOnVarietal_coffeeId_coffee_id_fk",
           "tableFrom": "coffeeOnVarietal",
           "tableTo": "coffee",
-          "columnsFrom": ["coffeeId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "coffeeId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -298,8 +363,12 @@
           "name": "coffeeOnVarietal_varietalId_varietal_id_fk",
           "tableFrom": "coffeeOnVarietal",
           "tableTo": "varietal",
-          "columnsFrom": ["varietalId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "varietalId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -307,7 +376,10 @@
       "compositePrimaryKeys": {
         "coffeeOnVarietal_coffeeId_varietalId_pk": {
           "name": "coffeeOnVarietal_coffeeId_varietalId_pk",
-          "columns": ["coffeeId", "varietalId"]
+          "columns": [
+            "coffeeId",
+            "varietalId"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -339,7 +411,7 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "CURRENT_TIMESTAMP"
+          "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
@@ -351,7 +423,9 @@
       "indexes": {
         "date_idx": {
           "name": "date_idx",
-          "columns": ["date"],
+          "columns": [
+            "date"
+          ],
           "isUnique": false
         }
       },
@@ -360,8 +434,12 @@
           "name": "log_coffeeId_coffee_id_fk",
           "tableFrom": "log",
           "tableTo": "coffee",
-          "columnsFrom": ["coffeeId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "coffeeId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -393,7 +471,9 @@
         "note_name_unique": {
           "name": "note_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       }
     },
@@ -421,7 +501,9 @@
         "process_name_unique": {
           "name": "process_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       }
     },
@@ -461,7 +543,9 @@
         "roaster_name_unique": {
           "name": "roaster_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       }
     },
@@ -491,7 +575,9 @@
       "indexes": {
         "session_userId_idx": {
           "name": "session_userId_idx",
-          "columns": ["userId"],
+          "columns": [
+            "userId"
+          ],
           "isUnique": false
         }
       },
@@ -500,8 +586,12 @@
           "name": "session_userId_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -536,7 +626,7 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
-          "default": "CURRENT_TIMESTAMP"
+          "default": "now()"
         },
         "image": {
           "name": "image",
@@ -574,7 +664,9 @@
         "varietal_name_unique": {
           "name": "varietal_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       }
     },
@@ -606,7 +698,10 @@
       "compositePrimaryKeys": {
         "verificationToken_identifier_token_pk": {
           "name": "verificationToken_identifier_token_pk",
-          "columns": ["identifier", "token"]
+          "columns": [
+            "identifier",
+            "token"
+          ]
         }
       },
       "uniqueConstraints": {}

@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import BackButton from "~/components/general/back-button";
 import { DashboardHeader } from "~/components/general/dashboard-header";
 import FormShell from "~/components/general/form-shell";
 import { DashboardShell } from "~/components/general/shell";
@@ -19,7 +20,13 @@ export default async function Create() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Create Process" text="Create a new process" />
+      <DashboardHeader
+        icon="process"
+        heading="Create Process"
+        text="Create a new process"
+      >
+        <BackButton href="/dashboard/manage/process" />
+      </DashboardHeader>
       <FormShell>
         <CreateForm />
       </FormShell>

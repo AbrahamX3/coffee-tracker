@@ -25,10 +25,13 @@ CREATE TABLE IF NOT EXISTS "coffee" (
 	"roasterId" integer NOT NULL,
 	"processId" integer NOT NULL,
 	"region" text NOT NULL,
+	"estate" text,
 	"altitude" integer,
-	"score" integer,
-	"roast" "roast",
-	"created_at" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"producer" text,
+	"sca" real,
+	"personal_sca" real,
+	"roast" "roast" NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp,
 	"active" boolean DEFAULT true,
 	CONSTRAINT "coffee_name_unique" UNIQUE("name")
@@ -50,7 +53,7 @@ CREATE TABLE IF NOT EXISTS "log" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"date" date NOT NULL,
 	"coffeeId" integer NOT NULL,
-	"created_at" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp
 );
 --> statement-breakpoint
@@ -84,7 +87,7 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"name" varchar(255),
 	"email" varchar(255) NOT NULL,
-	"emailVerified" timestamp DEFAULT CURRENT_TIMESTAMP,
+	"emailVerified" timestamp DEFAULT now(),
 	"image" varchar(255)
 );
 --> statement-breakpoint
@@ -103,7 +106,8 @@ CREATE TABLE IF NOT EXISTS "verificationToken" (
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "account_userId_idx" ON "account" ("userId");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "active_idx" ON "coffee" ("active");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "score_idx" ON "coffee" ("score");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "sca_idx" ON "coffee" ("sca");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "personal_sca_idx" ON "coffee" ("personal_sca");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "name_idx" ON "coffee" ("name");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "date_idx" ON "log" ("date");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "session_userId_idx" ON "session" ("userId");--> statement-breakpoint

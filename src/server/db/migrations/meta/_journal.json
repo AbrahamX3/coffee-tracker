@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1709842068009,
-      "tag": "0000_jazzy_ultimates",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1710076801443,
-      "tag": "0001_confused_ultron",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1710078068463,
-      "tag": "0002_empty_bloodstorm",
+      "when": 1710683567564,
+      "tag": "0000_petite_toad_men",
       "breakpoints": true
     }
   ]

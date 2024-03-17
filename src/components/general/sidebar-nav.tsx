@@ -21,7 +21,7 @@ export function SidebarNav({ items }: SidebarNavProps) {
   return (
     <nav className="grid grid-cols-3 items-start gap-2 sm:grid-cols-4 md:grid-cols-1">
       {items.map((item, index) => {
-        const Icon = Icons[item.icon ?? "arrowRight"];
+        const Icon = Icons[item.icon ?? "help"];
 
         return (
           item.href && (
@@ -30,7 +30,7 @@ export function SidebarNav({ items }: SidebarNavProps) {
                 className={cn(
                   "group flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground md:justify-start",
                   path === item.href ||
-                    path.includes(`${item.href}/create`) ||
+                    path.includes(`${item.href}/new`) ||
                     (Number.isInteger(Number(path.split("/").pop())) &&
                       path.includes(`${item.href}/${path.split("/").pop()}`))
                     ? "bg-accent"

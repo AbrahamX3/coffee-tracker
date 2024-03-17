@@ -55,7 +55,9 @@ export function UpdateForm({ data }: UpdateFormProps) {
       region: data?.region,
       active: data?.active ?? false,
       processId: data?.processId,
+      estate: data?.estate ?? undefined,
       roasterId: data?.roasterId,
+      producer: data?.producer ?? undefined,
       roast: data?.roast ?? undefined,
       sca: data?.sca ?? undefined,
       personal_sca: data?.personal_sca ?? undefined,
@@ -147,6 +149,34 @@ export function UpdateForm({ data }: UpdateFormProps) {
                 <FormLabel>Region</FormLabel>
                 <FormControl>
                   <Input placeholder="Region" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="producer"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Producer</FormLabel>
+                <FormControl>
+                  <Input placeholder="Producer" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="estate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Estate</FormLabel>
+                <FormControl>
+                  <Input placeholder="Estate" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -462,7 +492,6 @@ export function UpdateForm({ data }: UpdateFormProps) {
                     checked={field.value}
                     onCheckedChange={field.onChange}
                     aria-readonly
-                    required
                     className="block"
                   />
                 </FormControl>

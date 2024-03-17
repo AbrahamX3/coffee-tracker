@@ -1,10 +1,8 @@
-import { ChevronLeftIcon } from "lucide-react";
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import BackButton from "~/components/general/back-button";
 import { DashboardHeader } from "~/components/general/dashboard-header";
 import FormShell from "~/components/general/form-shell";
 import { DashboardShell } from "~/components/general/shell";
-import { buttonVariants } from "~/components/ui/button";
 import { getCurrentUser } from "~/lib/session";
 import { authOptions } from "~/server/auth";
 import { api } from "~/trpc/server";
@@ -34,14 +32,9 @@ export default async function Update({ params }: { params: { id: string } }) {
       <DashboardHeader
         heading="Update Coffee"
         text="Update an existing roaster"
+        icon="coffee"
       >
-        <Link
-          href="/dashboard/manage/coffee"
-          className={buttonVariants({ variant: "outline" })}
-        >
-          <ChevronLeftIcon className="mr-2 h-4 w-4" />
-          Back
-        </Link>
+        <BackButton href="/dashboard/manage/coffee" />
       </DashboardHeader>
       <FormShell>
         <UpdateForm data={data} />

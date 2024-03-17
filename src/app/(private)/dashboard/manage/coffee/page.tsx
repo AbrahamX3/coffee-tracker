@@ -27,7 +27,11 @@ export default async function Coffees() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Coffees" text="Create and manage coffees">
+      <DashboardHeader
+        icon="coffee"
+        heading="Coffees"
+        text="Create and manage coffees"
+      >
         <CreateButton
           href="/dashboard/manage/coffee/new"
           title="Create Coffee"

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { buttonVariants, type ButtonProps } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
+import { Icons } from "./icons";
 
 interface CreateButtonProps extends ButtonProps {
   title: string;
@@ -17,7 +18,7 @@ export function CreateButton({
 }: CreateButtonProps) {
   return (
     <Link href={href} className={cn(buttonVariants({ variant }), className)}>
-      {title}
+      {title} <Icons.add className="ml-2 h-4 w-4" />
     </Link>
   );
 }

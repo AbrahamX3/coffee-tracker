@@ -26,7 +26,11 @@ export default async function Process() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Roasters" text="Create and manage roasters">
+      <DashboardHeader
+        heading="Processes"
+        icon="process"
+        text="Create and manage processes"
+      >
         <CreateButton
           href="/dashboard/manage/process/new"
           title="Create Process"

@@ -1,20 +1,25 @@
 "use client";
 
-import { SiInstagram as InstagramIcon } from "@icons-pack/react-simple-icons";
+import { format, tzDate } from "@formkit/tempo";
 import {
+  BeanIcon,
+  ClipboardListIcon,
   CoffeeIcon,
+  CogIcon,
   FlameIcon,
   GlobeIcon,
+  InfoIcon,
   LinkIcon,
-  ListIcon,
+  ListChecksIcon,
+  ListTodoIcon,
   MapIcon,
   MapPinIcon,
   MountainIcon,
-  NotebookIcon,
-  SparkleIcon,
+  SparklesIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Icons } from "~/components/general/icons";
 import { buttonVariants } from "~/components/ui/button";
 import {
   Card,
@@ -30,6 +35,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
@@ -81,20 +91,28 @@ export function InfoModal({
 
   return (
     <Dialog modal open={isOpen} onOpenChange={handleClose}>
-      <DialogContent>
+      <DialogContent className="mx-auto max-w-fit rounded-md sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{selectedDate}</DialogTitle>
+          <DialogTitle>
+            {format(
+              tzDate(
+                selectedDate,
+                Intl.DateTimeFormat().resolvedOptions().timeZone,
+              ),
+              "full",
+            )}
+          </DialogTitle>
           <DialogDescription>
             Drank a total of {data?.length} cups of coffee
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <Tabs defaultValue="account" className="w-full">
+          <Tabs defaultValue="coffee-1" className="w-full">
             <TabsList className="flex w-full">
               {data?.map((log, index) => (
                 <TabsTrigger
-                  value={`log-${index + 1}`}
-                  key={`trigger-${log.id}`}
+                  value={`coffee-${index + 1}`}
+                  key={`coffee_trigger-${log.id}`}
                   className="w-full"
                 >
                   Coffee {index + 1}
@@ -107,8 +125,8 @@ export function InfoModal({
 
               return (
                 <TabsContent
-                  value={`log-${index + 1}`}
-                  key={`content-${log.id}`}
+                  value={`coffee-${index + 1}`}
+                  key={`coffee_info-${log.id}`}
                   className="w-full"
                 >
                   <Card>
@@ -127,14 +145,10 @@ export function InfoModal({
                               }),
                             )}
                             target="_blank"
-                            rel="noreferrer noopener"
+                            rel="noreferrer"
                             href={log.coffee.roaster.instagram}
                           >
-                            <InstagramIcon
-                              className="h-4 w-4"
-                              onPointerEnterCapture={undefined}
-                              onPointerLeaveCapture={undefined}
-                            />
+                            <Icons.instagram className="h-4 w-4" />
                           </a>
                         )}
 
@@ -147,7 +161,7 @@ export function InfoModal({
                               }),
                             )}
                             target="_blank"
-                            rel="noreferrer noopener"
+                            rel="noreferrer"
                             href={log.coffee.roaster.website}
                           >
                             <GlobeIcon className="h-4 w-4" />
@@ -159,18 +173,22 @@ export function InfoModal({
                       <Tabs className="w-full" defaultValue="location">
                         <TabsList className="flex w-full">
                           <TabsTrigger className="w-full" value="location">
-                            Location
+                            <GlobeIcon className="mr-2 h-3 w-3" /> Location
                           </TabsTrigger>
                           <TabsTrigger className="w-full" value="bean">
-                            Coffee Bean
+                            <CoffeeIcon className="mr-2 h-3 w-3" /> Coffee
                           </TabsTrigger>
                           {isScoreAvailable ? (
                             <TabsTrigger className="w-full" value="score">
+                              <ClipboardListIcon className="mr-2 h-3 w-3" />{" "}
                               Score
                             </TabsTrigger>
                           ) : null}
                         </TabsList>
-                        <TabsContent className="p-2" value="location">
+                        <TabsContent
+                          className="rounded-md border-2 border-dashed p-4"
+                          value="location"
+                        >
                           <dl>
                             <DescrptionGoogleMapsLink
                               title="Region"
@@ -193,10 +211,13 @@ export function InfoModal({
                             ) : null}
                           </dl>
                         </TabsContent>
-                        <TabsContent className="p-2" value="bean">
+                        <TabsContent
+                          className="rounded-md border-2 border-dashed p-4"
+                          value="bean"
+                        >
                           <dl>
                             <DescrptionLabel
-                              icon={<CoffeeIcon className="h-4 w-4" />}
+                              icon={<BeanIcon className="h-4 w-4" />}
                               title="Varietals"
                               description={log.coffee.varietals
                                 .map((v) => v.varietal.name)
@@ -204,7 +225,7 @@ export function InfoModal({
                             />
                             <DescrptionLabel
                               title="Process"
-                              icon={<SparkleIcon className="h-4 w-4" />}
+                              icon={<CogIcon className="h-4 w-4" />}
                               description={log.coffee.process.name}
                             />
                             <DescrptionLabel
@@ -214,18 +235,21 @@ export function InfoModal({
                             />
                             <DescrptionLabel
                               title="Notes"
-                              icon={<NotebookIcon className="h-4 w-4" />}
+                              icon={<SparklesIcon className="h-4 w-4" />}
                               description={log.coffee.notes
                                 .map((n) => n.note.name)
                                 .join(", ")}
                             />
                           </dl>
                         </TabsContent>
-                        <TabsContent className="p-2" value="score">
+                        <TabsContent
+                          className="rounded-md border-2 border-dashed p-4"
+                          value="score"
+                        >
                           <dl>
                             {log.coffee.sca !== null && log.coffee.sca > 0 && (
                               <DescrptionLabel
-                                icon={<ListIcon className="h-4 w-4" />}
+                                icon={<ListChecksIcon className="h-4 w-4" />}
                                 title="SCA Score"
                                 description={`${log.coffee.sca} SCA`}
                               />
@@ -233,9 +257,11 @@ export function InfoModal({
 
                             {log.coffee.personal_sca !== null &&
                               log.coffee.personal_sca > 0 && (
-                                <DescrptionLabel
-                                  icon={<ListIcon className="h-4 w-4" />}
+                                <DescrptionInfoBadgeLabel
+                                  icon={<ListTodoIcon className="h-4 w-4" />}
                                   title="Personal SCA Score"
+                                  label="Obtained using SCA Cuping Score Calculator"
+                                  href="https://sca.coffee/cuppingscore"
                                   description={`${log.coffee.personal_sca} SCA`}
                                 />
                               )}
@@ -265,12 +291,56 @@ function DescrptionLabel({
 }) {
   return (
     <>
-      <dt className="flex items-center gap-2 align-baseline font-bold">
+      <dt className="flex items-center gap-2 align-baseline font-semibold leading-loose tracking-wide">
         <span>{title}</span>
         <span>{icon}</span>
       </dt>
-      <dd className="ml-3 text-sm font-medium capitalize text-foreground/60">
+      <dd className="ml-3 text-sm font-medium capitalize text-foreground/80">
         {description}
+      </dd>
+    </>
+  );
+}
+
+function DescrptionInfoBadgeLabel({
+  title,
+  description,
+  icon,
+  label,
+  href,
+}: {
+  title: string;
+  description: string | number;
+  icon: React.ReactNode;
+  label: string;
+  href?: string;
+}) {
+  return (
+    <>
+      <dt className="flex items-center gap-2 align-baseline font-semibold leading-loose tracking-wide">
+        <span>{title}</span>
+        <span>{icon}</span>
+      </dt>
+      <dd className="ml-3 flex items-center gap-2 align-middle text-sm font-medium capitalize text-foreground/80">
+        <p>{description}</p>
+        <Popover>
+          <PopoverTrigger>
+            <InfoIcon className="h-4 w-4 duration-150 ease-in-out hover:text-foreground" />
+          </PopoverTrigger>
+          <PopoverContent className="flex flex-col items-center gap-2 align-middle leading-snug tracking-wide">
+            <p>{label}</p>
+            {href ? (
+              <a
+                href={href}
+                className="text-foreground/60"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {href}
+              </a>
+            ) : null}
+          </PopoverContent>
+        </Popover>
       </dd>
     </>
   );
@@ -287,11 +357,11 @@ function DescrptionGoogleMapsLink({
 }) {
   return (
     <>
-      <dt className="flex items-center gap-2 align-baseline font-bold">
+      <dt className="flex items-center gap-2 align-baseline font-semibold leading-loose tracking-wide">
         <span>{title}</span>
-        <span>{icon}</span>
+        <span className="">{icon}</span>
       </dt>
-      <dd className="ml-3 text-sm font-medium">
+      <dd className="ml-3 text-sm font-medium capitalize text-foreground/80">
         <a
           target="_blank"
           rel="noreferrer"

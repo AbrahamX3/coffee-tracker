@@ -2,19 +2,10 @@ import { CoffeeIcon, PlusIcon } from "lucide-react";
 import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
 import { DashboardHeader } from "~/components/general/dashboard-header";
 import { CardStat } from "~/components/overview/card-stat";
-import CoffeeTrackerGraph from "~/components/overview/coffee-tracker-graph";
+import LogCarousel from "~/components/overview/log-carousel";
 import { buttonVariants } from "~/components/ui/button";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "~/components/ui/carousel";
-import { months } from "~/lib/constants";
 import { getCurrentUser } from "~/lib/session";
 import { cn } from "~/lib/utils";
 import { authOptions } from "~/server/auth";
@@ -70,30 +61,7 @@ export default async function DashboardPage() {
         </div>
         <div className="flex w-full flex-1 flex-col overflow-hidden rounded-md border p-4">
           <div className="container flex w-full flex-col gap-2">
-            <Suspense fallback={"Loading..."}>
-              <Carousel
-                opts={{
-                  startIndex: new Date().getMonth(),
-                  loop: true,
-                }}
-                className="m-6"
-              >
-                <CarouselContent>
-                  {months.map((month) => (
-                    <CarouselItem key={month.id}>
-                      <h1 className="pb-2 text-3xl font-bold">{month.month}</h1>
-                      <CoffeeTrackerGraph
-                        totalsByDate={logs}
-                        month={month.id}
-                        key={month.month}
-                      />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </Suspense>
+            <LogCarousel logs={logs} />
           </div>
         </div>
       </div>
