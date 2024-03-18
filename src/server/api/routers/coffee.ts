@@ -42,12 +42,13 @@ export const coffeeRouter = createTRPCRouter({
         with: {
           roaster: true,
         },
-        where: eq(coffee.active, true),
+        orderBy: [desc(coffee.active), asc(coffee.country)],
       })
     ).map((coffee) => {
       return {
         value: coffee.id,
         label: coffee.name ?? `${coffee.roaster.name} - ${coffee.region}`,
+        active: coffee.active,
       };
     });
   }),

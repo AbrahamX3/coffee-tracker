@@ -97,7 +97,7 @@ export function CreateForm() {
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
+                  <PopoverContent className="w-[400px] p-0">
                     <Command>
                       <CommandInput placeholder="Search..." />
                       <CommandList>
@@ -107,19 +107,28 @@ export function CreateForm() {
                             <CommandItem
                               value={coffee.label}
                               key={coffee.value}
+                              className="flex w-full justify-between gap-2"
                               onSelect={() => {
                                 form.setValue("coffeeId", coffee.value);
                               }}
                             >
-                              <Check
+                              <div className="flex items-center gap-2">
+                                <Check
+                                  className={cn(
+                                    "h-4 w-4",
+                                    coffee.value === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0",
+                                  )}
+                                />
+                                {coffee.label}
+                              </div>
+                              <div
                                 className={cn(
-                                  "mr-2 h-4 w-4",
-                                  coffee.value === field.value
-                                    ? "opacity-100"
-                                    : "opacity-0",
+                                  coffee.active ? "bg-green-500" : "bg-red-500",
+                                  "h-4 w-4 justify-end rounded-full",
                                 )}
-                              />
-                              {coffee.label}
+                              ></div>
                             </CommandItem>
                           ))}
                         </CommandGroup>
@@ -144,12 +153,12 @@ export function CreateForm() {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
+                          "w-full pl-3 text-left font-normal",
                           !field.value && "text-muted-foreground",
                         )}
                       >
                         {field.value ? (
-                          format(field.value, "PPP")
+                          format(field.value, "full")
                         ) : (
                           <span>Pick a date</span>
                         )}
