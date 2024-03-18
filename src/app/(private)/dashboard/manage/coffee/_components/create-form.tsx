@@ -93,7 +93,7 @@ export function CreateForm() {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input placeholder="Name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -144,6 +144,20 @@ export function CreateForm() {
                 <FormLabel>Producer</FormLabel>
                 <FormControl>
                   <Input placeholder="Producer" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Country</FormLabel>
+                <FormControl>
+                  <Input placeholder="Country" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

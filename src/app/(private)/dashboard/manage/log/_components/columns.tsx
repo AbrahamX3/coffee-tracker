@@ -35,6 +35,7 @@ export function Columns({ coffeeOptions }: { coffeeOptions: FilterOptions[] }) {
         const label =
           row.original.coffee.name ??
           `${row.original.coffee.roaster.name} - ${row.original.coffee.region}`;
+
         const coffee = coffeeOptions.find((coffee) => {
           return coffee.value === label;
         });

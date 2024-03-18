@@ -107,6 +107,7 @@ export const coffee = pgTable(
       .notNull(),
     region: text("region").notNull(),
     estate: text("estate"),
+    country: text("country"),
     altitude: integer("altitude"),
     producer: text("producer"),
     sca: real("sca"),

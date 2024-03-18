@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -11,11 +11,28 @@ import { CoffeeFormSchema } from "~/utils/schemas/coffee-schema";
 export const coffeeRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.query.coffee.findMany({
+      orderBy: [desc(coffee.active), asc(coffee.country)],
       with: {
         roaster: true,
-        varietals: true,
-        notes: true,
         process: true,
+        notes: {
+          columns: {
+            coffeeId: false,
+            noteId: false,
+          },
+          with: {
+            note: true,
+          },
+        },
+        varietals: {
+          columns: {
+            coffeeId: false,
+            varietalId: false,
+          },
+          with: {
+            varietal: true,
+          },
+        },
       },
     });
   }),
@@ -25,6 +42,7 @@ export const coffeeRouter = createTRPCRouter({
         with: {
           roaster: true,
         },
+        where: eq(coffee.active, true),
       })
     ).map((coffee) => {
       return {
@@ -66,6 +84,7 @@ export const coffeeRouter = createTRPCRouter({
           active: input.active,
           altitude: input.altitude,
           estate: input.estate,
+          country: input.country,
           sca: input.sca,
           personal_sca: input.personal_sca,
           roast: input.roast,
@@ -124,6 +143,7 @@ export const coffeeRouter = createTRPCRouter({
           active: input.active,
           altitude: input.altitude,
           sca: input.sca,
+          country: input.country,
           personal_sca: input.personal_sca,
           roast: input.roast,
           processId: input.processId,

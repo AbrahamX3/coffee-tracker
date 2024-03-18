@@ -12,8 +12,10 @@ import { Actions } from "./actions";
 
 export function Columns({
   roasterOptions,
+  statusOptions,
 }: {
   roasterOptions: FilterOptions[];
+  statusOptions: FilterOptions[];
 }) {
   const columns: ColumnDef<CoffeeDataTableColumn>[] = [
     {
@@ -27,6 +29,8 @@ export function Columns({
     },
     {
       accessorKey: "name",
+      accessorFn: (row) =>
+        row.name ?? `${row.region} - ${row.estate ? row.estate : row.country} `,
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Name" />
       ),
@@ -34,21 +38,25 @@ export function Columns({
         return (
           <div className="flex space-x-2">
             <span className="max-w-[500px] truncate font-medium">
-              {row.getValue("name")}
+              {row.original.name
+                ? row.original.name
+                : `${row.original.region} - ${row.original.estate ? row.original.estate : row.original.country} `}
             </span>
           </div>
         );
       },
     },
+
     {
       id: "Roaster",
-      accessorFn: (row) => row.roasterId,
+      accessorKey: "Roaster",
+      accessorFn: (row) => row.roaster.name,
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Roaster" />
       ),
       cell: ({ row }) => {
         const roaster = roasterOptions.find((roaster) => {
-          return roaster.value === row.original.roasterId;
+          return roaster.label === row.original.roaster.name;
         });
 
         if (!roaster?.value) {
@@ -58,7 +66,7 @@ export function Columns({
         return (
           <Badge
             variant="outline"
-            className="flex w-fit max-w-[500px] px-3 py-1 align-middle"
+            className="flex w-max px-3 py-1 align-middle"
           >
             <roaster.icon className="mr-2 h-4 w-4" />
             {roaster.label}
@@ -66,7 +74,37 @@ export function Columns({
         );
       },
       filterFn: (row, id: string, value: string) => {
-        return value.includes(row.original.roaster.name);
+        return value.includes(row.getValue(id));
+      },
+    },
+    {
+      accessorKey: "region",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Region" />
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="flex space-x-2">
+            <span className="max-w-[500px] truncate font-medium">
+              {row.getValue("region")}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "country",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Country" />
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="flex space-x-2">
+            <span className="max-w-[500px] truncate font-medium">
+              {row.getValue("country")}
+            </span>
+          </div>
+        );
       },
     },
     {
@@ -85,15 +123,47 @@ export function Columns({
       },
     },
     {
-      accessorKey: "region",
+      accessorKey: "personal_sca",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Region" />
+        <DataTableColumnHeader column={column} title="Personal SCA" />
       ),
       cell: ({ row }) => {
         return (
           <div className="flex space-x-2">
             <span className="max-w-[500px] truncate font-medium">
-              {row.getValue("region")}
+              {row.getValue("sca") !== 0 ? row.getValue("sca") : "N/A"}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      id: "Notes",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Notes" />
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="flex space-x-2">
+            <span className="max-w-[500px] truncate font-medium">
+              {row.original.notes.map((note) => note.note.name).join(", ")}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      id: "Varietals",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Varietals" />
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="flex space-x-2">
+            <span className="max-w-[500px] truncate font-medium">
+              {row.original.varietals
+                .map((varietal) => varietal.varietal.name)
+                .join(", ")}
             </span>
           </div>
         );
@@ -127,6 +197,50 @@ export function Columns({
             </span>
           </div>
         );
+      },
+    },
+    {
+      id: "Status",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Status" />
+      ),
+      accessorFn: (row) => (row.active ? "enabled" : "disabled"),
+      cell: ({ row }) => {
+        const status = statusOptions.find((status) => {
+          return (
+            status.value === (row.original.active ? "enabled" : "disabled")
+          );
+        });
+
+        if (!status?.value) {
+          return <Skeleton className="h-6 w-36 rounded-full px-3 py-1" />;
+        }
+
+        if (status.value === "enabled") {
+          return (
+            <Badge
+              variant="success"
+              className="flex w-fit px-3 py-1 align-middle"
+            >
+              <status.icon className="mr-2 h-4 w-4" />
+              {status.label}
+            </Badge>
+          );
+        }
+        if (status.value === "disabled") {
+          return (
+            <Badge
+              variant="destructive"
+              className="flex w-fit px-3 py-1 align-middle"
+            >
+              <status.icon className="mr-2 h-4 w-4" />
+              {status.label}
+            </Badge>
+          );
+        }
+      },
+      filterFn: (row, id: string, value: string) => {
+        return value.includes(row.original.active ? "enabled" : "disabled");
       },
     },
     {

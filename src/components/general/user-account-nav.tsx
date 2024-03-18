@@ -2,7 +2,6 @@
 
 import { type User } from "next-auth";
 import { signOut } from "next-auth/react";
-import Link from "next/link";
 
 import { UserAvatar } from "~/components/general/user-avatar";
 import {
@@ -37,10 +36,6 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
             )}
           </div>
         </div>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard">Dashboard</Link>
-        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer"

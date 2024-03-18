@@ -1,6 +1,6 @@
 {
-  "id": "097b98cd-a4b3-4c18-9c35-6ed1059454a6",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "b0d831f7-b277-498f-a152-d5b0d7c76fa2",
+  "prevId": "097b98cd-a4b3-4c18-9c35-6ed1059454a6",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -137,6 +137,12 @@
         },
         "estate": {
           "name": "estate",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "country": {
+          "name": "country",
           "type": "text",
           "primaryKey": false,
           "notNull": false

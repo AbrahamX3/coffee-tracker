@@ -1,3 +1,5 @@
+import { CheckIcon, XIcon } from "lucide-react";
+
 export const months = [
   {
     month: "January",
@@ -51,5 +53,18 @@ export const months = [
   {
     month: "December",
     id: 12,
+  },
+];
+
+export const StatusFilter = [
+  {
+    value: "enabled",
+    label: "Enabled",
+    icon: CheckIcon,
+  },
+  {
+    value: "disabled",
+    label: "Disabled",
+    icon: XIcon,
   },
 ];

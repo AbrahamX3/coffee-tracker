@@ -55,6 +55,7 @@ export function UpdateForm({ data }: UpdateFormProps) {
       region: data?.region,
       active: data?.active ?? false,
       processId: data?.processId,
+      country: data?.country ?? undefined,
       estate: data?.estate ?? undefined,
       roasterId: data?.roasterId,
       producer: data?.producer ?? undefined,
@@ -171,6 +172,20 @@ export function UpdateForm({ data }: UpdateFormProps) {
 
           <FormField
             control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Country</FormLabel>
+                <FormControl>
+                  <Input placeholder="Country" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="estate"
             render={({ field }) => (
               <FormItem>
@@ -195,7 +210,6 @@ export function UpdateForm({ data }: UpdateFormProps) {
                     type="number"
                     pattern="[0-9]*"
                     min={0}
-                    step={100}
                     max={10000}
                     {...field}
                   />

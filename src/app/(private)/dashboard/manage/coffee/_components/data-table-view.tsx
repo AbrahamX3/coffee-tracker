@@ -2,16 +2,17 @@
 
 import { DataTable } from "~/components/ui/datatable/data-table";
 
-import { WarehouseIcon } from "lucide-react";
+import { FlameIcon } from "lucide-react";
+import { StatusFilter } from "~/lib/constants";
 import { api } from "~/trpc/react";
 import { type CoffeeGetAll } from "~/utils/schemas/coffee-schema";
 import { Columns } from "./columns";
 
 export function DataTableView({ data }: { data: CoffeeGetAll }) {
-  const roasters = api.roaster.getAll.useQuery().data?.flatMap((roaster) => ({
-    value: roaster.id,
+  const roasters = api.roaster.getAll.useQuery().data?.map((roaster) => ({
+    value: roaster.name,
     label: roaster.name,
-    icon: WarehouseIcon,
+    icon: FlameIcon,
   }));
 
   return (
@@ -22,9 +23,15 @@ export function DataTableView({ data }: { data: CoffeeGetAll }) {
           title: "Roaster",
           options: roasters ?? [],
         },
+        {
+          columnId: "Status",
+          title: "Status",
+          options: StatusFilter,
+        },
       ]}
       columns={Columns({
         roasterOptions: roasters ?? [],
+        statusOptions: StatusFilter,
       })}
       data={data}
     />

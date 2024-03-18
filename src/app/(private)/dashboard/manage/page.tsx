@@ -1,11 +1,3 @@
-import {
-  CalendarDaysIcon,
-  CoffeeIcon,
-  CogIcon,
-  NotepadTextIcon,
-  SquareStackIcon,
-  WarehouseIcon,
-} from "lucide-react";
 import { redirect } from "next/navigation";
 import { DashboardHeader } from "~/components/general/dashboard-header";
 import { getCurrentUser } from "~/lib/session";
@@ -46,37 +38,37 @@ export default async function StatsPage() {
         <CardStatLink
           title="Total Roasters"
           total={Intl.NumberFormat("en-US").format(totalRoasters)}
-          icon={<WarehouseIcon className="h-4 w-4 text-muted-foreground" />}
+          icon="roaster"
           url="/dashboard/manage/roaster"
         />
         <CardStatLink
           title="Total Logs"
           total={Intl.NumberFormat("en-US").format(totalLogs)}
-          icon={<CalendarDaysIcon className="h-4 w-4 text-muted-foreground" />}
+          icon="log"
           url="/dashboard/manage/log"
         />
         <CardStatLink
           title="Total Coffees"
           total={Intl.NumberFormat("en-US").format(totalCoffees)}
-          icon={<CoffeeIcon className="h-4 w-4 text-muted-foreground" />}
+          icon="coffee"
           url="/dashboard/manage/coffee"
         />
         <CardStatLink
           title="Total Notes"
           total={Intl.NumberFormat("en-US").format(totalNotes)}
-          icon={<NotepadTextIcon className="h-4 w-4 text-muted-foreground" />}
+          icon="note"
           url="/dashboard/manage/note"
         />
         <CardStatLink
           title="Total Varietals"
           total={Intl.NumberFormat("en-US").format(totalVarietals)}
-          icon={<SquareStackIcon className="h-4 w-4 text-muted-foreground" />}
+          icon="varietal"
           url="/dashboard/manage/varietal"
         />
         <CardStatLink
           title="Total Processes"
           total={Intl.NumberFormat("en-US").format(totalProcesses)}
-          icon={<CogIcon className="h-4 w-4 text-muted-foreground" />}
+          icon="process"
           url="/dashboard/manage/process"
         />
       </div>

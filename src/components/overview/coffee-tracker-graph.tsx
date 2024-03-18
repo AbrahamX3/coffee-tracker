@@ -44,7 +44,7 @@ export default function CoffeeTrackerGraph({
 
   return (
     <>
-      <div className="relative flex w-full flex-wrap gap-2">
+      <div className="relative flex w-full flex-wrap items-center justify-center gap-2 md:justify-start">
         {currentMonthLabels.map((date, index) => (
           <Button
             onClick={() => setSelectedDate(date)}
@@ -55,7 +55,7 @@ export default function CoffeeTrackerGraph({
             key={index}
             variant="outline"
             className={cn(
-              "mr-1 aspect-square size-8",
+              "aspect-square size-8",
               colorSteps[currentMonthTotalsMap.get(date) ?? 0],
               isLoading && date === selectedDate && "animate-ping",
             )}

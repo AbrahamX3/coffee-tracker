@@ -195,6 +195,15 @@ export function InfoModal({
                               description={log.coffee.region}
                               icon={<MapPinIcon className="h-4 w-4" />}
                             />
+
+                            {log.coffee.country ? (
+                              <DescrptionLabel
+                                title="Country"
+                                description={log.coffee.country}
+                                icon={<MapPinIcon className="h-4 w-4" />}
+                              />
+                            ) : null}
+
                             {log.coffee.estate ? (
                               <DescrptionLabel
                                 title="Estate"
@@ -207,6 +216,14 @@ export function InfoModal({
                                 title="Altitude"
                                 icon={<MountainIcon className="h-4 w-4" />}
                                 description={`${log.coffee.altitude} masl`}
+                              />
+                            ) : null}
+
+                            {log.coffee.producer ? (
+                              <DescrptionLabel
+                                title="Producer"
+                                description={log.coffee.producer}
+                                icon={<MapPinIcon className="h-4 w-4" />}
                               />
                             ) : null}
                           </dl>

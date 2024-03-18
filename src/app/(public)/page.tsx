@@ -4,6 +4,7 @@ import { DashboardHeader } from "~/components/general/dashboard-header";
 import { CardStat } from "~/components/overview/card-stat";
 import LogCarousel from "~/components/overview/log-carousel";
 import { api } from "~/trpc/server";
+
 export const metadata = {
   title: "Tracker",
 };

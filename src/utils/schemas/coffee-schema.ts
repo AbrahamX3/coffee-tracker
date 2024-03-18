@@ -9,6 +9,7 @@ export const CoffeeFormSchema = z.object({
   region: z.string().min(1, { message: "Region is required" }),
   altitude: z.coerce.number().min(0).max(10000).default(0).optional(),
   producer: z.string().optional(),
+  country: z.string().optional(),
   estate: z.string().optional(),
   sca: z.coerce.number().min(0).max(100).default(0).optional(),
   personal_sca: z.coerce.number().min(0).max(100).default(0).optional(),
