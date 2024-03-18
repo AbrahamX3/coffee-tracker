@@ -1,5 +1,5 @@
 import { format } from "@formkit/tempo";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -12,6 +12,7 @@ import { LogFormSchema, LogUpdateFormSchema } from "~/utils/schemas/log-schema";
 export const logRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.query.log.findMany({
+      orderBy: [desc(log.date)],
       with: {
         coffee: {
           with: {
@@ -52,7 +53,7 @@ export const logRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.insert(log).values({
         ...input,
-        date: format(input.date, "yyyy-MM-dd"),
+        date: format(input.date, "YYYY-MM-DD"),
       });
     }),
   update: protectedProcedure
@@ -66,7 +67,7 @@ export const logRouter = createTRPCRouter({
         .update(log)
         .set({
           ...input,
-          date: format(input.date, "yyyy-MM-dd"),
+          date: format(input.date, "YYYY-MM-DD"),
           updatedAt: new Date(),
         })
         .where(eq(log.id, input.id));
