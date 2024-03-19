@@ -37,7 +37,7 @@ export function CreateForm() {
   const form = useForm<LogForm>({
     resolver: zodResolver(LogFormSchema),
     defaultValues: {
-      coffeeId: 0,
+      coffeeId: "",
       date: new Date(),
     },
   });

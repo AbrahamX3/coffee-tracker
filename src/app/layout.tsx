@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="scrollbar scrollbar-track-muted scrollbar-thumb-muted-foreground scrollbar-thumb-rounded-md scrollbar-w-2">
         <TRPCReactProvider>{children}</TRPCReactProvider>
         <Toaster richColors />
       </body>

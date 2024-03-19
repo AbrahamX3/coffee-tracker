@@ -1,1 +1,0 @@
-ALTER TABLE "coffee" ADD COLUMN "country" text;

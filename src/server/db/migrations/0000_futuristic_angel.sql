@@ -5,7 +5,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "account" (
-	"userId" varchar(255) NOT NULL,
+	"userId" uuid NOT NULL,
 	"type" varchar(255) NOT NULL,
 	"provider" varchar(255) NOT NULL,
 	"providerAccountId" varchar(255) NOT NULL,
@@ -20,12 +20,13 @@ CREATE TABLE IF NOT EXISTS "account" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "coffee" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text,
-	"roasterId" integer NOT NULL,
-	"processId" integer NOT NULL,
+	"roasterId" uuid NOT NULL,
+	"processId" uuid NOT NULL,
 	"region" text NOT NULL,
 	"estate" text,
+	"country" text,
 	"altitude" integer,
 	"producer" text,
 	"sca" real,
@@ -38,39 +39,39 @@ CREATE TABLE IF NOT EXISTS "coffee" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "coffeeOnNote" (
-	"coffeeId" integer NOT NULL,
-	"notesId" integer NOT NULL,
+	"coffeeId" uuid NOT NULL,
+	"notesId" uuid NOT NULL,
 	CONSTRAINT "coffeeOnNote_coffeeId_notesId_pk" PRIMARY KEY("coffeeId","notesId")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "coffeeOnVarietal" (
-	"coffeeId" integer NOT NULL,
-	"varietalId" integer NOT NULL,
+	"coffeeId" uuid NOT NULL,
+	"varietalId" uuid NOT NULL,
 	CONSTRAINT "coffeeOnVarietal_coffeeId_varietalId_pk" PRIMARY KEY("coffeeId","varietalId")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "log" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"date" date NOT NULL,
-	"coffeeId" integer NOT NULL,
+	"coffeeId" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "note" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
 	CONSTRAINT "note_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "process" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
 	CONSTRAINT "process_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "roaster" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
 	"instagram" text,
 	"website" text,
@@ -78,13 +79,13 @@ CREATE TABLE IF NOT EXISTS "roaster" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
-	"sessionToken" varchar(255) PRIMARY KEY NOT NULL,
-	"userId" varchar(255) NOT NULL,
+	"sessionToken" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"userId" uuid NOT NULL,
 	"expires" timestamp NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user" (
-	"id" varchar(255) PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(255),
 	"email" varchar(255) NOT NULL,
 	"emailVerified" timestamp DEFAULT now(),
@@ -92,7 +93,7 @@ CREATE TABLE IF NOT EXISTS "user" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "varietal" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
 	CONSTRAINT "varietal_name_unique" UNIQUE("name")
 );

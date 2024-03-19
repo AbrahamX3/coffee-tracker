@@ -7,7 +7,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { log } from "~/server/db/schema";
-import { LogFormSchema, LogUpdateFormSchema } from "~/utils/schemas/log-schema";
+import { LogFormSchema } from "~/utils/schemas/log-schema";
 
 export const logRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -42,7 +42,7 @@ export const logRouter = createTRPCRouter({
     });
   }),
   getById: publicProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       return await ctx.db.query.log.findFirst({
         where: eq(log.id, input.id),
@@ -57,7 +57,7 @@ export const logRouter = createTRPCRouter({
       });
     }),
   update: protectedProcedure
-    .input(LogUpdateFormSchema.extend({ id: z.number() }))
+    .input(LogFormSchema.extend({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");
@@ -75,7 +75,7 @@ export const logRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

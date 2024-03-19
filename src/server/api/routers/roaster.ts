@@ -21,7 +21,7 @@ export const roasterRouter = createTRPCRouter({
     });
   }),
   getById: protectedProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       return await ctx.db.query.roaster.findFirst({
         where: eq(roaster.id, input.id),
@@ -35,7 +35,7 @@ export const roasterRouter = createTRPCRouter({
       });
     }),
   update: protectedProcedure
-    .input(RoasterFormSchema.extend({ id: z.number() }))
+    .input(RoasterFormSchema.extend({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");
@@ -51,7 +51,7 @@ export const roasterRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

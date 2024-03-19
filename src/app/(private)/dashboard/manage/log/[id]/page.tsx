@@ -19,9 +19,7 @@ export default async function Update({ params }: { params: { id: string } }) {
     redirect(authOptions.pages?.signIn ?? "/api/auth/signin");
   }
 
-  const id = parseInt(params.id, 10);
-
-  const data = await api.log.getById.query({ id });
+  const data = await api.log.getById.query({ id: params.id });
 
   if (!data) {
     notFound();

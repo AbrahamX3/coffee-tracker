@@ -200,7 +200,7 @@ export function InfoModal({
                               <DescrptionLabel
                                 title="Country"
                                 description={log.coffee.country}
-                                icon={<MapPinIcon className="h-4 w-4" />}
+                                icon={<GlobeIcon className="h-4 w-4" />}
                               />
                             ) : null}
 

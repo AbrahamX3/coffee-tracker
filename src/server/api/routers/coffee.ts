@@ -53,7 +53,7 @@ export const coffeeRouter = createTRPCRouter({
     });
   }),
   getById: protectedProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       return await ctx.db.query.coffee.findFirst({
         where: eq(coffee.id, input.id),
@@ -69,11 +69,11 @@ export const coffeeRouter = createTRPCRouter({
     .input(CoffeeFormSchema)
     .mutation(async ({ ctx, input }) => {
       let varietalsInsert: {
-        varietalId: number;
+        varietalId: string;
       }[] = [];
 
       let notesInsert: {
-        noteId: number;
+        noteId: string;
       }[] = [];
 
       const coffeeInsert = await ctx.db
@@ -128,7 +128,7 @@ export const coffeeRouter = createTRPCRouter({
       };
     }),
   update: protectedProcedure
-    .input(CoffeeFormSchema.extend({ id: z.number() }))
+    .input(CoffeeFormSchema.extend({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");
@@ -182,7 +182,7 @@ export const coffeeRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

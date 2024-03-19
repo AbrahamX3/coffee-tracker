@@ -8,9 +8,9 @@ import {
   pgTable,
   primaryKey,
   real,
-  serial,
   text,
   timestamp,
+  uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
@@ -31,17 +31,17 @@ export const roastTypes = [
 export const roast = pgEnum("roast", roastTypes);
 
 export const note = pgTable("note", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull().unique(),
 });
 
 export const coffeeOnNote = pgTable(
   "coffeeOnNote",
   {
-    coffeeId: integer("coffeeId")
+    coffeeId: uuid("coffeeId")
       .notNull()
       .references(() => coffee.id, { onDelete: "cascade" }),
-    noteId: integer("notesId")
+    noteId: uuid("notesId")
       .notNull()
       .references(() => note.id, { onDelete: "cascade" }),
   },
@@ -57,17 +57,17 @@ export const noteRelations = relations(note, ({ many }) => ({
 }));
 
 export const varietal = pgTable("varietal", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull().unique(),
 });
 
 export const coffeeOnVarietal = pgTable(
   "coffeeOnVarietal",
   {
-    coffeeId: integer("coffeeId")
+    coffeeId: uuid("coffeeId")
       .notNull()
       .references(() => coffee.id, { onDelete: "cascade" }),
-    varietalId: integer("varietalId")
+    varietalId: uuid("varietalId")
       .notNull()
       .references(() => varietal.id, { onDelete: "cascade" }),
   },
@@ -83,26 +83,26 @@ export const varietalRelations = relations(varietal, ({ many }) => ({
 }));
 
 export const roaster = pgTable("roaster", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull().notNull().unique(),
   instagram: text("instagram"),
   website: text("website"),
 });
 
 export const process = pgTable("process", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull().notNull().unique(),
 });
 
 export const coffee = pgTable(
   "coffee",
   {
-    id: serial("id").primaryKey(),
+    id: uuid("id").primaryKey().defaultRandom(),
     name: text("name").unique(),
-    roasterId: integer("roasterId")
+    roasterId: uuid("roasterId")
       .references(() => roaster.id)
       .notNull(),
-    processId: integer("processId")
+    processId: uuid("processId")
       .references(() => process.id)
       .notNull(),
     region: text("region").notNull(),
@@ -166,9 +166,9 @@ export const coffeeOnVarietalRelations = relations(
 export const log = pgTable(
   "log",
   {
-    id: serial("id").primaryKey(),
+    id: uuid("id").primaryKey().defaultRandom(),
     date: date("date").notNull(),
-    coffeeId: integer("coffeeId")
+    coffeeId: uuid("coffeeId")
       .notNull()
       .references(() => coffee.id),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -187,7 +187,7 @@ export const logRelations = relations(log, ({ one }) => ({
 }));
 
 export const users = pgTable("user", {
-  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 255 }),
   email: varchar("email", { length: 255 }).notNull(),
   emailVerified: timestamp("emailVerified", {
@@ -203,9 +203,9 @@ export const usersRelations = relations(users, ({ many }) => ({
 export const accounts = pgTable(
   "account",
   {
-    userId: varchar("userId", { length: 255 })
-      .notNull()
-      .references(() => users.id),
+    userId: uuid("userId")
+      .references(() => users.id)
+      .notNull(),
     type: varchar("type", { length: 255 })
       .$type<AdapterAccount["type"]>()
       .notNull(),
@@ -234,12 +234,10 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 export const sessions = pgTable(
   "session",
   {
-    sessionToken: varchar("sessionToken", { length: 255 })
-      .notNull()
-      .primaryKey(),
-    userId: varchar("userId", { length: 255 })
-      .notNull()
-      .references(() => users.id),
+    sessionToken: uuid("sessionToken").primaryKey().defaultRandom().notNull(),
+    userId: uuid("userId")
+      .references(() => users.id)
+      .notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
   (session) => ({

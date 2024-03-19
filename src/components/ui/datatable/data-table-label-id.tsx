@@ -12,8 +12,12 @@ interface Props {
 
 export default function DataTableLabelId({ id }: Props) {
   return (
-    <Badge variant="outline" className="flex w-20 justify-between gap-x-2 py-1">
-      <span className="text-xs">{id}</span>
+    <Badge
+      variant="outline"
+      className="flex max-w-[200px] justify-between gap-x-2 py-1"
+      title={id}
+    >
+      <span className="truncate text-xs">{id}</span>
       <Button
         variant="ghost"
         size="xs"

@@ -24,14 +24,14 @@ export const varietalRouter = createTRPCRouter({
       });
     }),
   getById: protectedProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       return await ctx.db.query.varietal.findFirst({
         where: eq(varietal.id, input.id),
       });
     }),
   update: protectedProcedure
-    .input(VarietalFormSchema.extend({ id: z.number() }))
+    .input(VarietalFormSchema.extend({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       if (!input.id) {
         throw new Error("No Id provided");
@@ -47,7 +47,7 @@ export const varietalRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
