@@ -234,7 +234,9 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 export const sessions = pgTable(
   "session",
   {
-    sessionToken: uuid("sessionToken").primaryKey().defaultRandom().notNull(),
+    sessionToken: varchar("sessionToken", { length: 255 })
+      .primaryKey()
+      .notNull(),
     userId: uuid("userId")
       .references(() => users.id)
       .notNull(),

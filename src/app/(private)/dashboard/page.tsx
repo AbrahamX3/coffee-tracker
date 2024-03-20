@@ -31,8 +31,8 @@ export default async function DashboardPage() {
   return (
     <div className="container flex flex-1 flex-col">
       <DashboardHeader
-        heading="Tracker"
-        text="Overview of my coffee consumption and coffees I've tried"
+        heading="Coffee Consumption Overview"
+        text="Gain insights into my coffee consumption habits and the different types of coffee I've enjoyed."
       >
         <Link href="/dashboard/manage/log/new" className={cn(buttonVariants())}>
           New Log <PlusIcon className="ml-2 h-4 w-4" />

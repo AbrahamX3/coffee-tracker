@@ -103,7 +103,7 @@ export function InfoModal({
             )}
           </DialogTitle>
           <DialogDescription>
-            Drank a total of {data?.length} cups of coffee
+            Total cups of coffee consumed: {data?.length}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

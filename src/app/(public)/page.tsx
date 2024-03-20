@@ -21,8 +21,8 @@ export default async function PublicDashboard() {
   return (
     <div className="container flex flex-1 flex-col">
       <DashboardHeader
-        heading="Tracker"
-        text="Overview of my coffee consumption and coffee I had"
+        heading="Coffee Consumption Overview"
+        text="Gain insights into my coffee consumption habits and the different types of coffee I've enjoyed."
       />
       <div className="flex flex-1 flex-col gap-4 md:flex-row">
         <div className="flex flex-col gap-4">
