@@ -1,6 +1,6 @@
 import { SiteFooter } from "~/components/general/footer";
 import { PublicDashboardNav } from "~/components/general/public-dashboard-nav";
-
+import { Analytics } from "@vercel/analytics/react";
 export default async function RootLayout({
   children,
 }: {
@@ -15,6 +15,7 @@ export default async function RootLayout({
       </header>
       {children}
       <SiteFooter className="border-t" />
+      <Analytics />
     </div>
   );
 }
