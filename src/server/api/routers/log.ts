@@ -53,7 +53,11 @@ export const logRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.insert(log).values({
         ...input,
-        date: format(input.date, "YYYY-MM-DD"),
+        date: format({
+          date: input.date,
+          format: "YYYY-MM-DD",
+          tz: "UTC",
+        }),
       });
     }),
   update: protectedProcedure
@@ -67,7 +71,11 @@ export const logRouter = createTRPCRouter({
         .update(log)
         .set({
           ...input,
-          date: format(input.date, "YYYY-MM-DD"),
+          date: format({
+            date: input.date,
+            format: "YYYY-MM-DD",
+            tz: "UTC",
+          }),
           updatedAt: new Date(),
         })
         .where(eq(log.id, input.id));
