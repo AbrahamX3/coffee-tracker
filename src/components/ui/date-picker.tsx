@@ -1,6 +1,6 @@
 "use client";
 
-import { format } from "@formkit/tempo";
+import { formatDate } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { useState } from "react";
@@ -27,7 +27,7 @@ export function DatePicker() {
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "full") : <span>Pick a date</span>}
+          {date ? formatDate(date, "MMM d, yyyy") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

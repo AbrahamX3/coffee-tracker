@@ -25,11 +25,11 @@ This is a personal project that involves creating a coffee tracker, add new coff
 1. Modify `.env.example` to `.env` and fill in every field.
 
 > [!WARNING]
-> Fail to fill all `.env` fields will result in an error as they are required.
+> Failing to fill all `.env` fields will result in an error as they are required.
 
-2. Run `pnpm install` to install all dependencies.
+2. Run `bun install` to install all dependencies.
 
-3. Run the development server with `pnpm dev`.
+3. Run the development server with `bun dev`.
 
 4. Open up [http://localhost:3000](http://localhost:3000) in your browser for the public view.
 
@@ -41,15 +41,15 @@ This is a personal project that involves creating a coffee tracker, add new coff
 
 All commands are run from the root of the project, from a terminal:
 
-| Command           | Action                                                  |
-| :---------------- | :------------------------------------------------------ |
-| `pnpm install`    | Installs dependencies                                   |
-| `pnpm dev`        | Starts local dev server using Turbo at `localhost:3000` |
-| `pnpm build`      | Build your production site to `.next`                   |
-| `pnpm format`     | Format your code with Prettier                          |
-| `pnpm db:push`    | Push your database schema to the database               |
-| `pnpm db:studio`  | Open the database studio in your browser                |
-| `pnpm db:migrate` | Generate database migrations                            |
-| `pnpm typecheck`  | Typecheck your code with tsc                            |
-| `pnpm lint`       | Lint your code with ESLint                              |
-| `pnpm check`      | Format, typecheck, and lint your code with one command  |
+| Command          | Action                                                  |
+| :--------------- | :------------------------------------------------------ |
+| `bun install`    | Installs dependencies                                   |
+| `bun dev`        | Starts local dev server using Turbo at `localhost:3000` |
+| `bun build`      | Build your production site to `.next`                   |
+| `bun format`     | Format your code with Prettier                          |
+| `bun db:push`    | Push your database schema to the database               |
+| `bun db:studio`  | Open the database studio in your browser                |
+| `bun db:migrate` | Generate database migrations                            |
+| `bun typecheck`  | Typecheck your code with tsc                            |
+| `bun lint`       | Lint your code with ESLint                              |
+| `bun check`      | Format, typecheck, and lint your code with one command  |

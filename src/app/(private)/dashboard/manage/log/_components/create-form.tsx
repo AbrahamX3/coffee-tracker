@@ -1,7 +1,7 @@
 "use client";
 
-import { format } from "@formkit/tempo";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { formatDate } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -64,7 +64,10 @@ export function CreateForm() {
   });
 
   function onSubmit(values: LogForm) {
-    create.mutate(values);
+    create.mutate({
+      ...values,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    });
   }
 
   return (
@@ -158,7 +161,7 @@ export function CreateForm() {
                         )}
                       >
                         {field.value ? (
-                          format(field.value, "full")
+                          formatDate(field.value, "MMM d, yyyy")
                         ) : (
                           <span>Pick a date</span>
                         )}

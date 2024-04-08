@@ -1,7 +1,8 @@
 "use client";
 
-import { format } from "@formkit/tempo";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { formatDate } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -46,7 +47,10 @@ export function UpdateForm({ data }: UpdateFormProps) {
     resolver: zodResolver(LogFormSchema),
     defaultValues: {
       coffeeId: data?.coffeeId,
-      date: new Date(data?.date ?? Date.now()),
+      date: toZonedTime(
+        data?.date ?? new Date(),
+        Intl.DateTimeFormat().resolvedOptions().timeZone,
+      ),
     },
   });
 
@@ -76,10 +80,13 @@ export function UpdateForm({ data }: UpdateFormProps) {
       });
 
     update.mutate({
-      id: data.id,
       ...values,
+      id: data.id,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     });
   }
+
+  console.log(data);
 
   return (
     <Form {...form}>
@@ -172,7 +179,7 @@ export function UpdateForm({ data }: UpdateFormProps) {
                         )}
                       >
                         {field.value ? (
-                          format(field.value, "full")
+                          <span>{formatDate(field.value, "MMM d, yyyy")}</span>
                         ) : (
                           <span>Pick a date</span>
                         )}

@@ -1,6 +1,7 @@
 "use client";
 
-import { format, tzDate } from "@formkit/tempo";
+import { formatDate } from "date-fns";
+import { fromZonedTime } from "date-fns-tz";
 import {
   BeanIcon,
   ClipboardListIcon,
@@ -94,12 +95,12 @@ export function InfoModal({
       <DialogContent className="mx-auto max-w-fit rounded-md sm:max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {format(
-              tzDate(
+            {formatDate(
+              fromZonedTime(
                 selectedDate,
                 Intl.DateTimeFormat().resolvedOptions().timeZone,
               ),
-              "full",
+              "MMM d, yyyy",
             )}
           </DialogTitle>
           <DialogDescription>

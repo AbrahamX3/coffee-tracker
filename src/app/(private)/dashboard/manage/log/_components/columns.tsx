@@ -2,6 +2,8 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 
+import { format } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
 import { Badge } from "~/components/ui/badge";
 import { DataTableColumnHeader } from "~/components/ui/datatable/data-table-column-header";
 import DataTableLabelId from "~/components/ui/datatable/data-table-label-id";
@@ -68,10 +70,15 @@ export function Columns({ coffeeOptions }: { coffeeOptions: FilterOptions[] }) {
         <DataTableColumnHeader column={column} title="Date" />
       ),
       cell: ({ row }) => {
+        const date = toZonedTime(
+          row.getValue("date"),
+          Intl.DateTimeFormat().resolvedOptions().timeZone,
+        );
+
         return (
           <div className="flex space-x-2">
             <span className="max-w-[500px] truncate font-medium">
-              {row.getValue("date")}
+              {format(date, "MMM d, yyyy")}
             </span>
           </div>
         );
